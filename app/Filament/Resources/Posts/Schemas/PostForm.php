@@ -1,0 +1,138 @@
+<?php
+
+namespace App\Filament\Resources\Posts\Schemas;
+
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
+
+class PostForm
+{
+    private const CATEGORIES = [
+        'Berita' => 'Berita',
+        'Akademik' => 'Akademik',
+        'Lingkungan' => 'Lingkungan',
+        'Event' => 'Event',
+        'Teknologi' => 'Teknologi',
+        'Kesehatan' => 'Kesehatan',
+        'Prestasi' => 'Prestasi',
+    ];
+
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Section::make('Konten')
+                    ->schema([
+                        TextInput::make('title')
+                            ->label('Judul')
+                            ->required()
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set(
+                                'slug',
+                                Str::slug($state ?? ''),
+                            ))
+                            ->columnSpanFull(),
+
+                        TextInput::make('slug')
+                            ->label('Slug URL')
+                            ->required()
+                            ->maxLength(255)
+                            ->unique(ignoreRecord: true)
+                            ->columnSpanFull(),
+
+                        TextInput::make('excerpt')
+                            ->label('Ringkasan')
+                            ->maxLength(300)
+                            ->hint('Maksimal 300 karakter. Digunakan untuk SEO dan preview.')
+                            ->columnSpanFull(),
+
+                        RichEditor::make('content')
+                            ->label('Konten Artikel')
+                            ->required()
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('posts/attachments')
+                            ->fileAttachmentsVisibility('public')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
+
+                Section::make('Media & Kategori')
+                    ->schema([
+                        FileUpload::make('image')
+                            ->label('Gambar Utama')
+                            ->image()
+                            ->disk('public')
+                            ->directory('posts/images')
+                            ->visibility('public')
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('1200')
+                            ->imageResizeTargetHeight('675')
+                            ->hint('Rasio 16:9 disarankan. Akan di-resize ke 1200×675.')
+                            ->columnSpanFull(),
+
+                        Select::make('category')
+                            ->label('Kategori')
+                            ->options(self::CATEGORIES)
+                            ->required()
+                            ->default('Berita')
+                            ->native(false),
+
+                        TextInput::make('read_time')
+                            ->label('Estimasi Baca (menit)')
+                            ->required()
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(60)
+                            ->default(3),
+                    ])
+                    ->columns(2),
+
+                Section::make('Penulis & Publikasi')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('author')
+                                    ->label('Nama Penulis')
+                                    ->required()
+                                    ->default('Admin'),
+
+                                TextInput::make('author_initials')
+                                    ->label('Inisial Penulis')
+                                    ->required()
+                                    ->default('AD')
+                                    ->maxLength(3)
+                                    ->hint('Contoh: AF, SR, BS'),
+                            ]),
+
+                        Grid::make(2)
+                            ->schema([
+                                Toggle::make('is_published')
+                                    ->label('Publikasikan')
+                                    ->default(false)
+                                    ->live()
+                                    ->afterStateUpdated(function (Set $set, bool $state): void {
+                                        if ($state) {
+                                            $set('published_at', now()->format('Y-m-d H:i:s'));
+                                        }
+                                    }),
+
+                                DateTimePicker::make('published_at')
+                                    ->label('Tanggal Publikasi')
+                                    ->native(false)
+                                    ->seconds(false),
+                            ]),
+                    ]),
+            ]);
+    }
+}

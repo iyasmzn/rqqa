@@ -632,7 +632,7 @@
                     <h2 class="text-2xl font-bold" style="color:var(--text)">Blog Sekolah</h2>
                     <p class="mt-1 text-sm" style="color:var(--muted)">Informasi terkini, prestasi, dan cerita inspiratif dari komunitas sekolah.</p>
                 </div>
-                <a href="#" class="text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 shrink-0">
+                <a href="{{ route('blog.index') }}" class="text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 shrink-0">
                     Semua Artikel <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                 </a>
             </div>
@@ -716,7 +716,7 @@
             </div>
 
             <div class="mt-8 text-center">
-                <a href="#" class="btn-outline">Lihat Semua Artikel</a>
+                <a href="{{ route('blog.index') }}" class="btn-outline">Lihat Semua Artikel</a>
             </div>
         </section>
 
