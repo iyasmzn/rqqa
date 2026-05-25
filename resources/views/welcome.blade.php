@@ -19,6 +19,27 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 
+    {{-- Dynamic Google Font loading based on admin setting --}}
+    @php
+        $fontMap = [
+            'instrument-sans'   => ['family' => "'Instrument Sans', ui-sans-serif, system-ui, sans-serif", 'google' => null],
+            'inter'             => ['family' => "'Inter', ui-sans-serif, system-ui, sans-serif",             'google' => 'Inter:wght@300;400;500;600;700;800;900'],
+            'plus-jakarta-sans' => ['family' => "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif", 'google' => 'Plus+Jakarta+Sans:wght@300;400;500;600;700;800'],
+            'outfit'            => ['family' => "'Outfit', ui-sans-serif, system-ui, sans-serif",            'google' => 'Outfit:wght@300;400;500;600;700;800;900'],
+            'dm-sans'           => ['family' => "'DM Sans', ui-sans-serif, system-ui, sans-serif",           'google' => 'DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400'],
+            'nunito'            => ['family' => "'Nunito', ui-sans-serif, system-ui, sans-serif",            'google' => 'Nunito:wght@300;400;500;600;700;800'],
+            'poppins'           => ['family' => "'Poppins', ui-sans-serif, system-ui, sans-serif",           'google' => 'Poppins:wght@300;400;500;600;700;800'],
+            'sora'              => ['family' => "'Sora', ui-sans-serif, system-ui, sans-serif",              'google' => 'Sora:wght@300;400;500;600;700;800'],
+        ];
+        $selectedFont = setting('theme_font', 'instrument-sans');
+        $font = $fontMap[$selectedFont] ?? $fontMap['instrument-sans'];
+    @endphp
+    @if($font['google'])
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ $font['google'] }}&display=swap">
+    @endif
+
     {{-- Alpine.js for mobile menu & slider --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -26,19 +47,17 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 
     <style>
-        /* ── Warna utama dari pengaturan admin ───────────────────── */
+        /* ── Design tokens — Apple-inspired ─────────────────────── */
         :root {
-            --bg:       #f9fafb;
+            --bg:       #f5f5f7;   /* Apple off-white */
+            --bg-alt:   #ffffff;
             --card:     #ffffff;
-            --border:   #e5e7eb;
-            --text:     #030712;
-            --muted:    #6b7280;
+            --border:   rgba(0,0,0,.08);
+            --text:     #1d1d1f;   /* Apple near-black */
+            --muted:    #6e6e73;   /* Apple secondary gray */
 
             --primary: {{ setting('theme_primary_color', '#d97706') }};
 
-            /* Override seluruh Tailwind v4 amber palette dengan --primary.
-               Non-layered CSS menang atas @layer theme, sehingga semua
-               utility class amber (text-amber-*, bg-amber-*, dll.) ikut berubah. */
             --color-amber-50:  color-mix(in oklab, var(--primary)  8%, white);
             --color-amber-100: color-mix(in oklab, var(--primary) 15%, white);
             --color-amber-200: color-mix(in oklab, var(--primary) 28%, white);
@@ -50,69 +69,109 @@
             --color-amber-800: color-mix(in oklab, var(--primary) 58%, black);
             --color-amber-900: color-mix(in oklab, var(--primary) 42%, black);
         }
-        .dark {
-            --bg:     #030712;
-            --card:   #111827;
-            --border: #1f2937;
-            --text:   #f9fafb;
-            --muted:  #9ca3af;
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: {{ $font['family'] }};
+            -webkit-font-smoothing: antialiased;
         }
 
-        body { background: var(--bg); color: var(--text); font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif; }
-
-        /* Cards */
+        /* ── Cards — Apple large radius ─────────────────────────── */
         .fi-card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: .75rem;
-            box-shadow: 0 1px 2px 0 rgb(0 0 0/.05);
-            transition: box-shadow .15s, border-color .15s;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,.06);
+            transition: box-shadow .3s ease, transform .3s ease, border-color .3s ease;
         }
-        .fi-card-hover:hover { box-shadow: 0 6px 20px rgb(0 0 0/.1); border-color: var(--color-amber-300); }
+        .fi-card-hover:hover {
+            box-shadow: 0 20px 60px rgba(0,0,0,.12);
+            transform: translateY(-3px);
+            border-color: var(--color-amber-200);
+        }
 
-        /* Buttons */
+        /* ── Buttons — Apple style ──────────────────────────────── */
         .btn-primary {
             display: inline-flex; align-items: center; gap: .5rem;
-            padding: .6rem 1.25rem; border-radius: .5rem; font-size: .875rem; font-weight: 600;
-            background: var(--primary); color: #fff; transition: background .15s;
+            padding: .75rem 1.75rem;
+            border-radius: .875rem;
+            font-size: .9375rem; font-weight: 600;
+            background: var(--primary); color: #fff;
+            transition: background .2s, box-shadow .2s, transform .15s;
+            box-shadow: 0 4px 16px color-mix(in oklab, var(--primary) 40%, transparent);
         }
-        .btn-primary:hover { background: var(--color-amber-700); }
-
+        .btn-primary:hover {
+            background: var(--color-amber-700);
+            box-shadow: 0 6px 20px color-mix(in oklab, var(--primary) 50%, transparent);
+            transform: translateY(-1px);
+        }
         .btn-outline {
             display: inline-flex; align-items: center; gap: .5rem;
-            padding: .6rem 1.25rem; border-radius: .5rem; font-size: .875rem; font-weight: 600;
-            border: 1px solid var(--border); color: var(--text); background: var(--card); transition: border-color .15s, color .15s;
+            padding: .75rem 1.75rem;
+            border-radius: .875rem;
+            font-size: .9375rem; font-weight: 600;
+            border: 1.5px solid var(--border);
+            color: var(--text); background: var(--card);
+            transition: border-color .2s, color .2s, box-shadow .2s, transform .15s;
         }
-        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 4px 16px rgba(0,0,0,.06);
+            transform: translateY(-1px);
+        }
 
-        /* Labels */
-        .fi-label { font-size: .6875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--primary); }
-        .fi-badge  { display:inline-flex; align-items:center; gap:.25rem; padding:.125rem .625rem; border-radius:9999px; font-size:.75rem; font-weight:600; background:var(--color-amber-50); color:var(--color-amber-800); border:1px solid var(--color-amber-200); }
+        /* ── Labels & badges ────────────────────────────────────── */
+        .fi-label {
+            font-size: .6875rem; font-weight: 700;
+            letter-spacing: .1em; text-transform: uppercase;
+            color: var(--primary);
+        }
+        .fi-badge {
+            display: inline-flex; align-items: center; gap: .25rem;
+            padding: .2rem .75rem;
+            border-radius: 9999px;
+            font-size: .75rem; font-weight: 600;
+            background: var(--color-amber-50);
+            color: var(--color-amber-800);
+            border: 1px solid var(--color-amber-200);
+        }
 
-        /* Hero slider */
-        .slide { position:absolute; inset:0; transition: opacity .7s ease; }
-        .slide.active { opacity:1; z-index:1; }
-        .slide.inactive { opacity:0; z-index:0; }
+        /* ── Hero slider ─────────────────────────────────────────── */
+        .slide { position: absolute; inset: 0; transition: opacity .7s ease; }
+        .slide.active   { opacity: 1; z-index: 1; }
+        .slide.inactive { opacity: 0; z-index: 0; }
 
-        /* Gallery — CSS columns masonry (no plugin needed) */
-        .masonry { columns: 3; column-gap: .75rem; }
+        /* ── Gallery masonry ─────────────────────────────────────── */
+        .masonry { columns: 3; column-gap: .875rem; }
         @media(max-width:640px){ .masonry { columns: 2; } }
         .masonry-item {
             break-inside: avoid;
-            margin-bottom: .75rem;
-            border-radius: .75rem;
+            margin-bottom: .875rem;
+            border-radius: 1.25rem;
             overflow: hidden;
             display: block;
             position: relative;
             cursor: pointer;
         }
 
-        /* Top divider — mengikuti warna primary */
-        .amber-bar { height:3px; background:linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--primary) 55%, white) 60%, transparent); }
+        /* ── Primary accent bar ──────────────────────────────────── */
+        .amber-bar {
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--primary) 55%, white) 60%, transparent);
+        }
 
-        @keyframes fadeUp{ from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-        .fade-up{ animation:fadeUp .55s ease both; }
-        .d1{animation-delay:.1s} .d2{animation-delay:.2s} .d3{animation-delay:.3s}
+        /* ── Section dividers replaced by spacing ─────────────────── */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0;
+        }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-up { animation: fadeUp .6s ease both; }
+        .d1 { animation-delay: .1s; } .d2 { animation-delay: .2s; } .d3 { animation-delay: .3s; }
     </style>
 </head>
 

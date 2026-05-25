@@ -1,19 +1,19 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <section id="profil" class="mb-10">
+<section id="profil" class="py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         @if($stats->isNotEmpty())
-            <div class="grid grid-cols-2 sm:grid-cols-{{ min($stats->count(), 4) }} gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-{{ min($stats->count(), 4) }} gap-4 sm:gap-5">
                 @foreach($stats as $stat)
-                    <div class="fi-card fi-card-hover p-5 text-center"
+                    <div class="fi-card fi-card-hover p-7 sm:p-8 text-center"
                          data-aos="zoom-in" data-aos-delay="{{ $loop->index * 80 }}">
-                        <div class="text-3xl mb-2">{{ $stat->icon }}</div>
-                        <div class="text-xl font-extrabold text-amber-600">{{ $stat->value }}</div>
-                        <div class="text-xs font-semibold mt-0.5" style="color:var(--text)">{{ $stat->label }}</div>
+                        <div class="text-4xl mb-3">{{ $stat->icon }}</div>
+                        <div class="text-3xl sm:text-4xl font-black tracking-tight" style="color:var(--primary)">{{ $stat->value }}</div>
+                        <div class="text-sm font-semibold mt-2" style="color:var(--text)">{{ $stat->label }}</div>
                         @if($stat->sub)
-                            <div class="text-[11px] mt-0.5" style="color:var(--muted)">{{ $stat->sub }}</div>
+                            <div class="text-xs mt-1 leading-relaxed" style="color:var(--muted)">{{ $stat->sub }}</div>
                         @endif
                     </div>
                 @endforeach
             </div>
         @endif
-    </section>
-</div>
+    </div>
+</section>

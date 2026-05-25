@@ -40,39 +40,39 @@
         background-size: 40px 40px;
     }
     .teacher-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 1rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
         overflow: hidden;
-        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
     }
     .teacher-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(0,0,0,.12);
-        border-color: #fbbf24;
+        box-shadow: 0 24px 60px rgba(0,0,0,.14);
+        border-color: var(--color-amber-200);
     }
     .teacher-card:hover .teacher-photo {
         transform: scale(1.06);
     }
     .teacher-photo {
-        transition: transform .5s ease;
+        transition: transform .6s ease;
     }
     .search-input:focus {
-        box-shadow: 0 0 0 3px rgba(217,119,6,.15);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent);
     }
     .filter-chip {
-        border: 1px solid #e5e7eb;
-        border-radius: .5rem;
-        padding: .55rem 1rem;
-        font-size: .8125rem;
-        color: #6b7280;
-        background: #fff;
-        transition: border-color .15s, color .15s, box-shadow .15s;
+        border: 1.5px solid var(--border);
+        border-radius: .875rem;
+        padding: .6rem 1.125rem;
+        font-size: .875rem;
+        color: var(--muted);
+        background: var(--card);
+        transition: border-color .2s, color .2s, box-shadow .2s;
     }
     .filter-chip:focus {
         outline: none;
-        border-color: #d97706;
-        box-shadow: 0 0 0 3px rgba(217,119,6,.15);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
     }
     .contact-pill {
         display: inline-flex;
@@ -82,15 +82,15 @@
         border-radius: 9999px;
         font-size: .6875rem;
         font-weight: 600;
-        border: 1px solid #e5e7eb;
-        color: #6b7280;
-        background: #f9fafb;
-        transition: all .15s;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        background: var(--bg);
+        transition: all .2s;
     }
     .contact-pill:hover {
-        background: #fffbeb;
-        border-color: #fcd34d;
-        color: #92400e;
+        background: var(--color-amber-50);
+        border-color: var(--color-amber-300);
+        color: var(--color-amber-800);
     }
     .contact-pill.wa:hover {
         background: #f0fdf4;
@@ -220,7 +220,7 @@
                          itemscope itemtype="https://schema.org/Person">
 
                         {{-- Photo --}}
-                        <a href="{{ route('teachers.show', $teacher) }}" class="block relative overflow-hidden bg-linear-to-br from-amber-50 to-amber-100" style="aspect-ratio:3/4">
+                        <a href="{{ route('teachers.show', $teacher) }}" class="block relative overflow-hidden h-52 sm:h-56" style="background:linear-gradient(135deg,var(--color-amber-50),var(--color-amber-100))">
                             <img src="{{ $teacher->photo_url }}"
                                  alt="{{ $teacher->name }}"
                                  loading="{{ $loop->index < 8 ? 'eager' : 'lazy' }}"

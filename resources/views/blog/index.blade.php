@@ -43,64 +43,64 @@
 
     /* Category filter pills */
     .cat-pill {
-        font-size: .75rem;
-        font-weight: 700;
-        padding: .45rem .9rem;
+        font-size: .8125rem;
+        font-weight: 600;
+        padding: .5rem 1.125rem;
         border-radius: 9999px;
-        border: 1px solid #e5e7eb;
-        color: #6b7280;
-        background: #fff;
-        transition: all .15s;
+        border: 1.5px solid var(--border);
+        color: var(--muted);
+        background: var(--card);
+        transition: all .2s;
         white-space: nowrap;
     }
     .cat-pill:hover {
-        border-color: #fcd34d;
-        color: #92400e;
-        background: #fffbeb;
+        border-color: var(--color-amber-300);
+        color: var(--color-amber-800);
+        background: var(--color-amber-50);
     }
     .cat-pill.active {
-        background: #d97706;
-        border-color: #d97706;
+        background: var(--primary);
+        border-color: var(--primary);
         color: #fff;
     }
 
     /* Featured post */
     .featured-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 1.25rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
         overflow: hidden;
-        transition: box-shadow .25s, border-color .25s;
+        transition: box-shadow .3s ease, transform .3s ease;
     }
     .featured-card:hover {
-        box-shadow: 0 16px 40px rgba(0,0,0,.1);
-        border-color: #fcd34d;
+        box-shadow: 0 24px 60px rgba(0,0,0,.12);
+        transform: translateY(-2px);
     }
     .featured-card:hover .featured-img {
         transform: scale(1.04);
     }
     .featured-img {
-        transition: transform .6s ease;
+        transition: transform .7s ease;
     }
 
     /* Grid cards */
     .blog-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 1rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
         overflow: hidden;
-        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
     }
     .blog-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 16px 32px rgba(0,0,0,.1);
-        border-color: #fcd34d;
+        box-shadow: 0 20px 50px rgba(0,0,0,.12);
+        border-color: var(--color-amber-200);
     }
     .blog-card:hover .blog-card-img {
         transform: scale(1.06);
     }
     .blog-card-img {
-        transition: transform .5s ease;
+        transition: transform .6s ease;
     }
 
     /* Author avatar */
@@ -108,7 +108,7 @@
         width: 2rem;
         height: 2rem;
         border-radius: 9999px;
-        background: linear-gradient(135deg, #f59e0b, #d97706);
+        background: var(--primary);
         color: #fff;
         display: flex;
         align-items: center;

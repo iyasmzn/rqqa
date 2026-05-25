@@ -42,36 +42,35 @@
 
     /* Category filter pills */
     .cat-pill {
-        font-size: .75rem;
-        font-weight: 700;
-        padding: .45rem .9rem;
+        font-size: .8125rem;
+        font-weight: 600;
+        padding: .5rem 1.125rem;
         border-radius: 9999px;
-        border: 1px solid #e5e7eb;
-        color: #6b7280;
-        background: #fff;
-        transition: all .15s;
+        border: 1.5px solid var(--border);
+        color: var(--muted);
+        background: var(--card);
+        transition: all .2s;
         white-space: nowrap;
         cursor: pointer;
         text-decoration: none;
         display: inline-block;
     }
-    .cat-pill:hover,
-    .cat-pill.active {
-        border-color: #d97706;
-        background: #fffbeb;
-        color: #92400e;
+    .cat-pill:hover {
+        border-color: var(--color-amber-300);
+        color: var(--color-amber-800);
+        background: var(--color-amber-50);
     }
     .cat-pill.active {
-        background: #d97706;
+        background: var(--primary);
+        border-color: var(--primary);
         color: #fff;
-        border-color: #d97706;
     }
 
     /* File type icon badge */
     .file-icon {
-        width: 3rem;
-        height: 3rem;
-        border-radius: .75rem;
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 1rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -85,55 +84,59 @@
     .file-icon.xls  { background: #f0fdf4; color: #15803d; }
     .file-icon.zip  { background: #fefce8; color: #a16207; }
     .file-icon.img  { background: #fdf4ff; color: #7e22ce; }
-    .file-icon.file { background: #f8fafc; color: #64748b; }
+    .file-icon.file { background: var(--bg);  color: var(--muted); }
 
     /* Download card */
     .dl-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 1rem;
-        padding: 1.25rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        padding: 1.5rem;
         display: flex;
         align-items: flex-start;
-        gap: 1rem;
-        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        gap: 1.125rem;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
     }
     .dl-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(0,0,0,.08);
-        border-color: #fbbf24;
+        transform: translateY(-3px);
+        box-shadow: 0 16px 48px rgba(0,0,0,.1);
+        border-color: var(--color-amber-200);
     }
     .dl-btn {
         display: inline-flex;
         align-items: center;
-        gap: .375rem;
-        padding: .45rem .9rem;
-        border-radius: .625rem;
-        font-size: .75rem;
+        gap: .4rem;
+        padding: .55rem 1.125rem;
+        border-radius: .875rem;
+        font-size: .8125rem;
         font-weight: 700;
-        background: #d97706;
+        background: var(--primary);
         color: #fff;
-        transition: background .15s;
+        transition: background .2s, box-shadow .2s;
         white-space: nowrap;
         flex-shrink: 0;
+        box-shadow: 0 3px 12px color-mix(in oklab, var(--primary) 30%, transparent);
     }
-    .dl-btn:hover { background: #b45309; }
+    .dl-btn:hover {
+        background: var(--color-amber-700);
+        box-shadow: 0 5px 16px color-mix(in oklab, var(--primary) 40%, transparent);
+    }
     .search-input:focus {
-        box-shadow: 0 0 0 3px rgba(217,119,6,.15);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
     }
     .filter-chip {
-        border: 1px solid #e5e7eb;
-        border-radius: .5rem;
-        padding: .55rem 1rem;
-        font-size: .8125rem;
-        color: #6b7280;
-        background: #fff;
-        transition: border-color .15s, color .15s, box-shadow .15s;
+        border: 1.5px solid var(--border);
+        border-radius: .875rem;
+        padding: .6rem 1.125rem;
+        font-size: .875rem;
+        color: var(--muted);
+        background: var(--card);
+        transition: border-color .2s, color .2s, box-shadow .2s;
     }
     .filter-chip:focus {
         outline: none;
-        border-color: #d97706;
-        box-shadow: 0 0 0 3px rgba(217,119,6,.15);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
     }
 </style>
 @endpush

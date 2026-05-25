@@ -24,9 +24,9 @@ class ThemeSettings extends Page
 
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
-    protected static ?string $navigationLabel = 'Tema Warna';
+    protected static ?string $navigationLabel = 'Tema & Tampilan';
 
-    protected static ?string $title = 'Pengaturan Tema Warna';
+    protected static ?string $title = 'Pengaturan Tema & Tampilan';
 
     protected static ?int $navigationSort = 16;
 
@@ -36,10 +36,12 @@ class ThemeSettings extends Page
     public function mount(): void
     {
         $savedColor = Setting::get('theme_primary_color', '#d97706');
+        $savedFont = Setting::get('theme_font', 'instrument-sans');
 
         $this->form->fill([
             'theme_preset' => $this->matchPreset($savedColor),
             'theme_primary_color' => $savedColor,
+            'theme_font' => $savedFont,
         ]);
     }
 
@@ -81,6 +83,18 @@ class ThemeSettings extends Page
                             ->hint('Klik kotak warna untuk membuka color picker.'),
                     ]),
                 ]),
+
+            Section::make('Tipografi')
+                ->description('Pilih font yang digunakan di seluruh tampilan publik website.')
+                ->icon('heroicon-o-document-text')
+                ->schema([
+                    Select::make('theme_font')
+                        ->label('Font Website')
+                        ->options(self::fonts())
+                        ->searchable(false)
+                        ->default('instrument-sans')
+                        ->hint('Perubahan font akan langsung terlihat setelah disimpan.'),
+                ]),
         ]);
     }
 
@@ -89,11 +103,12 @@ class ThemeSettings extends Page
         $data = $this->form->getState();
 
         Setting::set('theme_primary_color', $data['theme_primary_color'] ?? '#d97706');
+        Setting::set('theme_font', $data['theme_font'] ?? 'instrument-sans');
 
         Notification::make()
             ->success()
-            ->title('Tema warna berhasil disimpan')
-            ->body('Perubahan akan langsung terlihat di website.')
+            ->title('Tema berhasil disimpan')
+            ->body('Perubahan warna dan font akan langsung terlihat di website.')
             ->send();
     }
 
@@ -110,19 +125,21 @@ class ThemeSettings extends Page
                 ->color('gray')
                 ->icon(Heroicon::OutlinedArrowPath)
                 ->requiresConfirmation()
-                ->modalHeading('Reset Tema Warna?')
-                ->modalDescription('Warna akan dikembalikan ke tema Amber (default).')
+                ->modalHeading('Reset Tema?')
+                ->modalDescription('Warna akan dikembalikan ke Amber dan font ke Instrument Sans (default).')
                 ->action(function (): void {
                     Setting::set('theme_primary_color', '#d97706');
+                    Setting::set('theme_font', 'instrument-sans');
 
                     $this->form->fill([
                         'theme_preset' => '#d97706',
                         'theme_primary_color' => '#d97706',
+                        'theme_font' => 'instrument-sans',
                     ]);
 
                     Notification::make()
                         ->success()
-                        ->title('Tema warna direset ke Amber (default)')
+                        ->title('Tema direset ke default (Amber + Instrument Sans)')
                         ->send();
                 }),
         ];
@@ -147,6 +164,25 @@ class ThemeSettings extends Page
             '#0d9488' => '🩵 Teal',
             '#0891b2' => '🔵 Cyan',
             '#ea580c' => '🟠 Oranye',
+        ];
+    }
+
+    /**
+     * Returns available font options.
+     *
+     * @return array<string, string>
+     */
+    public static function fonts(): array
+    {
+        return [
+            'instrument-sans' => '✦ Instrument Sans (Default)',
+            'inter' => '▪ Inter — Clean & Modern',
+            'plus-jakarta-sans' => '▪ Plus Jakarta Sans — Elegant',
+            'outfit' => '▪ Outfit — Geometric',
+            'dm-sans' => '▪ DM Sans — Rounded & Friendly',
+            'nunito' => '▪ Nunito — Soft & Rounded',
+            'poppins' => '▪ Poppins — Bold & Geometric',
+            'sora' => '▪ Sora — Modern Sans',
         ];
     }
 
