@@ -2,11 +2,15 @@
 
 namespace App\Filament\Resources\StaticPages\Schemas;
 
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -57,6 +61,96 @@ class StaticPageForm
                             ->fileAttachmentsVisibility('public')
                             ->columnSpanFull(),
                     ]),
+
+                Section::make('Konten Tambahan')
+                    ->description('Tambahkan blok gambar opsional yang ditampilkan di bawah konten utama.')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
+                        Repeater::make('blocks')
+                            ->label('')
+                            ->schema([
+                                Select::make('type')
+                                    ->label('Jenis Blok')
+                                    ->options([
+                                        'image_cover' => '🖼️  Cover Image — satu gambar penuh lebar',
+                                        'image_carousel' => '🎠  Carousel — slider beberapa gambar',
+                                        'image_gallery' => '🖼️  Galeri — grid beberapa gambar',
+                                    ])
+                                    ->required()
+                                    ->live()
+                                    ->native(false)
+                                    ->columnSpanFull(),
+
+                                // ── Cover Image ──────────────────────────────
+                                FileUpload::make('image')
+                                    ->label('Gambar')
+                                    ->image()
+                                    ->disk('public')
+                                    ->directory('pages/blocks')
+                                    ->visibility('public')
+                                    ->automaticallyResizeImagesToWidth('1400')
+                                    ->hint('Lebar optimal 1400px atau lebih.')
+                                    ->visible(fn (Get $get): bool => $get('type') === 'image_cover')
+                                    ->columnSpanFull(),
+
+                                TextInput::make('caption')
+                                    ->label('Keterangan Gambar')
+                                    ->maxLength(200)
+                                    ->placeholder('Opsional — keterangan singkat di bawah gambar')
+                                    ->visible(fn (Get $get): bool => $get('type') === 'image_cover')
+                                    ->columnSpanFull(),
+
+                                // ── Carousel & Gallery — shared images repeater ──
+                                Repeater::make('images')
+                                    ->label('Daftar Gambar')
+                                    ->schema([
+                                        FileUpload::make('image')
+                                            ->label('Gambar')
+                                            ->image()
+                                            ->disk('public')
+                                            ->directory('pages/blocks')
+                                            ->visibility('public')
+                                            ->required()
+                                            ->columnSpanFull(),
+
+                                        TextInput::make('caption')
+                                            ->label('Keterangan')
+                                            ->maxLength(200)
+                                            ->placeholder('Opsional')
+                                            ->columnSpanFull(),
+                                    ])
+                                    ->addActionLabel('+ Tambah Gambar')
+                                    ->minItems(1)
+                                    ->defaultItems(1)
+                                    ->reorderable()
+                                    ->collapsed(false)
+                                    ->itemLabel(fn (array $state): string => $state['caption'] ?: 'Gambar')
+                                    ->visible(fn (Get $get): bool => in_array($get('type'), ['image_carousel', 'image_gallery']))
+                                    ->columnSpanFull(),
+
+                                // ── Gallery columns selector ──────────────────
+                                Select::make('columns')
+                                    ->label('Jumlah Kolom')
+                                    ->options(['2' => '2 Kolom', '3' => '3 Kolom', '4' => '4 Kolom'])
+                                    ->default('3')
+                                    ->native(false)
+                                    ->visible(fn (Get $get): bool => $get('type') === 'image_gallery'),
+                            ])
+                            ->addActionLabel('+ Tambah Blok')
+                            ->reorderable()
+                            ->collapsible()
+                            ->collapsed()
+                            ->defaultItems(0)
+                            ->itemLabel(fn (array $state): string => match ($state['type'] ?? '') {
+                                'image_cover' => '🖼️  Cover Image',
+                                'image_carousel' => '🎠  Carousel — '.count($state['images'] ?? []).' gambar',
+                                'image_gallery' => '🖼️🖼️  Galeri — '.count($state['images'] ?? []).' gambar',
+                                default => 'Blok Baru',
+                            })
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
 
                 Section::make('Pengaturan')
                     ->schema([

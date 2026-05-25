@@ -17,12 +17,14 @@ class StaticPage extends Model
         'slug',
         'meta_description',
         'content',
+        'blocks',
         'is_active',
         'sort_order',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'blocks' => 'array',
     ];
 
     // ── Scopes ──────────────────────────────────────────────
