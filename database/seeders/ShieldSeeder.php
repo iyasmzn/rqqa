@@ -21,6 +21,7 @@ class ShieldSeeder extends Seeder
             '--all' => true,
             '--panel' => 'admin',
             '--ignore-existing-policies' => true,
+            '--no-interaction' => true,
         ]);
 
         // 3. Flush cache lagi agar Permission::all() baca dari DB bukan cache lama
@@ -39,7 +40,7 @@ class ShieldSeeder extends Seeder
         );
 
         // 6. Assign super_admin ke user admin (fallback ke user pertama jika email tidak ditemukan)
-        $admin = User::where('email', 'admin@smamuh5.sch.id')->first()
+        $admin = User::where('email', 'admin@email.com')->first()
             ?? User::first();
 
         $admin?->assignRole('super_admin');
