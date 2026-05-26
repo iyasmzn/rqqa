@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
@@ -74,3 +75,7 @@ Route::get('/program/{program:slug}', [ProgramController::class, 'show'])->name(
 // Cerita Santri
 Route::get('/cerita-santri', [StoryController::class, 'index'])->name('stories.index');
 Route::get('/cerita-santri/{story:slug}', [StoryController::class, 'show'])->name('stories.show');
+
+// Donasi
+Route::get('/donasi', [DonationController::class, 'index'])->name('donasi.index');
+Route::post('/donasi', [DonationController::class, 'store'])->name('donasi.store');

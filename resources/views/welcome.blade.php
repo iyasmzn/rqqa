@@ -162,6 +162,17 @@
             background: linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--primary) 55%, white) 60%, transparent);
         }
 
+        /* ── Navbar primary-based hover helpers ─────────────────── */
+        .nav-link-scrolled { transition: background .2s, color .2s; }
+        .nav-link-scrolled:hover { background: color-mix(in oklab, var(--primary) 8%, white); color: var(--primary); }
+        .nav-dropdown-item:hover { background: color-mix(in oklab, var(--primary) 8%, white); color: var(--primary); }
+        .nav-icon-scrolled:hover { background: color-mix(in oklab, var(--primary) 8%, white); }
+        .nav-auth-scrolled:hover { border-color: var(--primary); color: var(--primary); }
+        .mobile-nav-hover:hover .mobile-nav-num { color: var(--primary); }
+        .mobile-nav-hover:hover { border-color: color-mix(in oklab, var(--primary) 40%, transparent); }
+        .mobile-nav-arrow:hover { color: var(--primary); }
+        .mobile-subnav-hover:hover { color: color-mix(in oklab, var(--primary) 60%, white); }
+
         /* ── Section dividers replaced by spacing ─────────────────── */
         .section-divider {
             border: none;
@@ -198,6 +209,7 @@
         ['key' => 'section_events',      'visible' => true],
         ['key' => 'section_gallery',     'visible' => true],
         ['key' => 'section_blog',        'visible' => true],
+        ['key' => 'section_donasi',      'visible' => true],
         ['key' => 'section_contact',     'visible' => true],
     ];
 
@@ -216,6 +228,7 @@
         'section_books'       => 'sections.books',
         'section_gallery'     => 'sections.gallery',
         'section_blog'        => 'sections.blog',
+        'section_donasi'      => 'sections.donasi',
         'section_contact'     => 'sections.contact',
     ];
 @endphp
@@ -254,7 +267,7 @@
                              alt="{{ setting('site_name', config('app.name')) }}"
                              class="w-9 h-9 rounded-xl object-contain shrink-0">
                     @else
-                        <div class="w-9 h-9 shrink-0 rounded-xl bg-amber-500 shadow flex items-center justify-center">
+                        <div class="w-9 h-9 shrink-0 rounded-xl shadow flex items-center justify-center" style="background:var(--primary)">
                             <span class="text-white font-extrabold text-base">{{ strtoupper(substr(setting('site_name', config('app.name', 'S')), 0, 1)) }}</span>
                         </div>
                     @endif
@@ -264,7 +277,7 @@
                             {{ setting('site_name', config('app.name', "Qurrota A'yun")) }}
                         </div>
                         <div class="text-[10px] font-medium uppercase tracking-widest transition-colors duration-300"
-                             :class="scrolled ? 'text-amber-600' : 'text-amber-300'">
+                             :style="scrolled ? 'color:var(--primary)' : 'color:color-mix(in oklab,var(--primary) 65%,white)'">
                             {{ setting('site_tagline', 'Unggul · Berkarakter') }}
                         </div>
                     </div>
@@ -281,7 +294,7 @@
                                 <div x-data="{ dropOpen: false }" class="relative">
                                     <button @mouseenter="dropOpen = true" @mouseleave="dropOpen = false"
                                             class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1"
-                                            :class="scrolled ? 'text-gray-500 hover:bg-amber-50 hover:text-amber-700' : 'text-white/80 hover:text-white hover:bg-white/10'">
+                                            :class="scrolled ? 'text-gray-500 nav-link-scrolled' : 'text-white/80 hover:text-white hover:bg-white/10'">
                                         {{ $item['label'] }}
                                         <svg class="w-3 h-3 transition-transform duration-200" :class="dropOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
@@ -298,8 +311,8 @@
                                          class="absolute top-full left-0 mt-1 min-w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 py-1">
                                         @foreach($children as $child)
                                             <a href="{{ $child['url'] }}" target="{{ $child['target'] ?? '_self' }}"
-                                               class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-600 hover:bg-amber-50 hover:text-amber-700 transition-colors">
-                                                <span class="w-1 h-1 rounded-full bg-amber-400 shrink-0"></span>
+                                               class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-600 nav-dropdown-item transition-colors">
+                                                <span class="w-1 h-1 rounded-full shrink-0" style="background:var(--primary)"></span>
                                                 {{ $child['label'] }}
                                             </a>
                                         @endforeach
@@ -308,7 +321,7 @@
                             @else
                                 <a href="{{ $item['url'] }}" target="{{ $item['target'] ?? '_self' }}"
                                    class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                                   :class="scrolled ? 'text-gray-500 hover:bg-amber-50 hover:text-amber-700' : 'text-white/80 hover:text-white hover:bg-white/10'">
+                                   :class="scrolled ? 'text-gray-500 nav-link-scrolled' : 'text-white/80 hover:text-white hover:bg-white/10'">
                                     {{ $item['label'] }}
                                 </a>
                             @endif
@@ -319,7 +332,7 @@
                     @php $cartCount = \App\Http\Controllers\CartController::itemCount(); @endphp
                     <a href="{{ route('cart.index') }}"
                        class="relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
-                       :class="scrolled ? 'hover:bg-amber-50' : 'hover:bg-white/10'"
+                       :class="scrolled ? 'nav-icon-scrolled' : 'hover:bg-white/10'"
                        title="Keranjang">
                         <svg class="w-5 h-5 transition-colors" :class="scrolled ? 'text-gray-700' : 'text-white'"
                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -337,7 +350,7 @@
                             <button @click="userDropOpen = !userDropOpen"
                                     class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold border transition-all duration-200"
                                     :class="scrolled
-                                        ? 'border-gray-200 text-gray-700 bg-white hover:border-amber-400'
+                                        ? 'border-gray-200 text-gray-700 bg-white nav-auth-scrolled'
                                         : 'border-white/40 text-white hover:bg-white/10'">
                                 <div class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
                                      style="background:var(--primary)">
@@ -351,7 +364,7 @@
                                  x-transition:enter-end="opacity-100 translate-y-0"
                                  class="absolute right-0 top-full mt-1.5 min-w-40 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 py-1">
                                 <a href="{{ route('cart.index') }}"
-                                   class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-amber-50 transition-colors">
+                                   class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 nav-dropdown-item transition-colors">
                                     🛒 Keranjang
                                     @if($cartCount > 0)
                                         <span class="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full text-white bg-red-500">{{ $cartCount }}</span>
@@ -369,7 +382,7 @@
                         <a href="{{ route('login') }}"
                            class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-200"
                            :class="scrolled
-                               ? 'border-gray-200 text-gray-700 bg-white hover:border-amber-400 hover:text-amber-700'
+                               ? 'border-gray-200 text-gray-700 bg-white nav-auth-scrolled'
                                : 'border-white/40 text-white hover:bg-white/10'">
                             Masuk
                         </a>
@@ -378,7 +391,7 @@
                     {{-- Hamburger --}}
                     <button @click="mobileOpen = !mobileOpen"
                             class="lg:hidden w-9 h-9 rounded-lg flex flex-col items-center justify-center gap-1.5 transition-colors"
-                            :class="scrolled ? 'hover:bg-amber-50' : 'hover:bg-white/10'"
+                            :class="scrolled ? 'nav-icon-scrolled' : 'hover:bg-white/10'"
                             :aria-expanded="mobileOpen" aria-label="Toggle menu">
                         <span class="w-5 h-0.5 rounded transition-all duration-200"
                               :class="[mobileOpen ? 'rotate-45 translate-y-2' : '', scrolled ? 'bg-gray-700' : 'bg-white']"></span>
@@ -415,13 +428,13 @@
                          alt="{{ setting('site_name', config('app.name')) }}"
                          class="w-10 h-10 rounded-xl object-contain">
                 @else
-                    <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center shadow-lg">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg" style="background:var(--primary)">
                         <span class="text-white font-extrabold text-base">{{ strtoupper(substr(setting('site_name', config('app.name', 'S')), 0, 1)) }}</span>
                     </div>
                 @endif
                 <div>
                     <div class="font-bold text-white text-sm">{{ setting('site_name', config('app.name', "Qurrota A'yun")) }}</div>
-                    <div class="text-[10px] font-semibold uppercase tracking-widest text-amber-400">{{ setting('site_tagline', 'Unggul · Berkarakter') }}</div>
+                    <div class="text-[10px] font-semibold uppercase tracking-widest" style="color:color-mix(in oklab,var(--primary) 65%,white)">{{ setting('site_tagline', 'Unggul · Berkarakter') }}</div>
                 </div>
             </a>
 
@@ -441,10 +454,10 @@
                 @if($children->isNotEmpty())
                     <div x-data="{ mobileSubOpen: false }">
                         <button @click="mobileSubOpen = !mobileSubOpen"
-                                class="group w-full flex items-center gap-4 py-3.5 border-b border-white/8 hover:border-amber-500/50 transition-all duration-200">
-                            <span class="text-xs font-bold text-white/25 group-hover:text-amber-500 transition-colors w-6 shrink-0">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                                class="mobile-nav-hover group w-full flex items-center gap-4 py-3.5 border-b border-white/8 transition-all duration-200">
+                            <span class="mobile-nav-num text-xs font-bold text-white/25 transition-colors w-6 shrink-0">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
                             <span class="text-2xl font-bold text-white/70 group-hover:text-white transition-colors tracking-tight flex-1 text-left">{{ $item['label'] }}</span>
-                            <svg class="w-4 h-4 text-white/20 group-hover:text-amber-400 shrink-0 transition-all duration-200"
+                            <svg class="mobile-nav-arrow w-4 h-4 text-white/20 shrink-0 transition-all duration-200"
                                  :class="mobileSubOpen ? 'rotate-90' : ''"
                                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
@@ -458,7 +471,7 @@
                             @foreach($children as $child)
                                 <a href="{{ $child['url'] }}" target="{{ $child['target'] ?? '_self' }}"
                                    @click="mobileOpen = false"
-                                   class="flex items-center gap-2 py-2 text-lg font-medium text-white/55 hover:text-amber-300 transition-colors">
+                                   class="mobile-subnav-hover flex items-center gap-2 py-2 text-lg font-medium text-white/55 transition-colors">
                                     <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
                                     </svg>
@@ -470,10 +483,10 @@
                 @else
                     <a href="{{ $item['url'] }}" target="{{ $item['target'] ?? '_self' }}"
                        @click="mobileOpen = false"
-                       class="group flex items-center gap-4 py-3.5 border-b border-white/8 hover:border-amber-500/50 transition-all duration-200">
-                        <span class="text-xs font-bold text-white/25 group-hover:text-amber-500 transition-colors w-6 shrink-0">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                       class="mobile-nav-hover group flex items-center gap-4 py-3.5 border-b border-white/8 transition-all duration-200">
+                        <span class="mobile-nav-num text-xs font-bold text-white/25 transition-colors w-6 shrink-0">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
                         <span class="text-2xl font-bold text-white/70 group-hover:text-white transition-colors tracking-tight">{{ $item['label'] }}</span>
-                        <svg class="w-4 h-4 text-white/20 group-hover:text-amber-400 ml-auto shrink-0 transition-all group-hover:translate-x-1 duration-200"
+                        <svg class="mobile-nav-arrow w-4 h-4 text-white/20 ml-auto shrink-0 transition-all group-hover:translate-x-1 duration-200"
                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
                         </svg>
@@ -487,14 +500,14 @@
             @if (Route::has('login'))
                 @auth
                     <a href="{{ url('/dashboard') }}"
-                       class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-500 text-white font-bold hover:bg-amber-400 transition-colors">
+                       class="btn-primary flex items-center justify-center gap-2 w-full py-3 rounded-xl">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                         Dashboard
                     </a>
                 @else
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}"
-                           class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-500 text-white font-bold hover:bg-amber-400 transition-colors">
+                           class="btn-primary flex items-center justify-center gap-2 w-full py-3 rounded-xl">
                             Daftar SPMB Sekarang
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </a>
@@ -627,7 +640,7 @@
                             ['label' => 'Blog & Berita',   'url' => route('blog.index')],
                             ['label' => 'Unduhan',         'url' => route('downloads.index')],
                             ['label' => 'Tenaga Pendidik', 'url' => route('teachers.index')],
-                            ['label' => 'Keranjang Buku',  'url' => route('cart.index')],
+                            ['label' => 'Donasi',          'url' => route('donasi.index')],
                         ] as $link)
                         <li>
                             <a href="{{ $link['url'] }}"
