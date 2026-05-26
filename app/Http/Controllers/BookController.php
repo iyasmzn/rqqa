@@ -13,30 +13,61 @@ class BookController extends Controller
 
     public function index(Request $request): View
     {
-        $category = $request->query('category');
+        $q = trim((string) $request->query('q', ''));
+        $category = (string) $request->query('category', '');
+        $sort = (string) $request->query('sort', 'default');
+        $minPrice = $request->query('min_price') !== null ? (int) $request->query('min_price') : null;
+        $maxPrice = $request->query('max_price') !== null ? (int) $request->query('max_price') : null;
+        $inStock = $request->boolean('in_stock');
 
         $books = Book::available()
-            ->when($category, fn ($q) => $q->where('category', $category))
-            ->ordered()
+            ->when($q !== '', fn ($query) => $query->where(function ($sub) use ($q) {
+                $sub->where('title', 'like', "%{$q}%")
+                    ->orWhere('author', 'like', "%{$q}%")
+                    ->orWhere('description', 'like', "%{$q}%");
+            }))
+            ->when($category !== '', fn ($query) => $query->where('category', $category))
+            ->when($minPrice !== null, fn ($query) => $query->where('price', '>=', $minPrice))
+            ->when($maxPrice !== null, fn ($query) => $query->where('price', '<=', $maxPrice))
+            ->when($inStock, fn ($query) => $query->where('stock', '>', 0))
+            ->when($sort === 'price_asc', fn ($query) => $query->orderBy('price'))
+            ->when($sort === 'price_desc', fn ($query) => $query->orderByDesc('price'))
+            ->when($sort === 'name_asc', fn ($query) => $query->orderBy('title'))
+            ->when($sort === 'newest', fn ($query) => $query->latest())
+            ->when($sort === 'default', fn ($query) => $query->orderBy('sort_order')->orderBy('title'))
             ->paginate(self::PER_PAGE)
             ->withQueryString();
 
         $categories = Book::available()
-            ->select('category')
+            ->whereNotNull('category')
             ->distinct()
             ->orderBy('category')
-            ->pluck('category')
-            ->filter();
+            ->pluck('category');
 
-        $appName = config('app.name');
+        // Price bounds for the range slider
+        $priceStats = Book::available()->selectRaw('MIN(price) as min_p, MAX(price) as max_p')->first();
+        $priceMin = (int) ($priceStats->min_p ?? 0);
+        $priceMax = (int) ($priceStats->max_p ?? 200000);
+
+        // Active filter count (for badge on mobile button)
+        $activeFilters = collect([
+            $q !== '',
+            $category !== '',
+            $minPrice !== null || $maxPrice !== null,
+            $inStock,
+        ])->filter()->count();
 
         $seo = [
-            'title' => "Toko Buku | {$appName}",
-            'description' => "Beli buku pilihan dari {$appName}. Koleksi kitab, buku agama, dan referensi pendidikan berkualitas.",
+            'title' => 'Toko Buku | '.config('app.name'),
+            'description' => 'Beli buku pilihan dari '.config('app.name').'. Koleksi kitab, buku agama, dan referensi pendidikan berkualitas.',
             'canonical' => route('books.index'),
         ];
 
-        return view('books.index', compact('books', 'categories', 'category', 'seo'));
+        return view('books.index', compact(
+            'books', 'categories', 'category',
+            'q', 'sort', 'minPrice', 'maxPrice', 'inStock',
+            'priceMin', 'priceMax', 'activeFilters', 'seo',
+        ));
     }
 
     public function show(Book $book): View
@@ -52,7 +83,9 @@ class BookController extends Controller
 
         $seo = [
             'title' => "{$book->title} | ".config('app.name'),
-            'description' => $book->description ? Str::limit(strip_tags($book->description), 155) : "Beli buku {$book->title} di toko buku ".config('app.name'),
+            'description' => $book->description
+                ? Str::limit(strip_tags($book->description), 155)
+                : "Beli buku {$book->title} di toko buku ".config('app.name'),
             'canonical' => route('books.show', $book),
             'og_image' => $book->cover_url,
         ];
