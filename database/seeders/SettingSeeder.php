@@ -18,6 +18,36 @@ class SettingSeeder extends Seeder
         foreach ($defaults as $key => $value) {
             Setting::firstOrCreate(['key' => $key], ['value' => $value]);
         }
+
+        // Pastikan section_donasi selalu ada di section_order,
+        // meski setting sudah tersimpan sebelumnya di DB.
+        $this->ensureSectionDonasiInOrder();
+    }
+
+    /**
+     * Inject section_donasi ke dalam section_order yang sudah tersimpan
+     * di database, sebelum section_contact. Idempoten — aman dijalankan ulang.
+     */
+    private function ensureSectionDonasiInOrder(): void
+    {
+        $raw = Setting::get('section_order', '[]');
+        $order = json_decode($raw, true) ?: [];
+
+        $hasDonasi = collect($order)->contains('key', 'section_donasi');
+
+        if ($hasDonasi) {
+            return;
+        }
+
+        $contactIdx = collect($order)->search(fn ($s) => $s['key'] === 'section_contact');
+
+        if ($contactIdx !== false) {
+            array_splice($order, $contactIdx, 0, [['key' => 'section_donasi', 'visible' => true]]);
+        } else {
+            $order[] = ['key' => 'section_donasi', 'visible' => true];
+        }
+
+        Setting::set('section_order', json_encode($order));
     }
 
     /** @return array<string, mixed> */
@@ -31,6 +61,7 @@ class SettingSeeder extends Seeder
             $this->quickLinks(),
             $this->spmb(),
             $this->theme(),
+            $this->donasi(),
         );
     }
 
@@ -94,6 +125,7 @@ class SettingSeeder extends Seeder
                 ['key' => 'section_spmb',        'visible' => true],
                 ['key' => 'section_spmb_steps',  'visible' => true],
                 ['key' => 'section_blog',        'visible' => true],
+                ['key' => 'section_donasi',      'visible' => true],
                 ['key' => 'section_contact',     'visible' => true],
             ]),
         ];
@@ -180,6 +212,18 @@ class SettingSeeder extends Seeder
             // Konten prosedur & biaya
             'spmb_procedures' => json_encode($procedures),
             'spmb_fees' => json_encode($fees),
+        ];
+    }
+
+    // ── Donasi ────────────────────────────────────────────────────────
+
+    /** @return array<string, mixed> */
+    private function donasi(): array
+    {
+        return [
+            'donasi_bank_name' => 'Bank Syariah Indonesia (BSI)',
+            'donasi_bank_account' => '7123456789',
+            'donasi_bank_holder' => "Pondok Pesantren Qurrota A'yun",
         ];
     }
 
