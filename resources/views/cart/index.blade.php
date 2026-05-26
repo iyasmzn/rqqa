@@ -30,7 +30,7 @@ $seo = [
             </div>
         @endif
 
-        @if(empty($cart))
+        @if($items->isEmpty())
             {{-- Empty cart --}}
             <div class="fi-card text-center py-24">
                 <div class="text-6xl mb-4">🛒</div>
@@ -43,7 +43,7 @@ $seo = [
 
                 {{-- Items --}}
                 <div class="lg:col-span-2 space-y-4">
-                    @foreach($cart as $item)
+                    @foreach($items as $item)
                     @php /** @var \App\Models\Book $book */ $book = $item['book']; @endphp
                     <div class="fi-card p-5 flex gap-5">
 
@@ -118,7 +118,7 @@ $seo = [
                         <h2 class="font-extrabold text-lg mb-5" style="color:var(--text)">Ringkasan Pesanan</h2>
 
                         <div class="space-y-3 mb-5">
-                            @foreach($cart as $item)
+                            @foreach($items as $item)
                             @php /** @var \App\Models\Book $book */ $book = $item['book']; @endphp
                             <div class="flex justify-between text-sm gap-3">
                                 <span class="line-clamp-1 flex-1" style="color:var(--muted)">

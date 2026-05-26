@@ -13,7 +13,7 @@ class CartController extends Controller
     /**
      * Return the current cart from session.
      *
-     * @return array<int, array{book: Book, qty: int}>
+     * @return array<int, array{book_id: int, qty: int}>
      */
     private function getCart(): array
     {
@@ -23,7 +23,7 @@ class CartController extends Controller
     /**
      * Save cart back to session.
      *
-     * @param  array<int, array{book: Book, qty: int}>  $cart
+     * @param  array<int, array{book_id: int, qty: int}>  $cart
      */
     private function saveCart(array $cart): void
     {
@@ -40,9 +40,17 @@ class CartController extends Controller
     {
         $cart = $this->getCart();
 
-        $total = collect($cart)->sum(fn ($item) => $item['book']->price * $item['qty']);
+        $bookIds = array_keys($cart);
+        $books = Book::whereIn('id', $bookIds)->get()->keyBy('id');
 
-        return view('cart.index', compact('cart', 'total'));
+        $items = collect($cart)->map(fn ($item, $bookId) => [
+            'book' => $books->get($bookId),
+            'qty' => $item['qty'],
+        ])->filter(fn ($item) => $item['book'] !== null);
+
+        $total = $items->sum(fn ($item) => $item['book']->price * $item['qty']);
+
+        return view('cart.index', compact('items', 'total'));
     }
 
     public function add(Request $request, Book $book): RedirectResponse|JsonResponse
@@ -57,7 +65,7 @@ class CartController extends Controller
             $newQty = $cart[$book->id]['qty'] + $qty;
             $cart[$book->id]['qty'] = min($newQty, $book->stock);
         } else {
-            $cart[$book->id] = ['book' => $book, 'qty' => min($qty, $book->stock)];
+            $cart[$book->id] = ['book_id' => $book->id, 'qty' => min($qty, $book->stock)];
         }
 
         $this->saveCart($cart);

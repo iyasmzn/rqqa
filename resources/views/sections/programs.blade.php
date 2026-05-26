@@ -25,13 +25,18 @@
                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.5),transparent 60%)"></div>
                     @if($program->icon)
-                    <div class="absolute bottom-4 left-4 text-3xl">{{ $program->icon }}</div>
+                    <div class="absolute bottom-4 left-4 w-8 h-8 text-white drop-shadow">
+                        @svg('heroicon-o-' . $program->icon, 'w-full h-full')
+                    </div>
                     @endif
                 </a>
 
                 <div class="p-6 flex flex-col flex-1">
                     @if($program->category)
-                    <span class="text-xs font-bold mb-2 block" style="color:var(--primary)">{{ $program->category }}</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold mb-2 self-start"
+                          style="background:color-mix(in srgb,var(--primary) 12%,transparent);color:var(--primary)">
+                        {{ $program->category }}
+                    </span>
                     @endif
 
                     <h3 class="font-extrabold text-lg leading-snug mb-3 flex-1" style="color:var(--text)">

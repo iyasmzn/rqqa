@@ -191,6 +191,7 @@
 
     {{-- ── Navbar — frosted glass on scroll ─────────────────────── --}}
     <header class="sticky top-0 z-50 transition-all duration-300"
+            x-data="{ mobileOpen: false }"
             :style="scrolled
                 ? 'background:rgba(245,245,247,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.08);box-shadow:0 1px 12px rgba(0,0,0,.06)'
                 : 'background:rgba(245,245,247,0.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,0,0,.06)'">
@@ -200,34 +201,36 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
 
             {{-- Logo --}}
-            <a href="/" class="flex items-center gap-3 shrink-0">
+            <a href="/" class="flex items-center gap-3 min-w-0">
                 @if(setting('site_logo'))
                     <img src="{{ asset('storage/' . setting('site_logo')) }}"
                          alt="{{ setting('site_name', config('app.name')) }}"
-                         class="w-9 h-9 rounded-2xl object-contain">
+                         class="w-9 h-9 rounded-2xl object-contain shrink-0">
                 @else
-                    <div class="w-9 h-9 rounded-2xl flex items-center justify-center shadow-sm"
+                    <div class="w-9 h-9 rounded-2xl flex items-center justify-center shadow-sm shrink-0"
                          style="background:var(--primary)">
                         <span class="text-white font-extrabold text-sm">{{ strtoupper(substr(setting('site_name', config('app.name', 'S')), 0, 1)) }}</span>
                     </div>
                 @endif
-                <div class="hidden sm:block leading-tight">
-                    <div class="font-bold text-sm" style="color:var(--text)">{{ setting('site_name', config('app.name')) }}</div>
-                    <div class="text-[10px] font-semibold uppercase tracking-widest text-amber-600">{{ setting('site_tagline', 'Unggul · Berkarakter') }}</div>
+                <div class="leading-tight min-w-0">
+                    <div class="font-bold text-sm truncate" style="color:var(--text)">{{ setting('site_name', config('app.name')) }}</div>
+                    <div class="text-[10px] font-semibold uppercase tracking-widest truncate" style="color:var(--primary)">{{ setting('site_tagline', 'Unggul · Berkarakter') }}</div>
                 </div>
             </a>
 
-            {{-- Nav links --}}
-            <div class="flex items-center gap-1">
-                @php
-                    $pubNavItems = collect(json_decode(setting('nav_items', ''), true) ?: [
-                        ['label' => 'Beranda',  'url' => '/',         'target' => '_self', 'is_active' => true],
-                        ['label' => 'Guru',     'url' => '/guru',     'target' => '_self', 'is_active' => true],
-                        ['label' => 'Blog',     'url' => '/blog',     'target' => '_self', 'is_active' => true],
-                        ['label' => 'Unduhan',  'url' => '/unduhan',  'target' => '_self', 'is_active' => true],
-                        ['label' => 'Kontak',   'url' => '/#kontak',  'target' => '_self', 'is_active' => true],
-                    ])->where('is_active', true)->values();
-                @endphp
+            {{-- Desktop Nav links --}}
+            @php
+                $pubNavItems = collect(json_decode(setting('nav_items', ''), true) ?: [
+                    ['label' => 'Beranda',  'url' => '/',         'target' => '_self', 'is_active' => true],
+                    ['label' => 'Guru',     'url' => '/guru',     'target' => '_self', 'is_active' => true],
+                    ['label' => 'Blog',     'url' => '/blog',     'target' => '_self', 'is_active' => true],
+                    ['label' => 'Unduhan',  'url' => '/unduhan',  'target' => '_self', 'is_active' => true],
+                    ['label' => 'Kontak',   'url' => '/#kontak',  'target' => '_self', 'is_active' => true],
+                ])->where('is_active', true)->values();
+                $cartCount = \App\Http\Controllers\CartController::itemCount();
+            @endphp
+
+            <div class="hidden sm:flex items-center gap-1">
                 @foreach($pubNavItems as $item)
                     @php
                         $navUrl  = str_starts_with($item['url'], '#') ? '/' . $item['url'] : $item['url'];
@@ -237,23 +240,19 @@
                             : request()->is(ltrim($navPath, '/'), ltrim($navPath, '/') . '/*');
                     @endphp
                     <a href="{{ $navUrl }}" target="{{ $item['target'] ?? '_self' }}"
-                       class="hidden sm:inline-flex text-sm font-medium px-3.5 py-2 rounded-xl transition-all
-                              {{ $isActive
-                                  ? 'bg-amber-50 font-semibold'
-                                  : 'hover:bg-black/4' }}"
+                       class="text-sm font-medium px-3.5 py-2 rounded-xl transition-all
+                              {{ $isActive ? 'bg-amber-50 font-semibold' : 'hover:bg-black/5' }}"
                        style="{{ $isActive ? 'color:var(--primary)' : 'color:var(--muted)' }}"
                        @if($isActive) aria-current="page" @endif>
                         {{ $item['label'] }}
                     </a>
                 @endforeach
 
-                {{-- Cart icon with badge --}}
-                @php $cartCount = \App\Http\Controllers\CartController::itemCount(); @endphp
+                {{-- Cart icon --}}
                 <a href="{{ route('cart.index') }}"
                    class="relative inline-flex items-center justify-center w-9 h-9 rounded-xl transition-all hover:bg-black/5"
                    title="Keranjang">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                         style="color:var(--text)">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--text)">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
                               d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                     </svg>
@@ -267,13 +266,13 @@
                     {{-- User dropdown --}}
                     <div x-data="{ userOpen: false }" class="relative">
                         <button @click="userOpen = !userOpen"
-                                class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:bg-black/5"
+                                class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:bg-black/5"
                                 style="color:var(--text)">
                             <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
                                  style="background:var(--primary)">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </div>
-                            <span class="hidden md:inline max-w-25 truncate">{{ Auth::user()->name }}</span>
+                            <span class="hidden md:inline max-w-24 truncate">{{ Auth::user()->name }}</span>
                             <svg class="w-3 h-3 transition-transform" :class="userOpen ? 'rotate-180' : ''"
                                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
@@ -287,7 +286,7 @@
                              x-transition:leave="transition ease-in duration-100"
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 -translate-y-1"
-                             class="absolute right-0 top-full mt-1.5 min-w-45 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 py-1.5">
+                             class="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 py-1.5">
 
                             <div class="px-4 py-2.5 border-b border-gray-100">
                                 <p class="text-sm font-semibold truncate" style="color:var(--text)">{{ Auth::user()->name }}</p>
@@ -320,9 +319,109 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn-outline text-sm ml-1 hidden sm:inline-flex py-2 px-4">Masuk</a>
+                    <a href="{{ route('login') }}" class="btn-outline text-sm ml-1 py-2 px-4">Masuk</a>
                 @endauth
             </div>
+
+            {{-- Mobile right controls --}}
+            <div class="flex sm:hidden items-center gap-2">
+                {{-- Cart icon --}}
+                <a href="{{ route('cart.index') }}"
+                   class="relative inline-flex items-center justify-center w-9 h-9 rounded-xl transition-all hover:bg-black/5"
+                   title="Keranjang">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--text)">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
+                              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    @if($cartCount > 0)
+                        <span class="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 flex items-center justify-center rounded-full text-[10px] font-bold text-white"
+                              style="background:var(--primary)">{{ $cartCount }}</span>
+                    @endif
+                </a>
+
+                {{-- Hamburger button --}}
+                <button @click="mobileOpen = !mobileOpen"
+                        class="inline-flex items-center justify-center w-9 h-9 rounded-xl transition-all hover:bg-black/5"
+                        :aria-expanded="mobileOpen"
+                        aria-label="Menu navigasi">
+                    <svg x-show="!mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--text)">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg x-show="mobileOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--text)">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        {{-- Mobile menu dropdown --}}
+        <div x-show="mobileOpen"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-2"
+             class="sm:hidden border-t"
+             style="background:rgba(245,245,247,0.97);backdrop-filter:blur(20px);border-color:rgba(0,0,0,.08)">
+            <nav class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+                @foreach($pubNavItems as $item)
+                    @php
+                        $navUrl  = str_starts_with($item['url'], '#') ? '/' . $item['url'] : $item['url'];
+                        $navPath = parse_url($navUrl, PHP_URL_PATH) ?? '/';
+                        $isActive = $navPath === '/'
+                            ? request()->is('/')
+                            : request()->is(ltrim($navPath, '/'), ltrim($navPath, '/') . '/*');
+                    @endphp
+                    <a href="{{ $navUrl }}" target="{{ $item['target'] ?? '_self' }}"
+                       @click="mobileOpen = false"
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+                              {{ $isActive ? 'font-semibold' : 'hover:bg-black/5' }}"
+                       style="{{ $isActive ? 'color:var(--primary);background:color-mix(in oklab,var(--primary) 8%,white)' : 'color:var(--text)' }}"
+                       @if($isActive) aria-current="page" @endif>
+                        @if($isActive)
+                            <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:var(--primary)"></span>
+                        @else
+                            <span class="w-1.5 h-1.5 rounded-full shrink-0 opacity-0"></span>
+                        @endif
+                        {{ $item['label'] }}
+                    </a>
+                @endforeach
+
+                {{-- Divider --}}
+                <div class="my-1 border-t" style="border-color:rgba(0,0,0,.07)"></div>
+
+                @auth
+                    <div class="flex items-center gap-3 px-4 py-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
+                             style="background:var(--primary)">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold truncate" style="color:var(--text)">{{ Auth::user()->name }}</p>
+                            <p class="text-xs truncate" style="color:var(--muted)">{{ Auth::user()->email }}</p>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{{ route('logout') }}" class="px-4 pb-3">
+                        @csrf
+                        <button type="submit"
+                                class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Keluar
+                        </button>
+                    </form>
+                @else
+                    <div class="px-4 pb-3">
+                        <a href="{{ route('login') }}"
+                           class="btn-primary w-full justify-center text-sm py-2.5">
+                            Masuk
+                        </a>
+                    </div>
+                @endauth
+            </nav>
         </div>
     </header>
 

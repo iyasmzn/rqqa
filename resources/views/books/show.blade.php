@@ -134,7 +134,7 @@
             @foreach($related as $rel)
             <a href="{{ route('books.show', $rel) }}"
                class="fi-card fi-card-hover flex flex-col overflow-hidden group">
-                <div class="relative overflow-hidden" style="aspect-ratio:3/4">
+                <div class="relative overflow-hidden h-44">
                     <img src="{{ $rel->cover_url }}" alt="{{ $rel->title }}"
                          loading="lazy"
                          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">

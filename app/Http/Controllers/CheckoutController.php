@@ -2,24 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
-    public function index(): View|RedirectResponse
+    /**
+     * Hydrate cart items from the session, resolving book models from the DB.
+     *
+     * @return Collection<int, array{book: Book, qty: int}>
+     */
+    private function hydrateCart(): Collection
     {
         $cart = session('cart', []);
 
         if (empty($cart)) {
+            return collect();
+        }
+
+        $books = Book::whereIn('id', array_keys($cart))->get()->keyBy('id');
+
+        return collect($cart)
+            ->map(fn ($item, $bookId) => [
+                'book' => $books->get($bookId),
+                'qty' => $item['qty'],
+            ])
+            ->filter(fn ($item) => $item['book'] !== null);
+    }
+
+    public function index(): View|RedirectResponse
+    {
+        $items = $this->hydrateCart();
+
+        if ($items->isEmpty()) {
             return redirect()->route('cart.index')
                 ->with('success', 'Keranjang Anda masih kosong.');
         }
 
-        $total = collect($cart)->sum(fn ($item) => $item['book']->price * $item['qty']);
+        $total = $items->sum(fn ($item) => $item['book']->price * $item['qty']);
 
-        return view('checkout.index', compact('cart', 'total'));
+        return view('checkout.index', compact('items', 'total'));
     }
 
     public function process(Request $request): RedirectResponse
@@ -31,9 +56,9 @@ class CheckoutController extends Controller
             'notes' => ['nullable', 'string', 'max:300'],
         ]);
 
-        $cart = session('cart', []);
+        $items = $this->hydrateCart();
 
-        if (empty($cart)) {
+        if ($items->isEmpty()) {
             return redirect()->route('cart.index');
         }
 
@@ -60,7 +85,8 @@ class CheckoutController extends Controller
         $lines[] = '📚 *DAFTAR BUKU:*';
 
         $total = 0;
-        foreach ($cart as $item) {
+        foreach ($items as $item) {
+            /** @var Book $book */
             $book = $item['book'];
             $subtotal = $book->price * $item['qty'];
             $total += $subtotal;

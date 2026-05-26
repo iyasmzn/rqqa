@@ -126,7 +126,7 @@ $seo = [
                     <h2 class="font-extrabold text-lg mb-5" style="color:var(--text)">Pesanan Anda</h2>
 
                     <div class="space-y-4 mb-5">
-                        @foreach($cart as $item)
+                        @foreach($items as $item)
                         @php /** @var \App\Models\Book $book */ $book = $item['book']; @endphp
                         <div class="flex gap-3">
                             <div class="w-12 shrink-0 rounded-lg overflow-hidden" style="aspect-ratio:3/4">
