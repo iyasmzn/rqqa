@@ -247,13 +247,81 @@
                     </a>
                 @endforeach
 
-                @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="btn-primary text-sm ml-1">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="btn-outline text-sm ml-1 hidden sm:inline-flex">Masuk</a>
-                    @endauth
-                @endif
+                {{-- Cart icon with badge --}}
+                @php $cartCount = \App\Http\Controllers\CartController::itemCount(); @endphp
+                <a href="{{ route('cart.index') }}"
+                   class="relative inline-flex items-center justify-center w-9 h-9 rounded-xl transition-all hover:bg-black/5"
+                   title="Keranjang">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         style="color:var(--text)">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
+                              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    @if($cartCount > 0)
+                        <span class="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 flex items-center justify-center rounded-full text-[10px] font-bold text-white"
+                              style="background:var(--primary)">{{ $cartCount }}</span>
+                    @endif
+                </a>
+
+                @auth
+                    {{-- User dropdown --}}
+                    <div x-data="{ userOpen: false }" class="relative">
+                        <button @click="userOpen = !userOpen"
+                                class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:bg-black/5"
+                                style="color:var(--text)">
+                            <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
+                                 style="background:var(--primary)">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
+                            <span class="hidden md:inline max-w-25 truncate">{{ Auth::user()->name }}</span>
+                            <svg class="w-3 h-3 transition-transform" :class="userOpen ? 'rotate-180' : ''"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+
+                        <div x-show="userOpen" @click.outside="userOpen = false"
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 -translate-y-1"
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-100"
+                             x-transition:leave-start="opacity-100 translate-y-0"
+                             x-transition:leave-end="opacity-0 -translate-y-1"
+                             class="absolute right-0 top-full mt-1.5 min-w-45 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 py-1.5">
+
+                            <div class="px-4 py-2.5 border-b border-gray-100">
+                                <p class="text-sm font-semibold truncate" style="color:var(--text)">{{ Auth::user()->name }}</p>
+                                <p class="text-xs truncate" style="color:var(--muted)">{{ Auth::user()->email }}</p>
+                            </div>
+
+                            <a href="{{ route('cart.index') }}"
+                               class="flex items-center gap-2.5 px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors"
+                               style="color:var(--text)">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                Keranjang
+                                @if($cartCount > 0)
+                                    <span class="ml-auto text-xs font-bold px-2 py-0.5 rounded-full text-white"
+                                          style="background:var(--primary)">{{ $cartCount }}</span>
+                                @endif
+                            </a>
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                        class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                    </svg>
+                                    Keluar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="btn-outline text-sm ml-1 hidden sm:inline-flex py-2 px-4">Masuk</a>
+                @endauth
             </div>
         </div>
     </header>

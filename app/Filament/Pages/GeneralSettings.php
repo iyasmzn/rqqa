@@ -66,6 +66,9 @@ class GeneralSettings extends Page
             'social_instagram' => Setting::get('social_instagram'),
             'social_youtube' => Setting::get('social_youtube'),
             'social_whatsapp' => Setting::get('social_whatsapp'),
+
+            // Toko Buku
+            'shop_whatsapp' => Setting::get('shop_whatsapp'),
         ]);
     }
 
@@ -227,6 +230,19 @@ class GeneralSettings extends Page
                             ->hint('Nomor internasional tanpa + (contoh: 6281234567890)')
                             ->prefixIcon('heroicon-o-phone'),
                     ]),
+                ]),
+
+            Section::make('Toko Buku')
+                ->description('Konfigurasi nomor WhatsApp yang menerima pesanan buku dari halaman checkout.')
+                ->icon('heroicon-o-book-open')
+                ->schema([
+                    TextInput::make('shop_whatsapp')
+                        ->label('Nomor WhatsApp Toko Buku')
+                        ->tel()
+                        ->placeholder('6281234567890')
+                        ->hint('Nomor internasional tanpa + (contoh: 6281234567890). Pesanan checkout akan dikirim ke nomor ini.')
+                        ->helperText('Jika kosong, checkout akan mencoba menggunakan nomor WhatsApp sosial media.')
+                        ->prefixIcon('heroicon-o-phone'),
                 ]),
         ]);
     }

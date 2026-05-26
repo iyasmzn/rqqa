@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
@@ -33,9 +37,31 @@ Route::post('/ppdb', [SpmbController::class, 'store'])->name('ppdb.store');
 Route::get('/unduhan', [DownloadController::class, 'index'])->name('downloads.index');
 Route::get('/unduhan/{download}/download', [DownloadController::class, 'download'])->name('downloads.download');
 
+// ── Autentikasi Pengguna Umum ────────────────────────────────
+Route::middleware('guest')->group(function () {
+    Route::get('/masuk', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/masuk', [LoginController::class, 'login']);
+    Route::get('/daftar', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/daftar', [RegisterController::class, 'register']);
+});
+Route::post('/keluar', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
 // Produk Buku
 Route::get('/buku', [BookController::class, 'index'])->name('books.index');
 Route::get('/buku/{book:slug}', [BookController::class, 'show'])->name('books.show');
+
+// Keranjang Belanja
+Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
+Route::post('/keranjang/{book}', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/keranjang/{book}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/keranjang/{book}', [CartController::class, 'remove'])->name('cart.remove');
+Route::delete('/keranjang', [CartController::class, 'clear'])->name('cart.clear');
+
+// Checkout (harus login)
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+});
 
 // Kegiatan / Event
 Route::get('/kegiatan', [EventController::class, 'index'])->name('events.index');

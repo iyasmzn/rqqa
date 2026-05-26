@@ -54,6 +54,9 @@ class SettingSeeder extends Seeder
             'social_instagram' => null,
             'social_youtube' => null,
             'social_whatsapp' => null,
+
+            // Nomor WA khusus untuk pesanan buku (toko)
+            'shop_whatsapp' => null,
         ];
     }
 
@@ -87,6 +90,7 @@ class SettingSeeder extends Seeder
                 ['key' => 'section_principal',   'visible' => true],
                 ['key' => 'section_programs',    'visible' => true],
                 ['key' => 'section_events',      'visible' => true],
+                ['key' => 'section_books',       'visible' => true],
                 ['key' => 'section_spmb',        'visible' => true],
                 ['key' => 'section_spmb_steps',  'visible' => true],
                 ['key' => 'section_blog',        'visible' => true],

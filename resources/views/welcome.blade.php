@@ -213,6 +213,7 @@
         'section_programs'    => 'sections.programs',
         'section_activities'  => 'sections.activities',
         'section_events'      => 'sections.events',
+        'section_books'       => 'sections.books',
         'section_gallery'     => 'sections.gallery',
         'section_blog'        => 'sections.blog',
         'section_contact'     => 'sections.contact',
@@ -314,27 +315,65 @@
                         @endforeach
                     </nav>
 
+                    {{-- Cart icon --}}
+                    @php $cartCount = \App\Http\Controllers\CartController::itemCount(); @endphp
+                    <a href="{{ route('cart.index') }}"
+                       class="relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
+                       :class="scrolled ? 'hover:bg-amber-50' : 'hover:bg-white/10'"
+                       title="Keranjang">
+                        <svg class="w-5 h-5 transition-colors" :class="scrolled ? 'text-gray-700' : 'text-white'"
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
+                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        @if($cartCount > 0)
+                            <span class="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 flex items-center justify-center rounded-full text-[10px] font-bold text-white bg-red-500">{{ $cartCount }}</span>
+                        @endif
+                    </a>
+
                     {{-- Auth + hamburger --}}
-                    @if (Route::has('login'))
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="btn-primary text-xs hidden sm:inline-flex">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                                Dashboard
-                            </a>
-                        @else
-                            {{-- "Masuk" — outline putih saat transparan, normal saat scrolled --}}
-                            <a href="{{ route('login') }}"
-                               class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-200"
-                               :class="scrolled
-                                   ? 'border-gray-200 text-gray-700 bg-white hover:border-amber-400 hover:text-amber-700'
-                                   : 'border-white/40 text-white hover:bg-white/10'">
-                                Masuk
-                            </a>
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="btn-primary text-xs hidden sm:inline-flex">Daftar SPMB</a>
-                            @endif
-                        @endauth
-                    @endif
+                    @auth
+                        <div x-data="{ userDropOpen: false }" class="relative hidden sm:block">
+                            <button @click="userDropOpen = !userDropOpen"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold border transition-all duration-200"
+                                    :class="scrolled
+                                        ? 'border-gray-200 text-gray-700 bg-white hover:border-amber-400'
+                                        : 'border-white/40 text-white hover:bg-white/10'">
+                                <div class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+                                     style="background:var(--primary)">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </div>
+                                {{ Str::limit(Auth::user()->name, 12) }}
+                            </button>
+                            <div x-show="userDropOpen" @click.outside="userDropOpen = false"
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 -translate-y-1"
+                                 x-transition:enter-end="opacity-100 translate-y-0"
+                                 class="absolute right-0 top-full mt-1.5 min-w-40 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 py-1">
+                                <a href="{{ route('cart.index') }}"
+                                   class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-amber-50 transition-colors">
+                                    🛒 Keranjang
+                                    @if($cartCount > 0)
+                                        <span class="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full text-white bg-red-500">{{ $cartCount }}</span>
+                                    @endif
+                                </a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                        Keluar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @else
+                        <a href="{{ route('login') }}"
+                           class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-200"
+                           :class="scrolled
+                               ? 'border-gray-200 text-gray-700 bg-white hover:border-amber-400 hover:text-amber-700'
+                               : 'border-white/40 text-white hover:bg-white/10'">
+                            Masuk
+                        </a>
+                    @endauth
 
                     {{-- Hamburger --}}
                     <button @click="mobileOpen = !mobileOpen"

@@ -25,7 +25,26 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // Dummy public users
+        $dummyUsers = [
+            ['name' => 'Ahmad Fauzi', 'email' => 'ahmad@example.com'],
+            ['name' => 'Siti Rahmah', 'email' => 'siti@example.com'],
+            ['name' => 'Budi Santoso', 'email' => 'budi@example.com'],
+        ];
+
+        foreach ($dummyUsers as $user) {
+            User::firstOrCreate(
+                ['email' => $user['email']],
+                [
+                    'name' => $user['name'],
+                    'password' => Hash::make('password'),
+                    'email_verified_at' => now(),
+                ]
+            );
+        }
+
         $this->call(CategorySeeder::class);
+        $this->call(BookSeeder::class);
         $this->call(SettingSeeder::class);
         $this->call(StatSeeder::class);
         $this->call(TeacherSeeder::class);

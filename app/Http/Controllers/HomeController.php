@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\ContactItem;
 use App\Models\Event;
 use App\Models\Post;
@@ -35,9 +36,14 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
+        $featuredBooks = Book::available()
+            ->ordered()
+            ->limit(8)
+            ->get();
+
         return view('welcome', compact(
             'posts', 'stats', 'slides', 'contactItems',
-            'upcomingEvents', 'programs',
+            'upcomingEvents', 'programs', 'featuredBooks',
         ));
     }
 }

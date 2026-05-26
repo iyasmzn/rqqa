@@ -10,21 +10,22 @@
 
 <section id="spmb" class="py-8 sm:py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-3xl overflow-hidden shadow-2xl shadow-amber-200/50 border border-amber-200/60"
-             style="background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 50%,#fde68a 100%)"
+        <div class="rounded-3xl overflow-hidden shadow-2xl border"
+             style="background:linear-gradient(135deg,var(--color-amber-50) 0%,var(--color-amber-100) 50%,var(--color-amber-200) 100%);border-color:var(--color-amber-200);box-shadow:0 20px 60px color-mix(in oklab,var(--primary) 15%,transparent)"
              data-aos="fade-up">
             <div class="grid lg:grid-cols-2">
 
                 {{-- Left: copy --}}
                 <div class="p-10 lg:p-14" data-aos="fade-right" data-aos-delay="80">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-300 bg-amber-100/60 text-amber-800 text-xs font-bold uppercase tracking-widest mb-5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse inline-block"></span>
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-5"
+                         style="border:1px solid var(--color-amber-300);background:color-mix(in oklab,var(--color-amber-100) 60%,transparent);color:var(--color-amber-800)">
+                        <span class="w-1.5 h-1.5 rounded-full animate-pulse inline-block" style="background:var(--primary)"></span>
                         Penerimaan Peserta Didik Baru
                     </div>
-                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight mb-4" style="color:#78350f">
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight mb-4" style="color:var(--color-amber-900)">
                         {!! nl2br(e($cardTitle)) !!}
                     </h2>
-                    <p class="text-base leading-relaxed mb-8" style="color:#92400e;opacity:.85">
+                    <p class="text-base leading-relaxed mb-8" style="color:var(--color-amber-800);opacity:.85">
                         {{ $cardDesc }}
                     </p>
                     <div class="flex flex-wrap gap-3">
@@ -33,14 +34,18 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </a>
                         <a href="{{ route('ppdb.index') }}"
-                           class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-amber-300 text-amber-900 font-semibold bg-transparent hover:bg-amber-100 transition-all text-base">
+                           class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border-2 font-semibold bg-transparent transition-all text-base"
+                           style="border-color:var(--color-amber-300);color:var(--color-amber-900)"
+                           onmouseover="this.style.background='var(--color-amber-100)'"
+                           onmouseout="this.style.background='transparent'">
                             {{ $secondaryLabel }}
                         </a>
                     </div>
                 </div>
 
                 {{-- Right: dates panel --}}
-                <div class="hidden lg:flex items-center justify-center px-10 py-14 bg-amber-400/15"
+                <div class="hidden lg:flex items-center justify-center px-10 py-14"
+                     style="background:color-mix(in oklab,var(--color-amber-400) 15%,transparent)"
                      data-aos="fade-left" data-aos-delay="160">
                     <div class="text-center w-full">
                         <div class="text-8xl mb-6">🎓</div>
