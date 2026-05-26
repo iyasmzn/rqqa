@@ -5,9 +5,9 @@
         <div class="flex items-end justify-between gap-6 mb-14" data-aos="fade-up">
             <div>
                 <div class="fi-label mb-3">Berita & Artikel</div>
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">Blog Sekolah</h2>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">Artikel</h2>
                 <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
-                    Informasi terkini, prestasi, dan cerita inspiratif dari komunitas sekolah.
+                    Blog inspiratif dari berbagai sumber.
                 </p>
             </div>
             <a href="{{ route('blog.index') }}"
