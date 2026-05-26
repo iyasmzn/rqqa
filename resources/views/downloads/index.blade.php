@@ -56,9 +56,9 @@
         display: inline-block;
     }
     .cat-pill:hover {
-        border-color: var(--color-amber-300);
-        color: var(--color-amber-800);
-        background: var(--color-amber-50);
+        border-color: var(--primary-300);
+        color: var(--primary-800);
+        background: var(--primary-50);
     }
     .cat-pill.active {
         background: var(--primary);
@@ -100,7 +100,7 @@
     .dl-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 16px 48px rgba(0,0,0,.1);
-        border-color: var(--color-amber-200);
+        border-color: var(--primary-200);
     }
     .dl-btn {
         display: inline-flex;
@@ -118,7 +118,7 @@
         box-shadow: 0 3px 12px color-mix(in oklab, var(--primary) 30%, transparent);
     }
     .dl-btn:hover {
-        background: var(--color-amber-700);
+        background: var(--primary-700);
         box-shadow: 0 5px 16px color-mix(in oklab, var(--primary) 40%, transparent);
     }
     .search-input:focus {

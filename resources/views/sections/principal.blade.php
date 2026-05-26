@@ -37,7 +37,7 @@
                         </div>
                     @else
                         <div class="w-36 h-36 rounded-3xl flex items-center justify-center text-5xl shadow-xl mb-5"
-                             style="background:linear-gradient(135deg,var(--color-amber-100),var(--color-amber-200))">
+                             style="background:linear-gradient(135deg,var(--primary-100),var(--primary-200))">
                             👨‍💼
                         </div>
                     @endif
@@ -49,7 +49,7 @@
 
                     @if($principalNip)
                         <div class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border"
-                             style="background:var(--color-amber-50);color:var(--color-amber-800);border-color:var(--color-amber-200)">
+                             style="background:var(--primary-50);color:var(--primary-800);border-color:var(--primary-200)">
                             {{ $principalNip }}
                         </div>
                     @endif
@@ -58,7 +58,7 @@
                 {{-- Sambutan teks --}}
                 <div class="lg:col-span-2" data-aos="fade-left" data-aos-delay="120">
                     <svg class="w-10 h-10 mb-5" fill="currentColor" viewBox="0 0 24 24"
-                         style="color:var(--color-amber-300)">
+                         style="color:var(--primary-300)">
                         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                     </svg>
 

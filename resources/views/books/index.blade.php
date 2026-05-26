@@ -243,7 +243,7 @@
                     </div>
                     <button type="submit" form="filter-form"
                             class="w-full mt-2.5 py-2 rounded-xl text-xs font-bold transition-colors"
-                            style="background:var(--color-amber-50);color:var(--primary)">
+                            style="background:var(--primary-50);color:var(--primary)">
                         Terapkan Harga
                     </button>
                 </div>
@@ -382,7 +382,7 @@
                                class="flex items-center gap-2 px-4 py-2.5 text-sm transition-colors
                                       {{ $sort === $val ? 'font-bold' : 'font-medium' }}"
                                style="color:{{ $sort === $val ? 'var(--primary)' : 'var(--muted)' }};
-                                      background:{{ $sort === $val ? 'var(--color-amber-50)' : 'transparent' }}">
+                                      background:{{ $sort === $val ? 'var(--primary-50)' : 'transparent' }}">
                                 @if($sort === $val)
                                     <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -403,7 +403,7 @@
             <div class="flex flex-wrap gap-2 mb-5" data-aos="fade-up">
                 @if($q)
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
-                      style="background:var(--color-amber-50);color:var(--color-amber-800);border-color:var(--color-amber-200)">
+                      style="background:var(--primary-50);color:var(--primary-800);border-color:var(--primary-200)">
                     🔍 "{{ Str::limit($q, 20) }}"
                     <a href="{{ route('books.index', array_filter(['category' => $category ?: null, 'sort' => $sort !== 'default' ? $sort : null, 'min_price' => $minPrice, 'max_price' => $maxPrice, 'in_stock' => $inStock ? '1' : null], fn($v) => $v !== null)) }}"
                        class="hover:opacity-70 transition-opacity ml-0.5">✕</a>
@@ -411,7 +411,7 @@
                 @endif
                 @if($category)
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
-                      style="background:var(--color-amber-50);color:var(--color-amber-800);border-color:var(--color-amber-200)">
+                      style="background:var(--primary-50);color:var(--primary-800);border-color:var(--primary-200)">
                     📂 {{ $category }}
                     <a href="{{ route('books.index', array_filter(['q' => $q ?: null, 'sort' => $sort !== 'default' ? $sort : null, 'min_price' => $minPrice, 'max_price' => $maxPrice, 'in_stock' => $inStock ? '1' : null], fn($v) => $v !== null)) }}"
                        class="hover:opacity-70 transition-opacity ml-0.5">✕</a>
@@ -419,7 +419,7 @@
                 @endif
                 @if($minPrice !== null || $maxPrice !== null)
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
-                      style="background:var(--color-amber-50);color:var(--color-amber-800);border-color:var(--color-amber-200)">
+                      style="background:var(--primary-50);color:var(--primary-800);border-color:var(--primary-200)">
                     💰
                     @if($minPrice !== null && $maxPrice !== null)
                         Rp {{ number_format($minPrice, 0, ',', '.') }} – {{ number_format($maxPrice, 0, ',', '.') }}
@@ -434,7 +434,7 @@
                 @endif
                 @if($inStock)
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
-                      style="background:var(--color-amber-50);color:var(--color-amber-800);border-color:var(--color-amber-200)">
+                      style="background:var(--primary-50);color:var(--primary-800);border-color:var(--primary-200)">
                     ✅ Stok tersedia
                     <a href="{{ route('books.index', array_filter(['q' => $q ?: null, 'category' => $category ?: null, 'sort' => $sort !== 'default' ? $sort : null, 'min_price' => $minPrice, 'max_price' => $maxPrice], fn($v) => $v !== null)) }}"
                        class="hover:opacity-70 transition-opacity ml-0.5">✕</a>
@@ -500,7 +500,7 @@
                                 </span>
                                 @if($book->stock > 0)
                                 <span class="text-xs px-2 py-0.5 rounded-full font-medium"
-                                      style="background:var(--color-amber-50);color:var(--color-amber-800)">
+                                      style="background:var(--primary-50);color:var(--primary-800)">
                                     Stok {{ $book->stock }}
                                 </span>
                                 @endif

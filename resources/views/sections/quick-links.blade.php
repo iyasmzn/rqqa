@@ -17,8 +17,8 @@
             @foreach($quickLinks as $item)
                 <a href="{{ str_starts_with($item['url'], '#') ? '/'.$item['url'] : $item['url'] }}"
                    class="flex flex-col items-center gap-2.5 py-5 px-2 rounded-2xl transition-all duration-200 hover:scale-105 group"
-                   style="hover:background:var(--color-amber-50);"
-                   onmouseenter="this.style.background='var(--color-amber-50)'"
+                   style="hover:background:var(--primary-50);"
+                   onmouseenter="this.style.background='var(--primary-50)'"
                    onmouseleave="this.style.background=''"
                    data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                     @if(!empty($item['icon']))

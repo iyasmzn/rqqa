@@ -54,9 +54,9 @@
         white-space: nowrap;
     }
     .cat-pill:hover {
-        border-color: var(--color-amber-300);
-        color: var(--color-amber-800);
-        background: var(--color-amber-50);
+        border-color: var(--primary-300);
+        color: var(--primary-800);
+        background: var(--primary-50);
     }
     .cat-pill.active {
         background: var(--primary);
@@ -94,7 +94,7 @@
     .blog-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 20px 50px rgba(0,0,0,.12);
-        border-color: var(--color-amber-200);
+        border-color: var(--primary-200);
     }
     .blog-card:hover .blog-card-img {
         transform: scale(1.06);

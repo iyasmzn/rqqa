@@ -33,7 +33,7 @@
                      data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                     {{-- Step number watermark --}}
                     <div class="absolute top-4 right-5 text-5xl font-black select-none leading-none"
-                         style="color:var(--color-amber-100)">
+                         style="color:var(--primary-100)">
                         {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                     </div>
                     <div class="text-3xl mb-4">{{ $step['icon'] ?? '📌' }}</div>

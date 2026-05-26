@@ -35,7 +35,7 @@
                     <div class="lg:col-span-3 p-8 lg:p-10 flex flex-col justify-center">
                         <div class="flex items-center gap-2.5 mb-4">
                             <span class="text-xs font-bold px-3 py-1 rounded-full border"
-                                  style="background:var(--color-amber-50);color:var(--color-amber-800);border-color:var(--color-amber-200)">
+                                  style="background:var(--primary-50);color:var(--primary-800);border-color:var(--primary-200)">
                                 {{ $featured->category }}
                             </span>
                             <span class="text-xs" style="color:var(--muted)">
@@ -80,7 +80,7 @@
                                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                                 <div class="absolute top-4 left-4">
                                     <span class="text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-md border"
-                                          style="background:rgba(255,255,255,.88);color:var(--color-amber-800);border-color:var(--color-amber-200)">
+                                          style="background:rgba(255,255,255,.88);color:var(--primary-800);border-color:var(--primary-200)">
                                         {{ $post->category }}
                                     </span>
                                 </div>

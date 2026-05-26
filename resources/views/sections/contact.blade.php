@@ -6,7 +6,7 @@
         {{-- Header --}}
         <div class="text-center mb-16" data-aos="fade-up">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-bold uppercase tracking-widest mb-5"
-                 style="background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.3);color:var(--color-amber-300)">
+                 style="background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.3);color:var(--primary-300)">
                 <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse inline-block"></span>
                 Hubungi Kami
             </div>
@@ -45,7 +45,7 @@
                            target="{{ str_starts_with($ci->link, 'http') ? '_blank' : '_self' }}"
                            rel="{{ str_starts_with($ci->link, 'http') ? 'noopener noreferrer' : '' }}"
                            class="inline-flex items-center gap-1.5 text-sm font-semibold transition-all group/link"
-                           style="color:var(--color-amber-400)">
+                           style="color:var(--primary-400)">
                             Buka
                             <svg class="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5"
                                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,7 +75,7 @@
                     <a href="{{ str_replace('/embed?', '/search?', setting('contact_map_url')) }}"
                        target="_blank" rel="noopener noreferrer"
                        class="ms-auto inline-flex items-center gap-1.5 text-xs font-semibold transition-opacity hover:opacity-75"
-                       style="color:var(--color-amber-400)">
+                       style="color:var(--primary-400)">
                         Buka di Maps
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>

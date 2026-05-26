@@ -22,7 +22,7 @@
 
                         {{-- Slide counter pill --}}
                         <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-sm mb-6">
-                            <span class="w-2 h-2 rounded-full animate-pulse" style="background:var(--color-amber-400)"></span>
+                            <span class="w-2 h-2 rounded-full animate-pulse" style="background:var(--primary-400)"></span>
                             <span class="text-white/80 text-xs font-semibold tracking-wider">{{ $index + 1 }} / {{ $slides->count() }}</span>
                         </div>
 
@@ -40,7 +40,7 @@
                             @if($s->button_label && $s->button_url)
                                 <a href="{{ $s->button_url }}"
                                    class="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-bold hover:opacity-90 transition-all shadow-xl text-sm"
-                                   style="background:var(--color-amber-400);color:var(--color-amber-900)">
+                                   style="background:var(--primary-400);color:var(--primary-900)">
                                     {{ $s->button_label }}
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                                 </a>
@@ -74,7 +74,7 @@
                         :class="{{ $index }} === slide
                             ? 'w-7 h-2.5 opacity-100'
                             : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/70'"
-                        :style="{{ $index }} === slide ? 'background:var(--color-amber-400)' : ''"></button>
+                        :style="{{ $index }} === slide ? 'background:var(--primary-400)' : ''"></button>
             @endforeach
         </div>
     @endif

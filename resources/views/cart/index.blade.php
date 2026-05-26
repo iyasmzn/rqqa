@@ -77,7 +77,7 @@ $seo = [
                                        style="border-color:var(--border);background:var(--bg);color:var(--text)">
                                 <button type="submit"
                                         class="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
-                                        style="background:var(--color-amber-50);color:var(--primary)">
+                                        style="background:var(--primary-50);color:var(--primary)">
                                     Update
                                 </button>
                             </form>
@@ -139,7 +139,7 @@ $seo = [
 
                         @guest
                             <div class="p-4 rounded-xl mb-4 text-sm text-center"
-                                 style="background:var(--color-amber-50);color:var(--color-amber-800)">
+                                 style="background:var(--primary-50);color:var(--primary-800)">
                                 Silakan masuk terlebih dahulu untuk melanjutkan checkout.
                             </div>
                             <a href="{{ route('login') }}" class="btn-primary w-full justify-center mb-2">

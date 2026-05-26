@@ -31,13 +31,13 @@
                         'blue'   => 'background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe',
                         'purple' => 'background:#faf5ff;color:#7e22ce;border-color:#e9d5ff',
                         'green'  => 'background:#f0fdf4;color:#15803d;border-color:#bbf7d0',
-                        default  => 'background:var(--color-amber-50);color:var(--color-amber-800);border-color:var(--color-amber-200)',
+                        default  => 'background:var(--primary-50);color:var(--primary-800);border-color:var(--primary-200)',
                     };
                     $iconBg = match($color) {
                         'blue'   => 'background:#dbeafe',
                         'purple' => 'background:#ede9fe',
                         'green'  => 'background:#dcfce7',
-                        default  => 'background:var(--color-amber-100)',
+                        default  => 'background:var(--primary-100)',
                     };
                 @endphp
                 <div class="fi-card fi-card-hover p-7"

@@ -49,7 +49,7 @@
     .teacher-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 24px 60px rgba(0,0,0,.14);
-        border-color: var(--color-amber-200);
+        border-color: var(--primary-200);
     }
     .teacher-card:hover .teacher-photo {
         transform: scale(1.06);
@@ -88,9 +88,9 @@
         transition: all .2s;
     }
     .contact-pill:hover {
-        background: var(--color-amber-50);
-        border-color: var(--color-amber-300);
-        color: var(--color-amber-800);
+        background: var(--primary-50);
+        border-color: var(--primary-300);
+        color: var(--primary-800);
     }
     .contact-pill.wa:hover {
         background: #f0fdf4;
@@ -220,7 +220,7 @@
                          itemscope itemtype="https://schema.org/Person">
 
                         {{-- Photo --}}
-                        <a href="{{ route('teachers.show', $teacher) }}" class="block relative overflow-hidden h-52 sm:h-56" style="background:linear-gradient(135deg,var(--color-amber-50),var(--color-amber-100))">
+                        <a href="{{ route('teachers.show', $teacher) }}" class="block relative overflow-hidden h-52 sm:h-56" style="background:linear-gradient(135deg,var(--primary-50),var(--primary-100))">
                             <img src="{{ $teacher->photo_url }}"
                                  alt="{{ $teacher->name }}"
                                  loading="{{ $loop->index < 8 ? 'eager' : 'lazy' }}"

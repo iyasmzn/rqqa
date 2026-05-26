@@ -58,16 +58,16 @@
 
             --primary: {{ setting('theme_primary_color', '#08484A') }};
 
-            --color-amber-50:  color-mix(in oklab, var(--primary)  8%, white);
-            --color-amber-100: color-mix(in oklab, var(--primary) 15%, white);
-            --color-amber-200: color-mix(in oklab, var(--primary) 28%, white);
-            --color-amber-300: color-mix(in oklab, var(--primary) 45%, white);
-            --color-amber-400: color-mix(in oklab, var(--primary) 68%, white);
-            --color-amber-500: color-mix(in oklab, var(--primary) 85%, white);
-            --color-amber-600: var(--primary);
-            --color-amber-700: color-mix(in oklab, var(--primary) 78%, black);
-            --color-amber-800: color-mix(in oklab, var(--primary) 58%, black);
-            --color-amber-900: color-mix(in oklab, var(--primary) 42%, black);
+            --primary-50:  color-mix(in oklab, var(--primary)  8%, white);
+            --primary-100: color-mix(in oklab, var(--primary) 15%, white);
+            --primary-200: color-mix(in oklab, var(--primary) 28%, white);
+            --primary-300: color-mix(in oklab, var(--primary) 45%, white);
+            --primary-400: color-mix(in oklab, var(--primary) 68%, white);
+            --primary-500: color-mix(in oklab, var(--primary) 85%, white);
+            --primary-600: var(--primary);
+            --primary-700: color-mix(in oklab, var(--primary) 78%, black);
+            --primary-800: color-mix(in oklab, var(--primary) 58%, black);
+            --primary-900: color-mix(in oklab, var(--primary) 42%, black);
         }
 
         body {
@@ -88,7 +88,7 @@
         .fi-card-hover:hover {
             box-shadow: 0 20px 60px rgba(0,0,0,.12);
             transform: translateY(-3px);
-            border-color: var(--color-amber-200);
+            border-color: var(--primary-200);
         }
 
         /* ── Buttons — Apple style ──────────────────────────────── */
@@ -102,7 +102,7 @@
             box-shadow: 0 4px 16px color-mix(in oklab, var(--primary) 40%, transparent);
         }
         .btn-primary:hover {
-            background: var(--color-amber-700);
+            background: var(--primary-700);
             box-shadow: 0 6px 20px color-mix(in oklab, var(--primary) 50%, transparent);
             transform: translateY(-1px);
         }
@@ -133,9 +133,9 @@
             padding: .2rem .75rem;
             border-radius: 9999px;
             font-size: .75rem; font-weight: 600;
-            background: var(--color-amber-50);
-            color: var(--color-amber-800);
-            border: 1px solid var(--color-amber-200);
+            background: var(--primary-50);
+            color: var(--primary-800);
+            border: 1px solid var(--primary-200);
         }
 
         /* ── Hero slider ─────────────────────────────────────────── */
