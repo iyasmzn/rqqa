@@ -72,7 +72,7 @@ class SettingSeeder extends Seeder
     {
         return [
             'site_name' => "Qurrota A'yun",
-            'site_tagline' => 'Membentuk Generasi Qurani yang Berilmu dan Berakhlak',
+            'site_tagline' => 'Membentuk Generasi Qurani',
             'site_description' => "Website resmi Pondok Pesantren Qurrota A'yun. Informasi penerimaan santri baru, program pendidikan, kegiatan, dan cerita inspiratif dari pesantren.",
 
             'contact_address' => 'Jl. Pesantren No. 1, Kab. Pasuruan, Jawa Timur',
