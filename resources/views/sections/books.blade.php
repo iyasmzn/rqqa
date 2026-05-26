@@ -28,22 +28,19 @@
 
                 {{-- Cover --}}
                 <a href="{{ route('books.show', $book) }}"
-                   class="block relative overflow-hidden" style="padding-top:133%">
+                   class="block relative overflow-hidden shrink-0" style="height:180px">
                     <img src="{{ $book->cover_url }}"
                          alt="{{ $book->title }}"
                          loading="lazy"
                          class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
                     @if($book->stock === 0)
-                    <div class="absolute top-3 left-3">
-                        <span class="text-xs font-bold px-2.5 py-1 rounded-full"
-                              style="background:rgba(239,68,68,.9);color:#fff">Habis</span>
-                    </div>
+                    <span class="absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded-full"
+                          style="background:rgba(239,68,68,.9);color:#fff">Habis</span>
                     @endif
                     @if($book->category)
-                    <div class="absolute top-3 right-3">
-                        <span class="text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-md"
-                              style="background:rgba(8,72,74,.85);color:#fff">{{ $book->category }}</span>
-                    </div>
+                    <span class="absolute bottom-3 left-3 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm"
+                          style="background:rgba(8,72,74,.85);color:#fff">{{ $book->category }}</span>
                     @endif
                 </a>
 
