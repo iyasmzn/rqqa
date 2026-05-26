@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Downloads\Tables;
 
+use App\Models\Category;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -62,15 +63,7 @@ class DownloadsTable
             ->filters([
                 SelectFilter::make('category')
                     ->label('Kategori')
-                    ->options([
-                        'Formulir' => 'Formulir',
-                        'Surat Edaran' => 'Surat Edaran',
-                        'Pengumuman' => 'Pengumuman',
-                        'Akademik' => 'Akademik',
-                        'Administrasi' => 'Administrasi',
-                        'Kalender' => 'Kalender',
-                        'Lainnya' => 'Lainnya',
-                    ])
+                    ->options(fn () => Category::optionsForType(Category::TYPE_DOWNLOAD))
                     ->native(false),
 
                 Filter::make('is_active')

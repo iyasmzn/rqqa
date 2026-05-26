@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ setting('site_name', config('app.name', 'SMA Negeri')) }} — {{ setting('site_tagline', 'Unggul, Berkarakter, Berprestasi') }}</title>
-    <meta name="description" content="{{ setting('site_description', 'Website resmi ' . setting('site_name', config('app.name')) . '. Informasi SPMB, akademik, kegiatan, dan berita sekolah.') }}">
+    <title>{{ setting('site_name', config('app.name', "Qurrota A'yun")) }} — {{ setting('site_tagline', 'Membentuk Generasi Qurani yang Berilmu dan Berakhlak') }}</title>
+    <meta name="description" content="{{ setting('site_description', 'Website resmi Pondok Pesantren ' . setting('site_name', config('app.name')) . '. Informasi penerimaan santri baru, program tahfidz, kegiatan, dan berita pesantren.') }}">
 
     {{-- ── Favicon ─────────────────────────────────────────── --}}
     @if(setting('site_favicon'))
@@ -56,7 +56,7 @@
             --text:     #1d1d1f;   /* Apple near-black */
             --muted:    #6e6e73;   /* Apple secondary gray */
 
-            --primary: {{ setting('theme_primary_color', '#d97706') }};
+            --primary: {{ setting('theme_primary_color', '#08484A') }};
 
             --color-amber-50:  color-mix(in oklab, var(--primary)  8%, white);
             --color-amber-100: color-mix(in oklab, var(--primary) 15%, white);
@@ -193,7 +193,9 @@
         ['key' => 'section_stats',       'visible' => true],
         ['key' => 'section_principal',   'visible' => true],
         ['key' => 'section_spmb_steps',  'visible' => true],
+        ['key' => 'section_programs',    'visible' => true],
         ['key' => 'section_activities',  'visible' => true],
+        ['key' => 'section_events',      'visible' => true],
         ['key' => 'section_gallery',     'visible' => true],
         ['key' => 'section_blog',        'visible' => true],
         ['key' => 'section_contact',     'visible' => true],
@@ -208,7 +210,9 @@
         'section_stats'       => 'sections.stats',
         'section_principal'   => 'sections.principal',
         'section_spmb_steps'  => 'sections.spmb-steps',
+        'section_programs'    => 'sections.programs',
         'section_activities'  => 'sections.activities',
+        'section_events'      => 'sections.events',
         'section_gallery'     => 'sections.gallery',
         'section_blog'        => 'sections.blog',
         'section_contact'     => 'sections.contact',
@@ -256,7 +260,7 @@
                     <div class="leading-tight min-w-0">
                         <div class="font-bold text-sm truncate transition-colors duration-300"
                              :class="scrolled ? 'text-gray-900' : 'text-white'">
-                            {{ setting('site_name', config('app.name', 'SMA Negeri 1')) }}
+                            {{ setting('site_name', config('app.name', "Qurrota A'yun")) }}
                         </div>
                         <div class="text-[10px] font-medium uppercase tracking-widest transition-colors duration-300"
                              :class="scrolled ? 'text-amber-600' : 'text-amber-300'">
@@ -377,7 +381,7 @@
                     </div>
                 @endif
                 <div>
-                    <div class="font-bold text-white text-sm">{{ setting('site_name', config('app.name', 'SMA Negeri 1')) }}</div>
+                    <div class="font-bold text-white text-sm">{{ setting('site_name', config('app.name', "Qurrota A'yun")) }}</div>
                     <div class="text-[10px] font-semibold uppercase tracking-widest text-amber-400">{{ setting('site_tagline', 'Unggul · Berkarakter') }}</div>
                 </div>
             </a>
@@ -498,7 +502,7 @@
                             </div>
                         @endif
                         <div>
-                            <div class="font-bold text-sm" style="color:var(--text)">{{ setting('site_name', config('app.name', 'SMA Negeri 1')) }}</div>
+                            <div class="font-bold text-sm" style="color:var(--text)">{{ setting('site_name', config('app.name', "Qurrota A'yun")) }}</div>
                             <div class="text-[10px] text-amber-600 font-semibold uppercase tracking-wider">{{ setting('site_tagline', 'Unggul · Berkarakter') }}</div>
                         </div>
                     </div>
@@ -567,7 +571,7 @@
             </div>
 
             <div class="mt-10 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3" style="border-color:var(--border)">
-                <span class="text-xs" style="color:var(--muted)">© {{ date('Y') }} {{ setting('site_name', config('app.name', 'SMA Negeri 1')) }}. Hak cipta dilindungi.</span>
+                <span class="text-xs" style="color:var(--muted)">© {{ date('Y') }} {{ setting('site_name', config('app.name', "Qurrota A'yun")) }}. Hak cipta dilindungi.</span>
                 <div class="flex gap-4">
                     @foreach(['Kebijakan Privasi','Syarat & Ketentuan','Aksesibilitas'] as $l)
                         <a href="#" class="text-xs hover:text-amber-600 transition-colors" style="color:var(--muted)">{{ $l }}</a>

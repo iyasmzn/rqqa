@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
+use App\Models\Category;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -16,16 +17,6 @@ use Illuminate\Support\Str;
 
 class PostForm
 {
-    private const CATEGORIES = [
-        'Berita' => 'Berita',
-        'Akademik' => 'Akademik',
-        'Lingkungan' => 'Lingkungan',
-        'Event' => 'Event',
-        'Teknologi' => 'Teknologi',
-        'Kesehatan' => 'Kesehatan',
-        'Prestasi' => 'Prestasi',
-    ];
-
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -83,7 +74,7 @@ class PostForm
 
                         Select::make('category')
                             ->label('Kategori')
-                            ->options(self::CATEGORIES)
+                            ->options(fn () => Category::optionsForType(Category::TYPE_POST))
                             ->required()
                             ->default('Berita')
                             ->native(false),

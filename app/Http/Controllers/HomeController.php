@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactItem;
+use App\Models\Event;
 use App\Models\Post;
+use App\Models\Program;
 use App\Models\Slide;
 use App\Models\Stat;
 use Illuminate\View\View;
@@ -22,6 +24,20 @@ class HomeController extends Controller
         $slides = Slide::active()->get();
         $contactItems = ContactItem::active()->get();
 
-        return view('welcome', compact('posts', 'stats', 'slides', 'contactItems'));
+        $upcomingEvents = Event::published()
+            ->upcoming()
+            ->ordered()
+            ->limit(3)
+            ->get();
+
+        $programs = Program::published()
+            ->ordered()
+            ->limit(6)
+            ->get();
+
+        return view('welcome', compact(
+            'posts', 'stats', 'slides', 'contactItems',
+            'upcomingEvents', 'programs',
+        ));
     }
 }

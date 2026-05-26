@@ -15,25 +15,28 @@ class SlideSeeder extends Seeder
 
         $defaults = [
             [
-                'title' => 'Unggul dalam Akademik',
-                'subtitle' => 'Raih prestasi terbaik bersama guru-guru berpengalaman dan fasilitas modern.',
-                'button_label' => 'Profil Sekolah',
-                'button_url' => '#profil',
+                'title' => "Selamat Datang di Qurrota A'yun",
+                'subtitle' => 'Pondok pesantren modern yang membentuk generasi Qurani berilmu, berakhlak mulia, dan siap menghadapi tantangan zaman.',
+                'button_label' => 'Profil Pesantren',
+                'button_url' => '#sambutan',
                 'sort_order' => 1,
+                'is_active' => true,
             ],
             [
-                'title' => 'Berkarakter & Berintegritas',
-                'subtitle' => 'Membentuk generasi beriman, bertakwa, dan berakhlak mulia untuk bangsa.',
-                'button_label' => 'Lihat Kegiatan',
-                'button_url' => '#kegiatan',
+                'title' => 'Program Tahfidz Al-Qur\'an',
+                'subtitle' => 'Raih hafalan 30 juz dengan metode terbukti, dibimbing langsung oleh para asatidz berpengalaman dan hafidz Qur\'an.',
+                'button_label' => 'Lihat Program',
+                'button_url' => '/program',
                 'sort_order' => 2,
+                'is_active' => true,
             ],
             [
-                'title' => 'Pendaftaran Peserta Didik Baru',
-                'subtitle' => 'SPMB resmi dibuka. Daftarkan putra-putri Anda sekarang sebelum batas waktu.',
+                'title' => 'Penerimaan Santri Baru 2026/2027',
+                'subtitle' => 'Pendaftaran resmi dibuka. Tersedia program Tahfidz, Diniyah, dan Terpadu. Daftarkan putra-putri Anda sekarang.',
                 'button_label' => 'Daftar Sekarang',
-                'button_url' => '/register',
+                'button_url' => '/ppdb',
                 'sort_order' => 3,
+                'is_active' => true,
             ],
         ];
 

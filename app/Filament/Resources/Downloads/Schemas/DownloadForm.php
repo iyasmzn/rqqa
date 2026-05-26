@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Downloads\Schemas;
 
+use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -13,16 +14,6 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class DownloadForm
 {
-    private const CATEGORIES = [
-        'Formulir' => 'Formulir',
-        'Surat Edaran' => 'Surat Edaran',
-        'Pengumuman' => 'Pengumuman',
-        'Akademik' => 'Akademik',
-        'Administrasi' => 'Administrasi',
-        'Kalender' => 'Kalender',
-        'Lainnya' => 'Lainnya',
-    ];
-
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -45,7 +36,7 @@ class DownloadForm
                             ->schema([
                                 Select::make('category')
                                     ->label('Kategori')
-                                    ->options(self::CATEGORIES)
+                                    ->options(fn () => Category::optionsForType(Category::TYPE_DOWNLOAD))
                                     ->native(false)
                                     ->placeholder('Pilih kategori'),
 

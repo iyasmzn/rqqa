@@ -40,15 +40,15 @@ class SettingSeeder extends Seeder
     private function general(): array
     {
         return [
-            'site_name' => 'SMA Muhammadiyah 5',
-            'site_tagline' => 'Unggul, Berkarakter, Berprestasi',
-            'site_description' => 'Website resmi SMA Muhammadiyah 5. Informasi SPMB, akademik, kegiatan, dan berita sekolah.',
+            'site_name' => "Qurrota A'yun",
+            'site_tagline' => 'Membentuk Generasi Qurani yang Berilmu dan Berakhlak',
+            'site_description' => "Website resmi Pondok Pesantren Qurrota A'yun. Informasi penerimaan santri baru, program pendidikan, kegiatan, dan cerita inspiratif dari pesantren.",
 
-            'contact_address' => 'Jl. Pendidikan No. 1, Kota Bandung 40111',
-            'contact_phone' => '(022) 1234-5678',
-            'contact_email' => 'info@smamuh5.sch.id',
-            'contact_hours' => 'Senin–Jumat, 07.00–15.30 WIB',
-            'contact_map_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63370.996079930104!2d107.56067055291257!3d-6.927935776306638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e64c5e8866e5%3A0x37be7ac9d575f7ed!2sGedung%20Sate!5e0!3m2!1sid!2sid!4v1779677079761!5m2!1sid!2sid',
+            'contact_address' => 'Jl. Pesantren No. 1, Kab. Pasuruan, Jawa Timur',
+            'contact_phone' => '(0343) 123-4567',
+            'contact_email' => 'info@qurrotaayun.sch.id',
+            'contact_hours' => 'Senin–Sabtu, 07.00–17.00 WIB',
+            'contact_map_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253622.43084814636!2d112.34993385!3d-7.6454081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e3aa3f5f1fcf%3A0x2d5c3a3e5b5b5b5b!2sPasuruan%2C%20East%20Java!5e0!3m2!1sid!2sid!4v1779677079761!5m2!1sid!2sid',
 
             'social_facebook' => null,
             'social_instagram' => null,
@@ -64,13 +64,13 @@ class SettingSeeder extends Seeder
     {
         return [
             'nav_items' => json_encode([
-                ['label' => 'Beranda',  'url' => '/',         'target' => '_self', 'is_active' => true, 'children' => []],
-                ['label' => 'Profil',   'url' => '#profil',   'target' => '_self', 'is_active' => true, 'children' => []],
-                ['label' => 'SPMB',     'url' => '#spmb',     'target' => '_self', 'is_active' => true, 'children' => []],
-                ['label' => 'Akademik', 'url' => '#akademik', 'target' => '_self', 'is_active' => true, 'children' => []],
-                ['label' => 'Guru',     'url' => '/guru',     'target' => '_self', 'is_active' => true, 'children' => []],
-                ['label' => 'Blog',     'url' => '/blog',     'target' => '_self', 'is_active' => true, 'children' => []],
-                ['label' => 'Kontak',   'url' => '#kontak',   'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Beranda',  'url' => '/',              'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Profil',   'url' => '#sambutan',      'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Program',  'url' => '/program',       'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Kegiatan', 'url' => '/kegiatan',      'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Cerita',   'url' => '/cerita-santri', 'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Blog',     'url' => '/blog',          'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Kontak',   'url' => '#kontak',        'target' => '_self', 'is_active' => true, 'children' => []],
             ]),
         ];
     }
@@ -83,31 +83,30 @@ class SettingSeeder extends Seeder
         return [
             'section_order' => json_encode([
                 ['key' => 'section_hero',        'visible' => true],
-                ['key' => 'section_quick_links', 'visible' => true],
-                ['key' => 'section_spmb',        'visible' => true],
                 ['key' => 'section_stats',       'visible' => true],
                 ['key' => 'section_principal',   'visible' => true],
+                ['key' => 'section_programs',    'visible' => true],
+                ['key' => 'section_events',      'visible' => true],
+                ['key' => 'section_spmb',        'visible' => true],
                 ['key' => 'section_spmb_steps',  'visible' => true],
-                ['key' => 'section_activities',  'visible' => true],
-                ['key' => 'section_gallery',     'visible' => true],
                 ['key' => 'section_blog',        'visible' => true],
                 ['key' => 'section_contact',     'visible' => true],
             ]),
         ];
     }
 
-    // ── Kepala Sekolah ───────────────────────────────────────────────
+    // ── Kepala Yayasan ───────────────────────────────────────────────
 
     /** @return array<string, mixed> */
     private function principal(): array
     {
         return [
-            'principal_name' => 'Drs. Ahmad Fauzi, M.Pd.',
-            'principal_nip' => '197601012005011001',
-            'principal_title' => 'Kepala Sekolah',
+            'principal_name' => 'KH. Abdullah Mubarok, Lc., M.A.',
+            'principal_nip' => null,
+            'principal_title' => 'Kepala Yayasan',
             'principal_photo' => null,
-            'principal_excerpt' => 'Kami berkomitmen memberikan pendidikan terbaik untuk mencetak generasi yang beriman, berilmu, dan berdaya saing tinggi. Bersama seluruh warga sekolah, kami terus berinovasi demi masa depan peserta didik yang lebih gemilang.',
-            'principal_page' => 'sambutan-kepala-sekolah',
+            'principal_excerpt' => "Bismillahirrahmanirrahim. Alhamdulillah, atas izin dan ridha Allah SWT, Pondok Pesantren Qurrota A'yun terus berkembang menjadi lembaga pendidikan Islam yang amanah dan terpercaya.\n\nKami berkomitmen untuk mencetak generasi Qurani yang tidak hanya hafal Al-Qur'an, tetapi juga berilmu, berakhlak mulia, dan siap menghadapi tantangan zaman. Bersama seluruh asatidz dan keluarga besar pesantren, kami terus berijtihad demi masa depan santri yang gemilang di dunia dan akhirat.",
+            'principal_page' => 'sambutan-kepala-yayasan',
         ];
     }
 
@@ -118,61 +117,61 @@ class SettingSeeder extends Seeder
     {
         return [
             'quick_links' => json_encode([
-                ['icon' => '📋', 'label' => 'SPMB',    'url' => '#spmb',    'is_active' => true],
-                ['icon' => '📥', 'label' => 'Unduhan', 'url' => '/unduhan', 'is_active' => true],
-                ['icon' => '📅', 'label' => 'Jadwal',  'url' => '#jadwal',  'is_active' => true],
-                ['icon' => '🏆', 'label' => 'Prestasi', 'url' => '#prestasi', 'is_active' => true],
-                ['icon' => '👥', 'label' => 'Alumni',  'url' => '#alumni',  'is_active' => true],
-                ['icon' => '📞', 'label' => 'Kontak',  'url' => '#kontak',  'is_active' => true],
+                ['icon' => '📋', 'label' => 'Daftar Santri', 'url' => '#spmb',          'is_active' => true],
+                ['icon' => '📚', 'label' => 'Buku',          'url' => '/buku',          'is_active' => true],
+                ['icon' => '🎓', 'label' => 'Program',       'url' => '/program',       'is_active' => true],
+                ['icon' => '🗓', 'label' => 'Kegiatan',      'url' => '/kegiatan',      'is_active' => true],
+                ['icon' => '📖', 'label' => 'Cerita Santri', 'url' => '/cerita-santri', 'is_active' => true],
+                ['icon' => '📞', 'label' => 'Kontak',        'url' => '#kontak',        'is_active' => true],
             ]),
         ];
     }
 
-    // ── PPDB / SPMB ──────────────────────────────────────────────────
+    // ── PPDB / Penerimaan Santri ─────────────────────────────────────
 
     /** @return array<string, mixed> */
     private function spmb(): array
     {
         $procedures = [
-            ['icon' => '📝', 'title' => 'Isi Formulir Online',  'description' => 'Kunjungi halaman PPDB dan isi formulir pendaftaran secara lengkap dan benar melalui portal SPMB.'],
-            ['icon' => '📁', 'title' => 'Siapkan Berkas',       'description' => 'Persiapkan dokumen yang dipersyaratkan: ijazah/SHUN, rapor kelas 7–9, dan pas foto terbaru.'],
-            ['icon' => '✅', 'title' => 'Verifikasi Berkas',    'description' => 'Datang ke sekolah untuk verifikasi berkas pada tanggal yang telah ditentukan oleh panitia.'],
-            ['icon' => '🎉', 'title' => 'Pengumuman Hasil',     'description' => 'Hasil seleksi diumumkan melalui halaman resmi sekolah dan notifikasi WhatsApp/email.'],
+            ['icon' => '📝', 'title' => 'Isi Formulir Online',  'description' => 'Kunjungi halaman pendaftaran dan isi formulir dengan data calon santri secara lengkap dan benar.'],
+            ['icon' => '📁', 'title' => 'Siapkan Berkas',       'description' => 'Persiapkan dokumen: fotokopi KK, akta lahir, ijazah/SKHU, rapor, dan pas foto terbaru calon santri.'],
+            ['icon' => '✅', 'title' => 'Verifikasi & Tes',     'description' => 'Datang ke pesantren untuk verifikasi berkas dan mengikuti tes baca Al-Qur\'an serta wawancara.'],
+            ['icon' => '🎉', 'title' => 'Pengumuman Hasil',     'description' => 'Hasil penerimaan diumumkan melalui website resmi dan dihubungi langsung oleh panitia via WhatsApp.'],
         ];
 
         $fees = [
-            ['category' => 'Biaya Pendaftaran', 'amount' => 'Rp 0',       'note' => 'Gratis'],
-            ['category' => 'Seragam Sekolah',   'amount' => 'Rp 500.000', 'note' => '3 stel seragam (OSIS, Pramuka, Olahraga)'],
-            ['category' => 'Buku Paket',        'amount' => 'Rp 350.000', 'note' => 'Seluruh mata pelajaran, per semester'],
-            ['category' => 'Kegiatan MOS/MPLS', 'amount' => 'Rp 150.000', 'note' => 'Masa Pengenalan Lingkungan Sekolah'],
+            ['category' => 'Biaya Pendaftaran', 'amount' => 'Rp 100.000',   'note' => 'Tidak dikembalikan'],
+            ['category' => 'Biaya Masuk',       'amount' => 'Rp 2.500.000', 'note' => 'Termasuk seragam & perlengkapan'],
+            ['category' => 'SPP Bulanan',       'amount' => 'Rp 750.000',   'note' => 'Sudah termasuk makan 3x sehari'],
+            ['category' => 'Kitab & Buku',      'amount' => 'Rp 350.000',   'note' => 'Per semester, sesuai tingkatan'],
         ];
 
         return [
             // Jadwal & status
             'spmb_year' => '2026/2027',
             'spmb_open' => 1,
-            'spmb_deadline' => '30 Mei',
-            'spmb_select' => '10 Juni',
-            'spmb_announce' => '25 Juni',
+            'spmb_deadline' => '30 Juni',
+            'spmb_select' => '15 Juli',
+            'spmb_announce' => '25 Juli',
 
             // Kartu di halaman depan
-            'spmb_card_title' => 'SPMB Tahun Ajaran {year} Dibuka!',
-            'spmb_card_description' => 'Pendaftaran peserta didik baru resmi dibuka. Tersedia jalur Prestasi, Zonasi, dan Afirmasi. Segera lengkapi berkas dan daftarkan diri Anda sebelum batas waktu.',
+            'spmb_card_title' => 'Penerimaan Santri Baru {year} Dibuka!',
+            'spmb_card_description' => "Pondok Pesantren Qurrota A'yun membuka penerimaan santri baru. Tersedia program Tahfidz, Diniyah, dan Terpadu. Daftarkan putra-putri Anda sebelum batas waktu.",
             'spmb_card_cta_label' => 'Daftar Sekarang',
             'spmb_card_cta_url' => '/ppdb',
             'spmb_card_secondary_label' => 'Info Selengkapnya',
 
             // Section tahapan di halaman depan
-            'spmb_steps_title' => 'Tahapan SPMB',
-            'spmb_steps_description' => 'Ikuti langkah-langkah berikut untuk mendaftarkan diri sebagai calon peserta didik baru.',
+            'spmb_steps_title' => 'Alur Pendaftaran Santri',
+            'spmb_steps_description' => 'Ikuti langkah-langkah berikut untuk mendaftarkan putra-putri Anda sebagai santri baru.',
             'spmb_steps_cta_label' => 'Lihat Detail & Daftar',
             'spmb_steps_cta_url' => '/ppdb',
 
             // Form pendaftaran
             'spmb_form_enabled' => 1,
-            'spmb_form_title' => 'Formulir Pendaftaran SPMB',
-            'spmb_form_description' => 'Isi formulir di bawah ini dengan data yang benar dan lengkap. Panitia akan menghubungi Anda untuk proses verifikasi.',
-            'spmb_closed_message' => 'Pendaftaran SPMB saat ini sedang ditutup. Pantau informasi terbaru melalui halaman ini atau hubungi panitia via WhatsApp.',
+            'spmb_form_title' => 'Formulir Pendaftaran Santri Baru',
+            'spmb_form_description' => 'Isi formulir di bawah ini dengan data yang benar dan lengkap. Panitia akan menghubungi Anda untuk proses verifikasi dan jadwal tes.',
+            'spmb_closed_message' => 'Pendaftaran santri baru saat ini sedang ditutup. Pantau informasi terbaru melalui halaman ini atau hubungi panitia via WhatsApp.',
 
             // Konten prosedur & biaya
             'spmb_procedures' => json_encode($procedures),
@@ -186,8 +185,8 @@ class SettingSeeder extends Seeder
     private function theme(): array
     {
         return [
-            'theme_primary_color' => '#d97706',
-            'theme_font' => 'instrument-sans',
+            'theme_primary_color' => '#08484A',
+            'theme_font' => 'plus-jakarta-sans',
         ];
     }
 }

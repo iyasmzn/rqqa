@@ -7,16 +7,13 @@ use Illuminate\Database\Seeder;
 
 class StatSeeder extends Seeder
 {
-    /**
-     * Seed the four default landing-page stat cards.
-     */
     public function run(): void
     {
         $defaults = [
-            ['icon' => '🏫', 'label' => 'Berdiri Sejak',    'value' => '1985',  'sub' => 'Terakreditasi A',    'sort_order' => 1],
-            ['icon' => '🎓', 'label' => 'Total Siswa',      'value' => '1.240', 'sub' => 'Aktif tahun ini',    'sort_order' => 2],
-            ['icon' => '👨‍🏫', 'label' => 'Guru', 'value' => '86',    'sub' => 'Guru bersertifikat', 'sort_order' => 3],
-            ['icon' => '🏆', 'label' => 'Prestasi',         'value' => '200+',  'sub' => 'Tingkat nasional',   'sort_order' => 4],
+            ['icon' => '🕌', 'label' => 'Berdiri Sejak',   'value' => '1992',  'sub' => 'Lebih dari 3 dekade',     'sort_order' => 1],
+            ['icon' => '📖', 'label' => 'Total Santri',    'value' => '850',   'sub' => 'Mukim & non-mukim',       'sort_order' => 2],
+            ['icon' => '👳', 'label' => 'Asatidz',         'value' => '60+',   'sub' => 'Hafidz & alumni pesantren', 'sort_order' => 3],
+            ['icon' => '🏆', 'label' => 'Hafidz Qur\'an',  'value' => '200+',  'sub' => 'Alumni 30 juz',           'sort_order' => 4],
         ];
 
         foreach ($defaults as $data) {

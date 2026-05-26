@@ -91,7 +91,7 @@
             --text:   #1d1d1f;
             --muted:  #6e6e73;
 
-            --primary: {{ setting('theme_primary_color', '#d97706') }};
+            --primary: {{ setting('theme_primary_color', '#08484A') }};
 
             --color-amber-50:  color-mix(in oklab, var(--primary)  8%, white);
             --color-amber-100: color-mix(in oklab, var(--primary) 15%, white);

@@ -1,6 +1,6 @@
 @php
     $principalName    = setting('principal_name');
-    $principalTitle   = setting('principal_title', 'Kepala Sekolah');
+    $principalTitle   = setting('principal_title', 'Kepala Yayasan');
     $principalNip     = setting('principal_nip');
     $principalPhoto   = setting('principal_photo');
     $principalExcerpt = setting('principal_excerpt');
@@ -14,7 +14,7 @@
         <div class="text-center mb-14" data-aos="fade-up">
             <div class="fi-label mb-3">Sambutan</div>
             <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">
-                Sambutan Kepala Sekolah
+                Sambutan {{ $principalTitle }}
             </h2>
         </div>
 
@@ -50,7 +50,7 @@
                     @if($principalNip)
                         <div class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border"
                              style="background:var(--color-amber-50);color:var(--color-amber-800);border-color:var(--color-amber-200)">
-                            NIP. {{ $principalNip }}
+                            {{ $principalNip }}
                         </div>
                     @endif
                 </div>

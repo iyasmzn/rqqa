@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Posts\Tables;
 
+use App\Models\Category;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -67,15 +68,7 @@ class PostsTable
             ->filters([
                 SelectFilter::make('category')
                     ->label('Kategori')
-                    ->options([
-                        'Berita' => 'Berita',
-                        'Akademik' => 'Akademik',
-                        'Lingkungan' => 'Lingkungan',
-                        'Event' => 'Event',
-                        'Teknologi' => 'Teknologi',
-                        'Kesehatan' => 'Kesehatan',
-                        'Prestasi' => 'Prestasi',
-                    ])
+                    ->options(fn () => Category::optionsForType(Category::TYPE_POST))
                     ->native(false),
 
                 Filter::make('is_published')
