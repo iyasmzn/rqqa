@@ -8,10 +8,8 @@ use App\Filament\Resources\Stats\Pages\ListStats;
 use App\Filament\Resources\Stats\Schemas\StatForm;
 use App\Filament\Resources\Stats\Tables\StatsTable;
 use App\Models\Stat;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -19,9 +17,7 @@ class StatResource extends Resource
 {
     protected static ?string $model = Stat::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;
-
-    protected static string|UnitEnum|null $navigationGroup = 'Konten';
+    protected static string|UnitEnum|null $navigationGroup = 'Profil Sekolah';
 
     protected static ?string $navigationLabel = 'Statistik';
 
@@ -29,7 +25,7 @@ class StatResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Statistik';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

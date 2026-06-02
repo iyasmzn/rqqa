@@ -8,10 +8,8 @@ use App\Filament\Resources\Programs\Pages\ListPrograms;
 use App\Filament\Resources\Programs\Schemas\ProgramForm;
 use App\Filament\Resources\Programs\Tables\ProgramsTable;
 use App\Models\Program;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -19,11 +17,11 @@ class ProgramResource extends Resource
 {
     protected static ?string $model = Program::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-
     protected static string|UnitEnum|null $navigationGroup = 'Konten';
 
     protected static ?string $navigationLabel = 'Program';
+
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $modelLabel = 'Program';
 

@@ -8,10 +8,8 @@ use App\Filament\Resources\ContactItems\Pages\ListContactItems;
 use App\Filament\Resources\ContactItems\Schemas\ContactItemForm;
 use App\Filament\Resources\ContactItems\Tables\ContactItemsTable;
 use App\Models\ContactItem;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -19,9 +17,7 @@ class ContactItemResource extends Resource
 {
     protected static ?string $model = ContactItem::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhone;
-
-    protected static string|UnitEnum|null $navigationGroup = 'Konten';
+    protected static string|UnitEnum|null $navigationGroup = 'Interaksi';
 
     protected static ?string $navigationLabel = 'Kontak';
 
@@ -29,7 +25,7 @@ class ContactItemResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Informasi Kontak';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

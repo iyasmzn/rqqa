@@ -8,18 +8,14 @@ use App\Filament\Resources\Slides\Pages\ListSlides;
 use App\Filament\Resources\Slides\Schemas\SlideForm;
 use App\Filament\Resources\Slides\Tables\SlidesTable;
 use App\Models\Slide;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
 class SlideResource extends Resource
 {
     protected static ?string $model = Slide::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
 
     protected static string|UnitEnum|null $navigationGroup = 'Konten';
 

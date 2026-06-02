@@ -8,10 +8,8 @@ use App\Filament\Resources\Stories\Pages\ListStories;
 use App\Filament\Resources\Stories\Schemas\StoryForm;
 use App\Filament\Resources\Stories\Tables\StoriesTable;
 use App\Models\Story;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -19,11 +17,11 @@ class StoryResource extends Resource
 {
     protected static ?string $model = Story::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleBottomCenterText;
-
-    protected static string|UnitEnum|null $navigationGroup = 'Konten';
+    protected static string|UnitEnum|null $navigationGroup = 'Profil Sekolah';
 
     protected static ?string $navigationLabel = 'Cerita Santri';
+
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $modelLabel = 'Cerita';
 

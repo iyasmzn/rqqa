@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
-use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
@@ -20,15 +19,13 @@ class ThemeSettings extends Page
 {
     protected string $view = 'filament.pages.general-settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSwatch;
-
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
     protected static ?string $navigationLabel = 'Tema & Tampilan';
 
     protected static ?string $title = 'Pengaturan Tema & Tampilan';
 
-    protected static ?int $navigationSort = 16;
+    protected static ?int $navigationSort = 6;
 
     /** @var array<string, mixed>|null */
     public ?array $data = [];

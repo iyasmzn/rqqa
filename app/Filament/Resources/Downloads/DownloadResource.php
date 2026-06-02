@@ -8,10 +8,8 @@ use App\Filament\Resources\Downloads\Pages\ListDownloads;
 use App\Filament\Resources\Downloads\Schemas\DownloadForm;
 use App\Filament\Resources\Downloads\Tables\DownloadsTable;
 use App\Models\Download;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -19,11 +17,11 @@ class DownloadResource extends Resource
 {
     protected static ?string $model = Download::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowDownTray;
-
-    protected static string|UnitEnum|null $navigationGroup = 'Konten';
+    protected static string|UnitEnum|null $navigationGroup = 'Media & Unduhan';
 
     protected static ?string $navigationLabel = 'Unduhan';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $modelLabel = 'Unduhan';
 

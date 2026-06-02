@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
-use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -21,15 +20,13 @@ class NavbarSettings extends Page
 {
     protected string $view = 'filament.pages.general-settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBars3;
-
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
     protected static ?string $navigationLabel = 'Menu Navigasi';
 
     protected static ?string $title = 'Pengaturan Menu Navigasi';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 2;
 
     /** @var array<string, mixed>|null */
     public ?array $data = [];

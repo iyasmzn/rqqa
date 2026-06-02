@@ -7,18 +7,14 @@ use App\Filament\Resources\Donations\Pages\ListDonations;
 use App\Filament\Resources\Donations\Schemas\DonationForm;
 use App\Filament\Resources\Donations\Tables\DonationsTable;
 use App\Models\Donation;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
 class DonationResource extends Resource
 {
     protected static ?string $model = Donation::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHeart;
 
     protected static string|UnitEnum|null $navigationGroup = 'Donasi';
 

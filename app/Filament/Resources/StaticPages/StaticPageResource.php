@@ -8,10 +8,8 @@ use App\Filament\Resources\StaticPages\Pages\ListStaticPages;
 use App\Filament\Resources\StaticPages\Schemas\StaticPageForm;
 use App\Filament\Resources\StaticPages\Tables\StaticPagesTable;
 use App\Models\StaticPage;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -19,11 +17,11 @@ class StaticPageResource extends Resource
 {
     protected static ?string $model = StaticPage::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
-
     protected static string|UnitEnum|null $navigationGroup = 'Konten';
 
     protected static ?string $navigationLabel = 'Halaman Statis';
+
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $modelLabel = 'Halaman Statis';
 

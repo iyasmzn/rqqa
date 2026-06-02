@@ -4,7 +4,6 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use App\Services\MediaLibraryService;
-use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
@@ -22,15 +21,13 @@ class GeneralSettings extends Page
 {
     protected string $view = 'filament.pages.general-settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
-
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
     protected static ?string $navigationLabel = 'Pengaturan Umum';
 
     protected static ?string $title = 'Pengaturan Umum';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 1;
 
     /** @var array<string, mixed>|null */
     public ?array $data = [];

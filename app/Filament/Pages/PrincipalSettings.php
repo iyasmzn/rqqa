@@ -5,7 +5,6 @@ namespace App\Filament\Pages;
 use App\Models\Setting;
 use App\Models\StaticPage;
 use App\Services\MediaLibraryService;
-use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -23,15 +22,13 @@ class PrincipalSettings extends Page
 {
     protected string $view = 'filament.pages.general-settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserCircle;
-
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
     protected static ?string $navigationLabel = 'Kepala Sekolah';
 
     protected static ?string $title = 'Pengaturan Seksi Kepala Sekolah';
 
-    protected static ?int $navigationSort = 13;
+    protected static ?int $navigationSort = 4;
 
     /** @var array<string, mixed>|null */
     public ?array $data = [];

@@ -7,12 +7,11 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
+use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -35,14 +34,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
+            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
+            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -60,6 +54,36 @@ class AdminPanelProvider extends PanelProvider
                     '<style>.fi-ta-content-grid .fi-ta-record{overflow:hidden}</style>',
                 ),
             )
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Konten')
+                    ->icon(Heroicon::OutlinedNewspaper),
+                NavigationGroup::make()
+                    ->label('Profil Sekolah')
+                    ->icon(Heroicon::OutlinedBuildingLibrary),
+                NavigationGroup::make()
+                    ->label('Media & Unduhan')
+                    ->icon(Heroicon::OutlinedPhoto),
+                NavigationGroup::make()
+                    ->label('Interaksi')
+                    ->icon(Heroicon::OutlinedChatBubbleBottomCenterText),
+                NavigationGroup::make()
+                    ->label('Donasi')
+                    ->icon(Heroicon::OutlinedHeart),
+                NavigationGroup::make()
+                    ->label('PPDB / SPMB')
+                    ->icon(Heroicon::OutlinedClipboardDocumentCheck),
+                NavigationGroup::make()
+                    ->label('Master Data')
+                    ->icon(Heroicon::OutlinedRectangleStack),
+                NavigationGroup::make()
+                    ->label('Tampilan Website')
+                    ->icon(Heroicon::OutlinedPaintBrush),
+                NavigationGroup::make()
+                    ->label('Pengaturan')
+                    ->icon(Heroicon::OutlinedCog6Tooth)
+                    ->collapsed(),
+            ])
             ->authMiddleware([
                 Authenticate::class,
             ])

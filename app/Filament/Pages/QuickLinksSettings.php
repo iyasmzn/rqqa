@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
-use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
@@ -20,15 +19,13 @@ class QuickLinksSettings extends Page
 {
     protected string $view = 'filament.pages.general-settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBolt;
-
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
     protected static ?string $navigationLabel = 'Tautan Cepat';
 
     protected static ?string $title = 'Pengaturan Tautan Cepat';
 
-    protected static ?int $navigationSort = 14;
+    protected static ?int $navigationSort = 5;
 
     /** @var array<string, mixed>|null */
     public ?array $data = [];

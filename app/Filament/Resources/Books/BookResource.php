@@ -8,10 +8,8 @@ use App\Filament\Resources\Books\Pages\ListBooks;
 use App\Filament\Resources\Books\Schemas\BookForm;
 use App\Filament\Resources\Books\Tables\BooksTable;
 use App\Models\Book;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -19,11 +17,11 @@ class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
-
-    protected static string|UnitEnum|null $navigationGroup = 'Konten';
+    protected static string|UnitEnum|null $navigationGroup = 'Profil Sekolah';
 
     protected static ?string $navigationLabel = 'Produk Buku';
+
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $modelLabel = 'Buku';
 

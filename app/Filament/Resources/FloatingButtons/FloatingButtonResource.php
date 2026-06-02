@@ -8,21 +8,19 @@ use App\Filament\Resources\FloatingButtons\Pages\ListFloatingButtons;
 use App\Filament\Resources\FloatingButtons\Schemas\FloatingButtonForm;
 use App\Filament\Resources\FloatingButtons\Tables\FloatingButtonsTable;
 use App\Models\FloatingButton;
-use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class FloatingButtonResource extends Resource
 {
     protected static ?string $model = FloatingButton::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCursorArrowRays;
-
-    protected static string|\UnitEnum|null $navigationGroup = 'Pengaturan';
+    protected static string|\UnitEnum|null $navigationGroup = 'Tampilan Website';
 
     protected static ?string $navigationLabel = 'Floating Buttons';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $modelLabel = 'Tombol';
 
