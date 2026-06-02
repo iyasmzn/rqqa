@@ -354,6 +354,112 @@
         </div>
     </div>
 
+    {{-- ── Q&A Section ──────────────────────────────────────── --}}
+    <section class="border-t py-14" style="border-color:#f3f4f6;background:#f9fafb">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-600 mb-2">
+                <span class="w-4 h-px bg-amber-500 inline-block"></span>
+                Diskusi
+            </span>
+            <h2 class="text-xl font-extrabold mb-8 text-gray-900">Tanya Jawab Artikel Ini</h2>
+
+            {{-- Q&A List --}}
+            @if($postQuestions->isNotEmpty())
+            <div class="space-y-4 mb-10">
+                @foreach($postQuestions as $qa)
+                <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+                    <div class="flex items-start gap-3 mb-4">
+                        <div class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-extrabold text-xs text-white"
+                             style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+                            {{ strtoupper(substr($qa->name, 0, 1)) }}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span class="font-bold text-sm text-gray-900">{{ $qa->name }}</span>
+                                <span class="text-xs text-gray-400">{{ $qa->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 leading-relaxed">{{ $qa->question }}</p>
+                        </div>
+                    </div>
+                    @if($qa->answer)
+                    <div class="flex items-start gap-3 pl-3 pt-4 border-t border-gray-100">
+                        <div class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                             style="background:#fef3c7">
+                            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-bold text-sm text-amber-700">{{ setting('site_name', config('app.name')) }}</span>
+                                <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
+                                    <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Dijawab
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-700 leading-relaxed">{!! nl2br(e($qa->answer)) !!}</p>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            {{-- Submit Form --}}
+            <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+                <h3 class="font-bold text-base text-gray-900 mb-1">Punya Pertanyaan?</h3>
+                <p class="text-xs text-gray-400 mb-5">Pertanyaan yang dijawab akan ditampilkan di sini.</p>
+
+                @if(session('success') && request()->is('blog/*'))
+                <div class="flex items-center gap-2 p-3 rounded-lg mb-5 bg-amber-50 border border-amber-200">
+                    <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p class="text-xs font-medium text-amber-700">{{ session('success') }}</p>
+                </div>
+                @endif
+
+                <form method="POST" action="{{ route('questions.store') }}" class="space-y-4">
+                    @csrf
+                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Nama <span class="text-red-500">*</span></label>
+                            <input type="text" name="name" value="{{ old('name') }}" required
+                                   @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('name'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('name')])
+                                   placeholder="Nama Anda">
+                            @error('name')<p class="text-xs mt-1 text-red-500">{{ $message }}</p>@enderror
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Email <span class="text-gray-400 font-normal">(opsional)</span></label>
+                            <input type="email" name="email" value="{{ old('email') }}"
+                                   @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('email'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('email')])
+                                   placeholder="email@contoh.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Pertanyaan <span class="text-red-500">*</span></label>
+                        <textarea name="question" rows="3" required
+                                  @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('question'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('question')])
+                                  placeholder="Tulis pertanyaan Anda tentang artikel ini...">{{ old('question') }}</textarea>
+                        @error('question')<p class="text-xs mt-1 text-red-500">{{ $message }}</p>@enderror
+                    </div>
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80"
+                            style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        </svg>
+                        Kirim Pertanyaan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     {{-- ── Related Articles ─────────────────────────────────── --}}
     @if($related->isNotEmpty())
         <section class="border-t py-14" style="border-color:#f3f4f6;background:#f9fafb">

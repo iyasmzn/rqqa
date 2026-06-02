@@ -11,11 +11,17 @@ class Media extends Model
         'name',
         'alt',
         'description',
+        'show_in_gallery',
+        'album',
         'path',
         'disk',
         'mime_type',
         'size',
         'uploaded_by',
+    ];
+
+    protected $casts = [
+        'show_in_gallery' => 'boolean',
     ];
 
     // ── Accessors ─────────────────────────────────────────────────────

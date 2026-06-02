@@ -24,6 +24,7 @@
 
 {{-- ── Hero ──────────────────────────────────────────────── --}}
 <section class="programs-hero py-20 sm:py-28">
+    <x-hero-geo />
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-1.5 rounded-full mb-6"
              style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.2)">

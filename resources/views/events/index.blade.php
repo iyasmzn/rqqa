@@ -37,6 +37,7 @@
 
 {{-- ── Hero ──────────────────────────────────────────────── --}}
 <section class="events-hero py-20 sm:py-28">
+    <x-hero-geo />
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-1.5 rounded-full mb-6"
              style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.2)">
@@ -88,12 +89,21 @@
                             {{ $event->starts_at->format('d') }}
                         </div>
                     </div>
-                    @if($event->is_past)
-                    <div class="absolute top-4 right-4">
+                    <div class="absolute top-4 right-4 flex flex-col items-end gap-1.5">
+                        @if($event->is_past)
                         <span class="text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm"
                               style="background:rgba(0,0,0,.5);color:rgba(255,255,255,.8)">Selesai</span>
+                        @endif
+                        @if($event->youtube_url)
+                        <span class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full shadow"
+                              style="background:rgba(255,0,0,.85);color:#fff">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                            Video
+                        </span>
+                        @endif
                     </div>
-                    @endif
                 </a>
 
                 {{-- Content --}}

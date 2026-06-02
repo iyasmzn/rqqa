@@ -13,7 +13,7 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug', 'excerpt', 'content', 'image',
+        'title', 'slug', 'excerpt', 'content', 'image', 'youtube_url',
         'category', 'location', 'starts_at', 'ends_at',
         'is_published', 'sort_order',
     ];
@@ -65,5 +65,26 @@ class Event extends Model
     public function getIsPastAttribute(): bool
     {
         return $this->starts_at->isPast();
+    }
+
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        if (! $this->youtube_url) {
+            return null;
+        }
+
+        $url = $this->youtube_url;
+
+        // youtu.be/ID
+        if (preg_match('#youtu\.be/([a-zA-Z0-9_\-]{11})#', $url, $m)) {
+            return 'https://www.youtube.com/embed/'.$m[1];
+        }
+
+        // youtube.com/watch?v=ID or /embed/ID
+        if (preg_match('#(?:v=|/embed/)([a-zA-Z0-9_\-]{11})#', $url, $m)) {
+            return 'https://www.youtube.com/embed/'.$m[1];
+        }
+
+        return null;
     }
 }

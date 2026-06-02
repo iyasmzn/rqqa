@@ -78,6 +78,14 @@ class EventForm
                         TextInput::make('location')
                             ->label('Lokasi')
                             ->maxLength(255),
+
+                        TextInput::make('youtube_url')
+                            ->label('Link YouTube')
+                            ->url()
+                            ->placeholder('https://www.youtube.com/watch?v=...')
+                            ->maxLength(500)
+                            ->hint('Opsional – video akan ditampilkan di halaman kegiatan.')
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
 

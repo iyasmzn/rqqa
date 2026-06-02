@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -66,6 +67,11 @@ class PostController extends Controller
             'category' => $post->category,
         ];
 
-        return view('blog.show', compact('post', 'related', 'seo'));
+        $postQuestions = Question::published()->answered()
+            ->where('post_id', $post->id)
+            ->orderByDesc('answered_at')
+            ->get();
+
+        return view('blog.show', compact('post', 'related', 'seo', 'postQuestions'));
     }
 }

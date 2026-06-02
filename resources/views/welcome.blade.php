@@ -738,5 +738,8 @@
             offset: 50,
         });
     </script>
+
+    <x-popup-overlay />
+    <x-floating-buttons />
 </body>
 </html>

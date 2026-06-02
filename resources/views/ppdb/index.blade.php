@@ -16,12 +16,6 @@
             radial-gradient(ellipse 70% 70% at 10% 50%, rgba(217,119,6,.25) 0%, transparent 55%),
             radial-gradient(ellipse 50% 50% at 90% 10%, rgba(251,191,36,.12) 0%, transparent 50%);
     }
-    .ppdb-hero-dots {
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
-        background-size: 28px 28px;
-    }
 
     /* ── Tab pill nav ─────────────────────────── */
     .tab-nav { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -103,7 +97,7 @@
 
 {{-- ═══════════════════════ HERO ═══════════════════════════════ --}}
 <section class="ppdb-hero py-16 sm:py-20">
-    <div class="ppdb-hero-dots"></div>
+    <x-hero-geo />
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         <div class="flex flex-col lg:flex-row items-center gap-10">
 

@@ -88,6 +88,22 @@
             @endif
         </div>
 
+        {{-- YouTube Video --}}
+        @if($event->youtube_embed_url)
+        <div class="mb-10" data-aos="fade-up">
+            <div class="rounded-2xl overflow-hidden shadow-lg" style="aspect-ratio:16/9">
+                <iframe
+                    src="{{ $event->youtube_embed_url }}"
+                    title="{{ $event->title }}"
+                    class="w-full h-full"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+        @endif
+
         {{-- Content --}}
         @if($event->content)
         <div class="article-prose" data-aos="fade-up">

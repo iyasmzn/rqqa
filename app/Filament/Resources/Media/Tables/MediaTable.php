@@ -14,6 +14,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -82,6 +83,11 @@ class MediaTable
             ->paginated([12, 24, 48, 96])
             ->searchable()
             ->filters([
+                TernaryFilter::make('show_in_gallery')
+                    ->label('Status Galeri')
+                    ->trueLabel('Ditampilkan di Galeri')
+                    ->falseLabel('Tidak di Galeri'),
+
                 SelectFilter::make('type')
                     ->label('Tipe File')
                     ->options([

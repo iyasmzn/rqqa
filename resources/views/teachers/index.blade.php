@@ -32,13 +32,6 @@
         background: radial-gradient(ellipse 80% 80% at 20% 50%, rgba(217,119,6,.25) 0%, transparent 60%),
                     radial-gradient(ellipse 60% 60% at 80% 20%, rgba(251,191,36,.12) 0%, transparent 50%);
     }
-    .teacher-hero-grid {
-        position: absolute;
-        inset: 0;
-        background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-        background-size: 40px 40px;
-    }
     .teacher-card {
         background: var(--card);
         border: 1px solid var(--border);
@@ -104,7 +97,7 @@
 
     {{-- ── Page Hero ──────────────────────────────────────────── --}}
     <section class="teacher-hero py-14 sm:py-20">
-        <div class="teacher-hero-grid"></div>
+        <x-hero-geo />
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Mobile breadcrumb --}}
             <nav aria-label="Breadcrumb" class="md:hidden flex items-center gap-1.5 text-xs mb-5 text-white/50">

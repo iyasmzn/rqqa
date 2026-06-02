@@ -5,12 +5,15 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SpmbController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\StoryController;
@@ -79,3 +82,13 @@ Route::get('/cerita-santri/{story:slug}', [StoryController::class, 'show'])->nam
 // Donasi
 Route::get('/donasi', [DonationController::class, 'index'])->name('donasi.index');
 Route::post('/donasi', [DonationController::class, 'store'])->name('donasi.store');
+
+// Tanya Jawab
+Route::get('/tanya-jawab', [QuestionController::class, 'index'])->name('questions.index');
+Route::post('/tanya-jawab', [QuestionController::class, 'store'])->name('questions.store');
+
+// Kontak
+Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
+
+// Galeri
+Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery.index');

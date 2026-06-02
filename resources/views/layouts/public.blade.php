@@ -643,5 +643,10 @@
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>AOS.init({ once: true, duration: 700, easing: 'ease-out-quart', offset: 60 });</script>
+
+    @stack('scripts')
+
+    <x-popup-overlay />
+    <x-floating-buttons />
 </body>
 </html>
