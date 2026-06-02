@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthorRequestController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
@@ -47,8 +49,16 @@ Route::middleware('guest')->group(function () {
     Route::post('/masuk', [LoginController::class, 'login']);
     Route::get('/daftar', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/daftar', [RegisterController::class, 'register']);
+    Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
+    Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 });
 Route::post('/keluar', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
+// ── Permintaan Menjadi Author ────────────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get('/jadi-author', [AuthorRequestController::class, 'show'])->name('author-request.show');
+    Route::post('/jadi-author', [AuthorRequestController::class, 'store'])->name('author-request.store');
+});
 
 // Produk Buku
 Route::get('/buku', [BookController::class, 'index'])->name('books.index');
