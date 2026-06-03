@@ -25,6 +25,8 @@
     background:rgba(0,0,0,.7);
     backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
     opacity:0; transition:opacity .35s ease; pointer-events:none;
+    /* clip peek cards at viewport edge so they don't cause body horizontal scroll */
+    overflow:hidden;
 }
 #pop-ov.pop-in { opacity:1; pointer-events:all; }
 
@@ -33,7 +35,8 @@
     position:relative;
     display:flex; flex-direction:column;
     align-items:center;
-    /* width set inline by JS */
+    width:100%;          /* fill overlay content box (accounts for padding) */
+    /* max-width set by JS */
 }
 
 /* ── Track — holds absolutely positioned slide cards ─────────── */
@@ -238,7 +241,7 @@
     /* ── compute adaptive peek offset (% of card width) ── */
     function peekOffset() {
         var vw    = window.innerWidth;
-        var cardW = parseFloat(stage.style.width) || Math.min(600, vw * 0.9);
+        var cardW = Math.min(parseFloat(stage.style.maxWidth) || 600, vw - 32);
         /* stageLeft = space from viewport edge to stage left edge */
         var stageLeft = (vw - cardW) / 2;
         /* target visible peek width: up to 35% of card, but limited by available space - 16px gap */
@@ -341,9 +344,8 @@
 
     /* ── show popup ── */
     function show() {
-        /* set stage width */
-        var cardW = WIDTHS[queue[0].width] || '600px';
-        stage.style.width = 'min(' + cardW + ', 90vw)';
+        /* constrain stage width; width:100% (from CSS) fills overlay minus padding */
+        stage.style.maxWidth = WIDTHS[queue[0].width] || '600px';
 
         /* build slides as static first (so we can measure their natural height) */
         track.innerHTML = '';

@@ -185,7 +185,7 @@
     @stack('head')
 </head>
 
-<body class="min-h-screen antialiased"
+<body class="min-h-screen antialiased overflow-x-hidden"
       x-data="{ scrolled: false }"
       x-init="window.addEventListener('scroll', () => scrolled = window.scrollY > 40, { passive: true })">
 
