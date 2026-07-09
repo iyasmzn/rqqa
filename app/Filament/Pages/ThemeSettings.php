@@ -52,7 +52,7 @@ class ThemeSettings extends Page
         return $schema->components([
             Section::make('Warna Utama Website')
                 ->description('Warna ini diterapkan ke seluruh elemen utama website: tombol, label, highlight, dan aksen navigasi.')
-                ->icon('heroicon-o-swatch')
+                ->icon(Heroicon::OutlinedSwatch)
                 ->schema([
                     Grid::make(2)->schema([
                         Select::make('theme_preset')
@@ -83,7 +83,7 @@ class ThemeSettings extends Page
 
             Section::make('Tipografi')
                 ->description('Pilih font yang digunakan di seluruh tampilan publik website.')
-                ->icon('heroicon-o-document-text')
+                ->icon(Heroicon::OutlinedDocumentText)
                 ->schema([
                     Select::make('theme_font')
                         ->label('Font Website')

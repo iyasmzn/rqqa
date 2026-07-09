@@ -52,7 +52,7 @@ class IntegrationSettings extends Page
             $this->providerSection(
                 provider: 'google',
                 label: 'Google',
-                icon: 'heroicon-o-globe-alt',
+                icon: Heroicon::OutlinedGlobeAlt,
                 description: 'Login menggunakan akun Google. Dapatkan Client ID dan Secret dari Google Cloud Console → APIs & Services → Credentials.',
                 helpUrl: 'https://console.cloud.google.com/apis/credentials',
                 redirectUri: url('/auth/google/callback'),
@@ -67,7 +67,7 @@ class IntegrationSettings extends Page
     private function providerSection(
         string $provider,
         string $label,
-        string $icon,
+        Heroicon $icon,
         string $description,
         string $helpUrl,
         string $redirectUri,

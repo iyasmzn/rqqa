@@ -6,6 +6,7 @@ use App\Models\Donation;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -26,8 +27,8 @@ class DonationsTable
                 IconColumn::make('is_anonymous')
                     ->label('Anonim')
                     ->boolean()
-                    ->trueIcon('heroicon-o-eye-slash')
-                    ->falseIcon('heroicon-o-eye')
+                    ->trueIcon(Heroicon::OutlinedEyeSlash)
+                    ->falseIcon(Heroicon::OutlinedEye)
                     ->trueColor('warning')
                     ->falseColor('gray'),
 

@@ -14,6 +14,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 
 class MediaForm
@@ -42,7 +43,7 @@ class MediaForm
 
             Section::make('Embed Video')
                 ->description(fn (Get $get): string => 'Sumber: '.EmbedVideo::label($get('embed_provider')))
-                ->icon('heroicon-o-video-camera')
+                ->icon(Heroicon::OutlinedVideoCamera)
                 ->visible(fn (Get $get): bool => filled($get('embed_provider')))
                 ->schema([
                     TextInput::make('embed_url')
@@ -108,7 +109,7 @@ class MediaForm
 
             Section::make('Galeri Publik')
                 ->description('Tampilkan media ini di halaman Galeri website.')
-                ->icon('heroicon-o-photo')
+                ->icon(Heroicon::OutlinedPhoto)
                 ->schema([
                     Grid::make(2)
                         ->schema([
@@ -127,7 +128,7 @@ class MediaForm
 
             Section::make('Informasi SEO')
                 ->description('Metadata yang membantu mesin pencari dan aksesibilitas.')
-                ->icon('heroicon-o-magnifying-glass')
+                ->icon(Heroicon::OutlinedMagnifyingGlass)
                 ->schema([
                     TextInput::make('name')
                         ->label('Nama File')

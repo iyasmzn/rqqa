@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\Questions\QuestionResource;
 use App\Models\Question;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -25,7 +26,7 @@ class LatestQuestionsWidget extends TableWidget
             Action::make('lihat_semua')
                 ->label('Kelola Pertanyaan')
                 ->url(QuestionResource::getUrl('index'))
-                ->icon('heroicon-o-arrow-top-right-on-square')
+                ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                 ->color('gray')
                 ->size('sm'),
         ];

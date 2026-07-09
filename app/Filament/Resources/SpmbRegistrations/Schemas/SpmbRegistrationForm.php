@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class SpmbRegistrationForm
 {
@@ -18,7 +19,7 @@ class SpmbRegistrationForm
         return $schema->components([
 
             Section::make('Data Pribadi Calon Peserta')
-                ->icon('heroicon-o-user')
+                ->icon(Heroicon::OutlinedUser)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('full_name')
@@ -64,7 +65,7 @@ class SpmbRegistrationForm
                 ]),
 
             Section::make('Asal Sekolah')
-                ->icon('heroicon-o-academic-cap')
+                ->icon(Heroicon::OutlinedAcademicCap)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('previous_school')
@@ -79,7 +80,7 @@ class SpmbRegistrationForm
                 ]),
 
             Section::make('Data Orang Tua / Wali')
-                ->icon('heroicon-o-users')
+                ->icon(Heroicon::OutlinedUsers)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('parent_name')
@@ -94,7 +95,7 @@ class SpmbRegistrationForm
                 ]),
 
             Section::make('Catatan & Status')
-                ->icon('heroicon-o-clipboard-document-check')
+                ->icon(Heroicon::OutlinedClipboardDocumentCheck)
                 ->schema([
                     Grid::make(2)->schema([
                         Select::make('status')

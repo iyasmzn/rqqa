@@ -12,6 +12,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -93,8 +94,8 @@ trait InteractsWithImagePicker
                     'library' => 'Pilih dari Media',
                 ])
                 ->icons([
-                    'upload' => 'heroicon-o-arrow-up-tray',
-                    'library' => 'heroicon-o-photo',
+                    'upload' => Heroicon::OutlinedArrowUpTray,
+                    'library' => Heroicon::OutlinedPhoto,
                 ])
                 ->default('upload')
                 ->inline()

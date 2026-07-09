@@ -85,7 +85,7 @@ class GeneralSettings extends Page
 
             Section::make('Identitas Sekolah')
                 ->description('Nama dan informasi dasar yang tampil di seluruh halaman website.')
-                ->icon('heroicon-o-academic-cap')
+                ->icon(Heroicon::OutlinedAcademicCap)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('site_name')
@@ -110,7 +110,7 @@ class GeneralSettings extends Page
 
             Section::make('Logo & Favicon')
                 ->description('Gambar yang mewakili identitas visual sekolah di browser dan halaman web.')
-                ->icon('heroicon-o-photo')
+                ->icon(Heroicon::OutlinedPhoto)
                 ->schema([
                     Grid::make(2)->schema([
                         FileUpload::make('site_logo')
@@ -138,7 +138,7 @@ class GeneralSettings extends Page
 
             Section::make('Informasi Kontak')
                 ->description('Informasi kontak yang tampil di footer dan halaman kontak.')
-                ->icon('heroicon-o-map-pin')
+                ->icon(Heroicon::OutlinedMapPin)
                 ->schema([
                     Textarea::make('contact_address')
                         ->label('Alamat Lengkap')
@@ -174,7 +174,7 @@ class GeneralSettings extends Page
 
             Section::make('Pengaturan SPMB')
                 ->description('Jadwal dan status penerimaan peserta didik baru.')
-                ->icon('heroicon-o-clipboard-document-list')
+                ->icon(Heroicon::OutlinedClipboardDocumentList)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('spmb_year')
@@ -204,39 +204,39 @@ class GeneralSettings extends Page
 
             Section::make('Media Sosial')
                 ->description('Tautan media sosial yang tampil di footer.')
-                ->icon('heroicon-o-share')
+                ->icon(Heroicon::OutlinedShare)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('social_facebook')
                             ->label('Facebook')
                             ->url()
                             ->placeholder('https://facebook.com/namahalaman')
-                            ->prefixIcon('heroicon-o-globe-alt'),
+                            ->prefixIcon(Heroicon::OutlinedGlobeAlt),
 
                         TextInput::make('social_instagram')
                             ->label('Instagram')
                             ->url()
                             ->placeholder('https://instagram.com/namaakun')
-                            ->prefixIcon('heroicon-o-globe-alt'),
+                            ->prefixIcon(Heroicon::OutlinedGlobeAlt),
 
                         TextInput::make('social_youtube')
                             ->label('YouTube')
                             ->url()
                             ->placeholder('https://youtube.com/@channel')
-                            ->prefixIcon('heroicon-o-globe-alt'),
+                            ->prefixIcon(Heroicon::OutlinedGlobeAlt),
 
                         TextInput::make('social_whatsapp')
                             ->label('WhatsApp')
                             ->tel()
                             ->placeholder('6281234567890')
                             ->hint('Nomor internasional tanpa + (contoh: 6281234567890)')
-                            ->prefixIcon('heroicon-o-phone'),
+                            ->prefixIcon(Heroicon::OutlinedPhone),
                     ]),
                 ]),
 
             Section::make('Toko Buku')
                 ->description('Konfigurasi nomor WhatsApp yang menerima pesanan buku dari halaman checkout.')
-                ->icon('heroicon-o-book-open')
+                ->icon(Heroicon::OutlinedBookOpen)
                 ->schema([
                     TextInput::make('shop_whatsapp')
                         ->label('Nomor WhatsApp Toko Buku')
@@ -244,12 +244,12 @@ class GeneralSettings extends Page
                         ->placeholder('6281234567890')
                         ->hint('Nomor internasional tanpa + (contoh: 6281234567890). Pesanan checkout akan dikirim ke nomor ini.')
                         ->helperText('Jika kosong, checkout akan mencoba menggunakan nomor WhatsApp sosial media.')
-                        ->prefixIcon('heroicon-o-phone'),
+                        ->prefixIcon(Heroicon::OutlinedPhone),
                 ]),
 
             Section::make('Donasi')
                 ->description('Informasi rekening donasi yang ditampilkan di halaman donasi dan landing page.')
-                ->icon('heroicon-o-heart')
+                ->icon(Heroicon::OutlinedHeart)
                 ->schema([
                     TextInput::make('donasi_bank_name')
                         ->label('Nama Bank')

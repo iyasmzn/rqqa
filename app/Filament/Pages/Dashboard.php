@@ -9,12 +9,13 @@ use App\Filament\Widgets\SpmbRegistrationsChartWidget;
 use App\Filament\Widgets\StatsOverviewWidget;
 use BackedEnum;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Support\Icons\Heroicon;
 
 class Dashboard extends BaseDashboard
 {
     protected static ?string $title = 'Dashboard';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
     public function getColumns(): int|array
     {

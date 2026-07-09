@@ -13,6 +13,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 class StaticPageForm
@@ -64,7 +65,7 @@ class StaticPageForm
 
                 Section::make('Konten Tambahan')
                     ->description('Tambahkan blok gambar opsional yang ditampilkan di bawah konten utama.')
-                    ->icon('heroicon-o-photo')
+                    ->icon(Heroicon::OutlinedPhoto)
                     ->schema([
                         Repeater::make('blocks')
                             ->label('')

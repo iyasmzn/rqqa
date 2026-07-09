@@ -55,7 +55,7 @@ class PrincipalSettings extends Page
         return $schema->components([
             Section::make('Profil Kepala Sekolah')
                 ->description('Data ini ditampilkan pada section Kepala Sekolah di halaman depan website.')
-                ->icon('heroicon-o-user-circle')
+                ->icon(Heroicon::OutlinedUserCircle)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('principal_name')
@@ -91,7 +91,7 @@ class PrincipalSettings extends Page
 
             Section::make('Tampilan di Halaman Depan')
                 ->description('Kutipan singkat yang muncul di homepage, bukan konten lengkap sambutan.')
-                ->icon('heroicon-o-home')
+                ->icon(Heroicon::OutlinedHome)
                 ->schema([
                     Textarea::make('principal_excerpt')
                         ->label('Kutipan / Sambutan Singkat')

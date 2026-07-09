@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\SpmbRegistrations\SpmbRegistrationResource;
 use App\Models\SpmbRegistration;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
@@ -24,7 +25,7 @@ class LatestSpmbRegistrationsWidget extends TableWidget
             Action::make('lihat_semua')
                 ->label('Lihat Semua')
                 ->url(SpmbRegistrationResource::getUrl('index'))
-                ->icon('heroicon-o-arrow-top-right-on-square')
+                ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                 ->color('gray')
                 ->size('sm'),
         ];

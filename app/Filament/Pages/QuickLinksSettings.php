@@ -49,7 +49,7 @@ class QuickLinksSettings extends Page
         return $schema->components([
             Section::make('Item Tautan Cepat')
                 ->description('Ikon emoji, label, dan URL untuk tiap tombol di baris tautan cepat halaman depan. Seret untuk mengubah urutan.')
-                ->icon('heroicon-o-bolt')
+                ->icon(Heroicon::OutlinedBolt)
                 ->schema([
                     Repeater::make('items')
                         ->label('')

@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\Question;
 use App\Models\SpmbRegistration;
 use App\Models\Teacher;
+use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget as BaseStatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Carbon;
@@ -82,35 +83,35 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
         return [
             Stat::make('Total Postingan', Post::where('is_published', true)->count())
                 ->description($postsThisMonth.' baru bulan ini'.($postsLastMonth > 0 ? ' (bulan lalu: '.$postsLastMonth.')' : ''))
-                ->descriptionIcon('heroicon-m-newspaper')
+                ->descriptionIcon(Heroicon::Newspaper)
                 ->chart($postsTrend)
                 ->color('primary'),
 
             Stat::make('Pendaftaran SPMB', $spmbTotal)
                 ->description($spmbThisMonth.' bulan ini · '.$spmbPending.' menunggu verifikasi')
-                ->descriptionIcon('heroicon-m-clipboard-document-check')
+                ->descriptionIcon(Heroicon::ClipboardDocumentCheck)
                 ->chart($spmbTrend)
                 ->color('warning'),
 
             Stat::make('Total Donasi Masuk', 'Rp '.number_format($donationTotal, 0, ',', '.'))
                 ->description('Rp '.number_format($donationThisMonth, 0, ',', '.').' bulan ini')
-                ->descriptionIcon('heroicon-m-heart')
+                ->descriptionIcon(Heroicon::Heart)
                 ->chart($donationTrend)
                 ->color('danger'),
 
             Stat::make('Pertanyaan Belum Dijawab', $unansweredQuestions)
                 ->description('Dari total '.Question::count().' pertanyaan masuk')
-                ->descriptionIcon('heroicon-m-chat-bubble-left-right')
+                ->descriptionIcon(Heroicon::ChatBubbleLeftRight)
                 ->color($unansweredQuestions > 0 ? 'warning' : 'success'),
 
             Stat::make('Event Mendatang', $upcomingEvents)
                 ->description('Dari total '.Event::where('is_published', true)->count().' event aktif')
-                ->descriptionIcon('heroicon-m-calendar-days')
+                ->descriptionIcon(Heroicon::CalendarDays)
                 ->color('info'),
 
             Stat::make('Guru & Staf Aktif', $teacherTotal)
                 ->description($mediaTotal.' file media tersimpan')
-                ->descriptionIcon('heroicon-m-users')
+                ->descriptionIcon(Heroicon::Users)
                 ->color('success'),
         ];
     }

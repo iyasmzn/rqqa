@@ -74,7 +74,7 @@ class LandingPageSettings extends Page
         return $schema->components([
             Section::make('Urutan & Visibilitas Seksi')
                 ->description('Drag dan drop untuk mengatur urutan tampilan. Aktifkan atau nonaktifkan setiap seksi.')
-                ->icon('heroicon-o-queue-list')
+                ->icon(Heroicon::OutlinedQueueList)
                 ->schema([
                     Repeater::make('sections')
                         ->label('')

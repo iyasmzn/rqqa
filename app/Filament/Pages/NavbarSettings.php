@@ -50,7 +50,7 @@ class NavbarSettings extends Page
         return $schema->components([
             Section::make('Item Menu')
                 ->description('Seret untuk mengubah urutan. Setiap item dapat memiliki sub-menu (maks 1 level).')
-                ->icon('heroicon-o-bars-3')
+                ->icon(Heroicon::OutlinedBars3)
                 ->schema([
                     Repeater::make('items')
                         ->label('')

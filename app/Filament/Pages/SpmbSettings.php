@@ -75,7 +75,7 @@ class SpmbSettings extends Page
 
             Section::make('Kartu SPMB — Halaman Depan')
                 ->description('Teks dan tombol pada kartu SPMB besar di halaman depan. Gunakan {year} untuk menyisipkan tahun ajaran secara otomatis.')
-                ->icon('heroicon-o-home')
+                ->icon(Heroicon::OutlinedHome)
                 ->schema([
                     TextInput::make('spmb_card_title')
                         ->label('Judul Kartu')
@@ -111,7 +111,7 @@ class SpmbSettings extends Page
 
             Section::make('Tahapan SPMB — Halaman Depan')
                 ->description('Judul, deskripsi, dan tombol pada section tahapan SPMB di halaman depan. Langkah-langkah diambil dari Prosedur Pendaftaran di bawah.')
-                ->icon('heroicon-o-list-bullet')
+                ->icon(Heroicon::OutlinedListBullet)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('spmb_steps_title')
@@ -140,7 +140,7 @@ class SpmbSettings extends Page
 
             Section::make('Pengaturan Form Pendaftaran')
                 ->description('Kelola teks dan status buka/tutup form pendaftaran SPMB online.')
-                ->icon('heroicon-o-document-text')
+                ->icon(Heroicon::OutlinedDocumentText)
                 ->schema([
                     Grid::make(2)->schema([
                         Toggle::make('spmb_form_enabled')
@@ -167,7 +167,7 @@ class SpmbSettings extends Page
 
             Section::make('Prosedur Pendaftaran')
                 ->description('Langkah-langkah yang tampil di halaman PPDB. Seret untuk mengubah urutan.')
-                ->icon('heroicon-o-list-bullet')
+                ->icon(Heroicon::OutlinedListBullet)
                 ->schema([
                     Repeater::make('procedures')
                         ->label('')
@@ -207,7 +207,7 @@ class SpmbSettings extends Page
 
             Section::make('Biaya Pendaftaran')
                 ->description('Daftar biaya yang tampil di halaman PPDB. Kosongkan jika gratis.')
-                ->icon('heroicon-o-banknotes')
+                ->icon(Heroicon::OutlinedBanknotes)
                 ->schema([
                     Repeater::make('fees')
                         ->label('')

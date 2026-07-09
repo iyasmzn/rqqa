@@ -10,6 +10,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class DonationForm
 {
@@ -18,7 +19,7 @@ class DonationForm
         return $schema->components([
 
             Section::make('Data Donatur')
-                ->icon('heroicon-o-user')
+                ->icon(Heroicon::OutlinedUser)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('name')
@@ -45,7 +46,7 @@ class DonationForm
                 ]),
 
             Section::make('Detail Donasi')
-                ->icon('heroicon-o-banknotes')
+                ->icon(Heroicon::OutlinedBanknotes)
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('amount')
@@ -70,7 +71,7 @@ class DonationForm
                 ]),
 
             Section::make('Status & Catatan')
-                ->icon('heroicon-o-clipboard-document-check')
+                ->icon(Heroicon::OutlinedClipboardDocumentCheck)
                 ->schema([
                     Grid::make(2)->schema([
                         Select::make('status')
