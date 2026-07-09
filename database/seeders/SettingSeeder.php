@@ -57,7 +57,6 @@ class SettingSeeder extends Seeder
             $this->general(),
             $this->navbar(),
             $this->landingPage(),
-            $this->principal(),
             $this->quickLinks(),
             $this->spmb(),
             $this->theme(),
@@ -128,21 +127,6 @@ class SettingSeeder extends Seeder
                 ['key' => 'section_donasi',      'visible' => true],
                 ['key' => 'section_contact',     'visible' => true],
             ]),
-        ];
-    }
-
-    // ── Kepala Yayasan ───────────────────────────────────────────────
-
-    /** @return array<string, mixed> */
-    private function principal(): array
-    {
-        return [
-            'principal_name' => 'KH. Abdullah Mubarok, Lc., M.A.',
-            'principal_nip' => null,
-            'principal_title' => 'Kepala Yayasan',
-            'principal_photo' => null,
-            'principal_excerpt' => "Bismillahirrahmanirrahim. Alhamdulillah, atas izin dan ridha Allah SWT, Pondok Pesantren Qurrota A'yun terus berkembang menjadi lembaga pendidikan Islam yang amanah dan terpercaya.\n\nKami berkomitmen untuk mencetak generasi Qurani yang tidak hanya hafal Al-Qur'an, tetapi juga berilmu, berakhlak mulia, dan siap menghadapi tantangan zaman. Bersama seluruh asatidz dan keluarga besar pesantren, kami terus berijtihad demi masa depan santri yang gemilang di dunia dan akhirat.",
-            'principal_page' => 'sambutan-kepala-yayasan',
         ];
     }
 

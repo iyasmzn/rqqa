@@ -37,7 +37,7 @@ class LandingPageSettings extends Page
             ['key' => 'section_quick_links', 'label' => '🔗  Tautan Cepat',              'visible' => true],
             ['key' => 'section_spmb',        'label' => '📋  Kartu SPMB',               'visible' => true],
             ['key' => 'section_stats',       'label' => '📊  Statistik Sekolah',         'visible' => true],
-            ['key' => 'section_principal',   'label' => '👨‍💼  Sambutan Kepala Sekolah', 'visible' => true],
+            ['key' => 'section_principal',   'label' => '👨‍💼  Sambutan Para Tokoh',     'visible' => true],
             ['key' => 'section_spmb_steps',  'label' => '📝  Tahapan SPMB',             'visible' => true],
             ['key' => 'section_activities',  'label' => '⚽  Kegiatan & Ekskul',         'visible' => true],
             ['key' => 'section_gallery',     'label' => '🖼️  Galeri Foto',              'visible' => true],
