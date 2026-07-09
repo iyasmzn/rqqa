@@ -63,7 +63,7 @@
 </section>
 
 <section class="py-16 sm:py-20" style="background:var(--bg)">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- ── Form ────────────────────────────────────────────── --}}
         <div class="qa-card mb-12" data-aos="fade-up">

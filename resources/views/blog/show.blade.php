@@ -224,7 +224,7 @@
 
         {{-- Overlay content --}}
         <div class="absolute bottom-0 inset-x-0 p-6 sm:p-10">
-            <div class="max-w-4xl mx-auto">
+            <div class="max-w-7xl mx-auto">
                 {{-- Mobile breadcrumb --}}
                 <nav aria-label="Breadcrumb" class="md:hidden flex items-center gap-1.5 text-xs text-white/60 mb-3">
                     <a href="/" class="hover:text-white transition-colors">Beranda</a>
@@ -242,7 +242,7 @@
     </div>
 
     {{-- ── Article Body ─────────────────────────────────────── --}}
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10" data-aos="fade-up" data-aos-duration="500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" data-aos="fade-up" data-aos-duration="500">
         <div class="grid lg:grid-cols-4 gap-10">
 
             {{-- ── Main Content ──────────────────────────────── --}}
@@ -356,7 +356,7 @@
 
     {{-- ── Q&A Section ──────────────────────────────────────── --}}
     <section class="border-t py-14" style="border-color:#f3f4f6;background:#f9fafb">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-600 mb-2">
                 <span class="w-4 h-px bg-amber-500 inline-block"></span>
                 Diskusi

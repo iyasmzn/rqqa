@@ -188,7 +188,7 @@
     <div class="page-hero-circle" style="width:220px;height:220px;bottom:-60px;left:10%;"></div>
     <div class="page-hero-circle" style="width:80px;height:80px;top:30%;right:25%;background:rgba(255,255,255,.07)"></div>
 
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Breadcrumb --}}
         <nav class="flex items-center gap-1.5 text-xs mb-6" style="color:color-mix(in srgb,var(--primary-200) 70%,transparent)" aria-label="Breadcrumb">
@@ -238,7 +238,7 @@
 {{-- ═══════════════════════════════════════════════════
      CONTENT BODY
 ═══════════════════════════════════════════════════ --}}
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid lg:grid-cols-4 gap-10">
 
         {{-- ── Main content ────────────────────────────────── --}}
@@ -523,7 +523,7 @@
 ═══════════════════════════════════════════════════ --}}
 @if($otherPages->isNotEmpty())
     <section class="border-t py-12" style="border-color:#f3f4f6;background:#f9fafb">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center gap-2 mb-6">
                 <span class="w-4 h-px inline-block" style="background:var(--primary)"></span>
                 <span class="text-[11px] font-bold uppercase tracking-widest" style="color:var(--primary)">Informasi Lainnya</span>

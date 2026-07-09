@@ -21,7 +21,7 @@
          class="w-full h-full object-cover">
     <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,.2))"></div>
     <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             @if($event->category)
             <span class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-3"
                   style="background:rgba(8,72,74,.85);color:#fff">{{ $event->category }}</span>
@@ -35,7 +35,7 @@
 
 {{-- ── Content ──────────────────────────────────────────────── --}}
 <section class="py-14 sm:py-20" style="background:var(--bg)">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Meta --}}
         <div class="fi-card p-6 mb-10 grid sm:grid-cols-3 gap-5" data-aos="fade-up">

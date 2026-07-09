@@ -33,7 +33,7 @@
          class="w-full h-full object-cover">
     <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,.2))"></div>
     <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             <div class="flex items-center gap-3 mb-3">
                 @if($program->icon)
                 <span class="text-4xl">{{ $program->icon }}</span>
@@ -52,7 +52,7 @@
 
 {{-- ── Content ──────────────────────────────────────────────── --}}
 <section class="py-14 sm:py-20" style="background:var(--bg)">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         @if($program->excerpt)
         <p class="text-xl leading-relaxed mb-8 font-medium" style="color:var(--muted)" data-aos="fade-up">
