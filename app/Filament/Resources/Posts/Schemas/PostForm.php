@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
+use App\Filament\Concerns\InteractsWithImagePicker;
 use App\Models\Category;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -17,6 +17,8 @@ use Illuminate\Support\Str;
 
 class PostForm
 {
+    use InteractsWithImagePicker;
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -59,18 +61,16 @@ class PostForm
 
                 Section::make('Media & Kategori')
                     ->schema([
-                        FileUpload::make('image')
-                            ->label('Gambar Utama')
-                            ->image()
-                            ->disk('public')
-                            ->directory('posts/images')
-                            ->visibility('public')
-                            ->automaticallyCropImagesToAspectRatio('16:9')
-                            ->automaticallyResizeImagesMode('cover')
-                            ->automaticallyResizeImagesToWidth('1200')
-                            ->automaticallyResizeImagesToHeight('675')
-                            ->hint('Rasio 16:9 disarankan. Akan di-resize ke 1200×675.')
-                            ->columnSpanFull(),
+                        self::imagePicker(
+                            key: 'image',
+                            label: 'Gambar Utama',
+                            hint: 'Rasio 16:9 disarankan. Akan di-resize ke 1200×675.',
+                            accepted: ['image/jpeg', 'image/png', 'image/webp'],
+                            width: 1200,
+                            height: 675,
+                            directory: 'posts/images',
+                            aspectRatio: '16:9',
+                        )->columnSpanFull(),
 
                         Select::make('category')
                             ->label('Kategori')
