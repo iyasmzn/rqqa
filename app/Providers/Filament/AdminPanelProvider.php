@@ -71,14 +71,14 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Donasi')
                     ->icon(Heroicon::OutlinedHeart),
                 NavigationGroup::make()
+                    ->label('Tampilan Website')
+                    ->icon(Heroicon::OutlinedPaintBrush),
+                NavigationGroup::make()
                     ->label('PPDB / SPMB')
                     ->icon(Heroicon::OutlinedClipboardDocumentCheck),
                 NavigationGroup::make()
                     ->label('Master Data')
                     ->icon(Heroicon::OutlinedRectangleStack),
-                NavigationGroup::make()
-                    ->label('Tampilan Website')
-                    ->icon(Heroicon::OutlinedPaintBrush),
                 NavigationGroup::make()
                     ->label('Pengaturan')
                     ->icon(Heroicon::OutlinedCog6Tooth)
@@ -89,6 +89,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
+                    ->navigationGroup('Pengaturan')
+                    ->navigationSort(99)
                     ->gridColumns([
                         'default' => 1,
                         'sm' => 2,

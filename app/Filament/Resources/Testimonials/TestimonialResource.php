@@ -25,7 +25,7 @@ class TestimonialResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Kesan & Pesan';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Schema $schema): Schema
     {
