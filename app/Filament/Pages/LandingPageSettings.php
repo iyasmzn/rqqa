@@ -40,7 +40,6 @@ class LandingPageSettings extends Page
             ['key' => 'section_principal',   'label' => '👨‍💼  Sambutan Para Tokoh',     'visible' => true],
             ['key' => 'section_spmb_steps',  'label' => '📝  Tahapan SPMB',             'visible' => true],
             ['key' => 'section_programs',    'label' => '🎓  Program Unggulan',          'visible' => true],
-            ['key' => 'section_activities',  'label' => '⚽  Kegiatan & Ekskul',         'visible' => true],
             ['key' => 'section_events',      'label' => '📅  Agenda Kegiatan',           'visible' => true],
             ['key' => 'section_books',       'label' => '📚  Buku',                     'visible' => true],
             ['key' => 'section_gallery',     'label' => '🖼️  Galeri Foto',              'visible' => true],
