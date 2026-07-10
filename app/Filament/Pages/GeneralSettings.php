@@ -8,7 +8,6 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
@@ -50,13 +49,6 @@ class GeneralSettings extends Page
             'contact_email' => Setting::get('contact_email'),
             'contact_hours' => Setting::get('contact_hours', 'Senin–Jumat, 07.00–15.30 WIB'),
             'contact_map_url' => Setting::get('contact_map_url'),
-
-            // SPMB
-            'spmb_year' => Setting::get('spmb_year', '2026/2027'),
-            'spmb_open' => (bool) Setting::get('spmb_open', true),
-            'spmb_deadline' => Setting::get('spmb_deadline', '30 Mei'),
-            'spmb_select' => Setting::get('spmb_select', '10 Juni'),
-            'spmb_announce' => Setting::get('spmb_announce', '25 Juni'),
 
             // Sosial Media
             'social_facebook' => Setting::get('social_facebook'),
@@ -170,36 +162,6 @@ class GeneralSettings extends Page
                         ->hint('Buka Google Maps → Bagikan → Sematkan peta → Salin URL dari atribut src.')
                         ->helperText('Hanya URL dari google.com/maps/embed yang diterima.')
                         ->columnSpanFull(),
-                ]),
-
-            Section::make('Pengaturan SPMB')
-                ->description('Jadwal dan status penerimaan peserta didik baru.')
-                ->icon(Heroicon::OutlinedClipboardDocumentList)
-                ->schema([
-                    Grid::make(2)->schema([
-                        TextInput::make('spmb_year')
-                            ->label('Tahun Ajaran')
-                            ->placeholder('2026/2027'),
-
-                        Toggle::make('spmb_open')
-                            ->label('SPMB Sedang Dibuka')
-                            ->onColor('success')
-                            ->offColor('danger'),
-                    ]),
-
-                    Grid::make(3)->schema([
-                        TextInput::make('spmb_deadline')
-                            ->label('Batas Pendaftaran')
-                            ->placeholder('30 Mei'),
-
-                        TextInput::make('spmb_select')
-                            ->label('Tanggal Seleksi')
-                            ->placeholder('10 Juni'),
-
-                        TextInput::make('spmb_announce')
-                            ->label('Tanggal Pengumuman')
-                            ->placeholder('25 Juni'),
-                    ]),
                 ]),
 
             Section::make('Media Sosial')

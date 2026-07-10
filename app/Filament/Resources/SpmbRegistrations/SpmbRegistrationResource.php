@@ -7,14 +7,18 @@ use App\Filament\Resources\SpmbRegistrations\Pages\ListSpmbRegistrations;
 use App\Filament\Resources\SpmbRegistrations\Schemas\SpmbRegistrationForm;
 use App\Filament\Resources\SpmbRegistrations\Tables\SpmbRegistrationsTable;
 use App\Models\SpmbRegistration;
+use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
 class SpmbRegistrationResource extends Resource
 {
     protected static ?string $model = SpmbRegistration::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
     protected static string|UnitEnum|null $navigationGroup = 'PPDB / SPMB';
 

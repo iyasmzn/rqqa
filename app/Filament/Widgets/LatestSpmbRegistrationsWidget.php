@@ -35,6 +35,7 @@ class LatestSpmbRegistrationsWidget extends TableWidget
     {
         return $table
             ->query(fn (): Builder => SpmbRegistration::query()
+                ->with('admissionPath')
                 ->orderByDesc('created_at')
                 ->limit(8)
             )
@@ -47,17 +48,12 @@ class LatestSpmbRegistrationsWidget extends TableWidget
                 TextColumn::make('phone')
                     ->label('No. HP'),
 
-                TextColumn::make('jalur')
+                TextColumn::make('admissionPath.name')
                     ->label('Jalur')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'zonasi' => 'info',
-                        'prestasi' => 'success',
-                        'afirmasi' => 'warning',
-                        'mutasi' => 'gray',
-                        default => 'gray',
-                    })
-                    ->formatStateUsing(fn (string $state): string => SpmbRegistration::jalurOptions()[$state] ?? $state),
+                    ->color(fn (SpmbRegistration $record): string => $record->admissionPath?->color ?? 'gray')
+                    ->formatStateUsing(fn (?string $state, SpmbRegistration $record): string => trim(($record->admissionPath?->icon ?? '').' '.($state ?? '—')))
+                    ->placeholder('—'),
 
                 TextColumn::make('status')
                     ->label('Status')

@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\AcademicYear;
+use App\Models\AdmissionPath;
+use App\Models\RegistrationWave;
 use App\Models\SpmbRegistration;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,7 +19,13 @@ class SpmbRegistrationFactory extends Factory
     public function definition(): array
     {
         return [
+            'academic_year_id' => AcademicYear::factory(),
+            'registration_wave_id' => fn (array $attributes) => RegistrationWave::factory()->create([
+                'academic_year_id' => $attributes['academic_year_id'],
+            ]),
+            'admission_path_id' => AdmissionPath::factory(),
             'full_name' => fake()->name(),
+            'nik' => fake()->numerify('################'),
             'email' => fake()->safeEmail(),
             'phone' => '08'.fake()->numerify('#########'),
             'birth_date' => fake()->dateTimeBetween('-18 years', '-14 years')->format('Y-m-d'),
@@ -24,7 +33,6 @@ class SpmbRegistrationFactory extends Factory
             'previous_school' => 'SMP '.fake()->company(),
             'previous_school_city' => fake()->city(),
             'address' => fake()->address(),
-            'jalur' => fake()->randomElement(['zonasi', 'prestasi', 'afirmasi', 'mutasi']),
             'parent_name' => fake()->name(),
             'parent_phone' => '08'.fake()->numerify('#########'),
             'notes' => fake()->optional()->sentence(),

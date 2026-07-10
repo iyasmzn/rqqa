@@ -167,13 +167,6 @@ class SettingSeeder extends Seeder
         ];
 
         return [
-            // Jadwal & status
-            'spmb_year' => '2026/2027',
-            'spmb_open' => 1,
-            'spmb_deadline' => '30 Juni',
-            'spmb_select' => '15 Juli',
-            'spmb_announce' => '25 Juli',
-
             // Kartu di halaman depan
             'spmb_card_title' => 'Penerimaan Santri Baru {year} Dibuka!',
             'spmb_card_description' => "Pondok Pesantren Qurrota A'yun membuka penerimaan santri baru. Tersedia program Tahfidz, Diniyah, dan Terpadu. Daftarkan putra-putri Anda sebelum batas waktu.",

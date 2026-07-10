@@ -5,6 +5,9 @@ namespace App\Filament\Pages;
 use App\Filament\Widgets\LatestQuestionsWidget;
 use App\Filament\Widgets\LatestSpmbRegistrationsWidget;
 use App\Filament\Widgets\PostsChartWidget;
+use App\Filament\Widgets\RegistrationsPerPathChart;
+use App\Filament\Widgets\RegistrationsPerWaveChart;
+use App\Filament\Widgets\RegistrationsPerYearStats;
 use App\Filament\Widgets\SpmbRegistrationsChartWidget;
 use App\Filament\Widgets\StatsOverviewWidget;
 use BackedEnum;
@@ -30,7 +33,10 @@ class Dashboard extends BaseDashboard
     {
         return [
             StatsOverviewWidget::class,
+            RegistrationsPerYearStats::class,
             PostsChartWidget::class,
+            RegistrationsPerPathChart::class,
+            RegistrationsPerWaveChart::class,
             SpmbRegistrationsChartWidget::class,
             LatestSpmbRegistrationsWidget::class,
             LatestQuestionsWidget::class,

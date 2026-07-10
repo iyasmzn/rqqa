@@ -6,6 +6,7 @@ use Database\Factories\SpmbRegistrationFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SpmbRegistration extends Model
 {
@@ -13,7 +14,11 @@ class SpmbRegistration extends Model
     use HasFactory;
 
     protected $fillable = [
+        'academic_year_id',
+        'registration_wave_id',
+        'admission_path_id',
         'full_name',
+        'nik',
         'email',
         'phone',
         'birth_date',
@@ -21,7 +26,6 @@ class SpmbRegistration extends Model
         'previous_school',
         'previous_school_city',
         'address',
-        'jalur',
         'parent_name',
         'parent_phone',
         'notes',
@@ -34,17 +38,22 @@ class SpmbRegistration extends Model
         'verified_at' => 'datetime',
     ];
 
-    // ── Jalur options ────────────────────────────────────────────
-
-    /** @return array<string, string> */
-    public static function jalurOptions(): array
+    /** @return BelongsTo<AcademicYear, $this> */
+    public function academicYear(): BelongsTo
     {
-        return [
-            'zonasi' => 'Zonasi',
-            'prestasi' => 'Prestasi',
-            'afirmasi' => 'Afirmasi',
-            'mutasi' => 'Mutasi',
-        ];
+        return $this->belongsTo(AcademicYear::class);
+    }
+
+    /** @return BelongsTo<RegistrationWave, $this> */
+    public function registrationWave(): BelongsTo
+    {
+        return $this->belongsTo(RegistrationWave::class);
+    }
+
+    /** @return BelongsTo<AdmissionPath, $this> */
+    public function admissionPath(): BelongsTo
+    {
+        return $this->belongsTo(AdmissionPath::class);
     }
 
     /** @return array<string, string> */
@@ -58,7 +67,19 @@ class SpmbRegistration extends Model
         ];
     }
 
-    // ── Scopes ──────────────────────────────────────────────────
+    /**
+     * Whether the public registration form should accept new submissions:
+     * a wave of the active academic year must currently be open, and the
+     * admin must not have force-closed the form.
+     */
+    public static function isOpen(): bool
+    {
+        if (! (bool) Setting::get('spmb_form_enabled', true)) {
+            return false;
+        }
+
+        return RegistrationWave::currentOpen() !== null;
+    }
 
     public function scopePending(Builder $query): Builder
     {

@@ -1,15 +1,17 @@
 @php
-    $spmbYear    = setting('spmb_year', '2026/2027');
+    $spmbYear    = spmb_year_label();
     $stepsTitle  = setting('spmb_steps_title', 'Tahapan SPMB');
     $stepsDesc   = setting('spmb_steps_description', 'Ikuti langkah-langkah berikut untuk mendaftarkan diri sebagai calon peserta didik baru.');
     $ctaLabel    = setting('spmb_steps_cta_label', 'Lihat Detail & Daftar');
     $ctaUrl      = setting('spmb_steps_cta_url', '/ppdb');
 
+    $announceDate = \App\Models\RegistrationWave::relevant()?->announcement_date;
+    $announceText = $announceDate ? 'pada tanggal ' . $announceDate->locale('id')->translatedFormat('d M Y') . ' ' : '';
     $procedures = json_decode(setting('spmb_procedures', ''), true) ?: [
         ['icon' => '📝', 'title' => 'Isi Formulir Online',   'description' => 'Kunjungi halaman PPDB dan isi formulir pendaftaran secara lengkap dan benar melalui portal SPMB.'],
         ['icon' => '📁', 'title' => 'Siapkan Berkas',        'description' => 'Persiapkan dokumen yang dipersyaratkan: ijazah/SHUN, rapor, dan pas foto terbaru.'],
         ['icon' => '✅', 'title' => 'Verifikasi Berkas',     'description' => 'Berkas diverifikasi oleh panitia. Pantau status pendaftaran melalui akun Anda.'],
-        ['icon' => '🎉', 'title' => 'Pengumuman',            'description' => 'Hasil seleksi diumumkan pada tanggal ' . setting('spmb_announce', '25 Juni') . ' melalui portal resmi sekolah.'],
+        ['icon' => '🎉', 'title' => 'Pengumuman',            'description' => 'Hasil seleksi diumumkan ' . $announceText . 'melalui portal resmi sekolah.'],
     ];
 
     $stepsPreview = array_slice($procedures, 0, 4);

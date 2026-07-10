@@ -83,12 +83,11 @@
 
 @section('content')
 @php
-    $spmbOpen      = (bool) setting('spmb_open', true);
+    $spmbOpen      = spmb_in_admission_period();
     $formEnabled   = (bool) setting('spmb_form_enabled', true);
-    $spmbYear      = setting('spmb_year', date('Y').'/'.(date('Y')+1));
-    $spmbDeadline  = setting('spmb_deadline', '30 Mei');
-    $spmbSelect    = setting('spmb_select', '10 Juni');
-    $spmbAnnounce  = setting('spmb_announce', '25 Juni');
+    $spmbYear      = spmb_year_label();
+    $scheduleWave  = \App\Models\RegistrationWave::relevant();
+    $fmtDate       = fn ($d) => $d ? $d->locale('id')->translatedFormat('d M Y') : '—';
     $formTitle     = setting('spmb_form_title', 'Formulir Pendaftaran SPMB');
     $formDesc      = setting('spmb_form_description', 'Isi formulir di bawah ini dengan data yang benar dan lengkap.');
     $closedMessage = setting('spmb_closed_message', 'Pendaftaran SPMB saat ini sedang ditutup.');
@@ -106,7 +105,7 @@
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 mb-5">
                     @if($spmbOpen)
                         <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                        <span class="text-xs font-bold text-amber-300 uppercase tracking-widest">SPMB Dibuka</span>
+                        <span class="text-xs font-bold text-amber-300 uppercase tracking-widest">SPMB Dibuka{{ $scheduleWave ? ' — '.$scheduleWave->name : '' }}</span>
                     @else
                         <span class="w-2 h-2 rounded-full bg-red-400"></span>
                         <span class="text-xs font-bold text-red-300 uppercase tracking-widest">SPMB Ditutup</span>
@@ -117,21 +116,23 @@
                     <span class="text-amber-400">{{ $spmbYear }}</span>
                 </h1>
                 <p class="text-white/70 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0 mb-8">
-                    Penerimaan Peserta Didik Baru {{ $siteName }}. Daftarkan diri melalui jalur Zonasi, Prestasi, Afirmasi, atau Mutasi.
+                    Penerimaan Peserta Didik Baru {{ $siteName }}.@if($paths->isNotEmpty()) Daftarkan diri melalui jalur {{ $paths->pluck('name')->join(', ', ', dan ') }}.@endif
                 </p>
 
-                {{-- Timeline chips --}}
+                {{-- Timeline chips — diambil dari gelombang pendaftaran --}}
+                @if($scheduleWave)
                 <div class="flex flex-wrap justify-center lg:justify-start gap-3">
-                    @foreach([['📅', 'Batas Daftar', $spmbDeadline], ['🔍', 'Seleksi', $spmbSelect], ['🎉', 'Pengumuman', $spmbAnnounce]] as [$ic, $label, $val])
+                    @foreach([['📅', 'Batas Daftar', $scheduleWave->end_date], ['🔍', 'Seleksi', $scheduleWave->selection_date], ['🎉', 'Pengumuman', $scheduleWave->announcement_date]] as [$ic, $label, $val])
                     <div class="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-xl border border-white/15 backdrop-blur-sm">
                         <span class="text-base">{{ $ic }}</span>
                         <div>
                             <div class="text-[10px] text-white/50 font-medium uppercase tracking-wider">{{ $label }}</div>
-                            <div class="text-sm font-bold text-amber-300">{{ $val }}</div>
+                            <div class="text-sm font-bold text-amber-300">{{ $fmtDate($val) }}</div>
                         </div>
                     </div>
                     @endforeach
                 </div>
+                @endif
             </div>
 
             {{-- Right — jalur cards --}}
@@ -139,15 +140,16 @@
                 <div class="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/15 p-6">
                     <div class="fi-label text-amber-400 mb-4">Jalur Pendaftaran</div>
                     <div class="space-y-2.5">
-                        @foreach(['🏡' => 'Zonasi', '🏆' => 'Prestasi', '💚' => 'Afirmasi', '🔄' => 'Mutasi'] as $icon => $name)
+                        @foreach($paths as $path)
                         <div class="flex items-center gap-3 p-3 rounded-xl bg-white/8 border border-white/10">
-                            <span class="text-xl">{{ $icon }}</span>
-                            <span class="text-white font-semibold text-sm">{{ $name }}</span>
+                            <span class="text-xl">{{ $path->icon }}</span>
+                            <span class="text-white font-semibold text-sm">{{ $path->name }}</span>
                         </div>
                         @endforeach
                     </div>
                     @if($spmbOpen && $formEnabled)
-                    <a href="#form-pendaftaran"
+                    <a href="#form-pendaftaran" x-data
+                       @click="$dispatch('open-form')"
                        class="mt-5 flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm transition-colors">
                         Daftar Sekarang
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
@@ -160,7 +162,7 @@
 </section>
 
 {{-- ═══════════════════════ MAIN CONTENT ════════════════════════ --}}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-data="{ tab: 'prosedur' }">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-data="{ tab: 'prosedur' }" @open-form.window="tab = 'form'">
 
     {{-- Alerts --}}
     @if(session('success'))
@@ -208,6 +210,54 @@
             </div>
             @endforeach
         </div>
+
+        {{-- Jadwal Gelombang Pendaftaran --}}
+        @if($waves->isNotEmpty())
+        <div class="fi-card p-6 sm:p-8 mb-10" data-aos="fade-up">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-5">
+                <h3 class="font-bold text-base" style="color:var(--text)">🗓️ Jadwal Gelombang Pendaftaran</h3>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">Tahun Ajaran {{ $spmbYear }}</span>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-{{ min($waves->count(), 3) }}">
+                @foreach($waves as $w)
+                @php
+                    if ($w->isOpen()) {
+                        [$badgeText, $badgeClass, $dot] = ['Dibuka', 'bg-green-50 text-green-700 border-green-200', 'bg-green-500 animate-pulse'];
+                    } elseif ($w->start_date->isFuture()) {
+                        [$badgeText, $badgeClass, $dot] = ['Akan Datang', 'bg-blue-50 text-blue-700 border-blue-200', 'bg-blue-500'];
+                    } else {
+                        [$badgeText, $badgeClass, $dot] = ['Selesai', 'bg-gray-100 text-gray-500 border-gray-200', 'bg-gray-400'];
+                    }
+                @endphp
+                <div class="rounded-xl border p-4" style="border-color:var(--border); background:var(--bg)">
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="font-bold text-sm" style="color:var(--text)">{{ $w->name }}</span>
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold px-2 py-0.5 rounded-full border {{ $badgeClass }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ $dot }}"></span>{{ $badgeText }}
+                        </span>
+                    </div>
+                    <dl class="space-y-1.5 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="shrink-0">📅</span>
+                            <span style="color:var(--muted)">Pendaftaran:</span>
+                            <span class="font-semibold ml-auto text-right" style="color:var(--text)">{{ $fmtDate($w->start_date) }} – {{ $fmtDate($w->end_date) }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="shrink-0">🔍</span>
+                            <span style="color:var(--muted)">Seleksi:</span>
+                            <span class="font-semibold ml-auto" style="color:var(--text)">{{ $fmtDate($w->selection_date) }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="shrink-0">🎉</span>
+                            <span style="color:var(--muted)">Pengumuman:</span>
+                            <span class="font-semibold ml-auto" style="color:var(--text)">{{ $fmtDate($w->announcement_date) }}</span>
+                        </div>
+                    </dl>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
 
         {{-- Syarat Pendaftaran --}}
         <div class="fi-card p-6 sm:p-8" data-aos="fade-up">
@@ -293,6 +343,19 @@
                 <p class="text-sm" style="color:var(--muted)">{{ $formDesc }}</p>
             </div>
 
+            {{-- Info gelombang aktif tempat pendaftaran ini akan tercatat --}}
+            @if($scheduleWave)
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border border-green-200 bg-green-50" data-aos="fade-up">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0"></span>
+                    <span class="text-sm font-bold text-green-800">Pendaftaran {{ $scheduleWave->name }}</span>
+                </div>
+                <div class="text-xs text-green-700 sm:ml-auto">
+                    Tahun Ajaran {{ $spmbYear }} · Dibuka {{ $fmtDate($scheduleWave->start_date) }} – {{ $fmtDate($scheduleWave->end_date) }}
+                </div>
+            </div>
+            @endif
+
             @if($errors->any())
             <div class="mb-6 p-4 rounded-xl border border-red-200 bg-red-50" data-aos="fade-up">
                 <p class="font-semibold text-red-700 text-sm mb-2">Harap perbaiki kesalahan berikut:</p>
@@ -319,6 +382,13 @@
                             <input type="text" id="full_name" name="full_name" class="ppdb-input @error('full_name') border-red-400 @enderror"
                                    value="{{ old('full_name') }}" placeholder="Sesuai akta kelahiran" required>
                             @error('full_name')<p class="ppdb-hint text-red-500">{{ $message }}</p>@enderror
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="ppdb-label" for="nik">NIK <span class="ppdb-required">*</span></label>
+                            <input type="text" inputmode="numeric" id="nik" name="nik" maxlength="16" class="ppdb-input @error('nik') border-red-400 @enderror"
+                                   value="{{ old('nik') }}" placeholder="16 digit Nomor Induk Kependudukan" required>
+                            @error('nik')<p class="ppdb-hint text-red-500">{{ $message }}</p>@enderror
                         </div>
 
                         <div>
@@ -365,22 +435,17 @@
                         Jalur Pendaftaran <span class="ppdb-required">*</span>
                     </h3>
                     <div class="grid sm:grid-cols-2 gap-3">
-                        @foreach([
-                            ['zonasi',   '🏡', 'Zonasi',   'Berdasarkan jarak domisili ke sekolah.'],
-                            ['prestasi', '🏆', 'Prestasi', 'Berdasarkan nilai rapor atau prestasi akademik/non-akademik.'],
-                            ['afirmasi', '💚', 'Afirmasi', 'Untuk peserta didik dari keluarga tidak mampu.'],
-                            ['mutasi',   '🔄', 'Mutasi',   'Untuk anak guru/tenaga kependidikan atau pindah tugas orang tua.'],
-                        ] as [$val, $ico, $name, $desc])
+                        @foreach($paths as $path)
                         <label class="jalur-card">
-                            <input type="radio" name="jalur" value="{{ $val }}" {{ old('jalur', 'zonasi') === $val ? 'checked' : '' }}>
+                            <input type="radio" name="admission_path_id" value="{{ $path->id }}" {{ (int) old('admission_path_id', $paths->first()?->id) === $path->id ? 'checked' : '' }}>
                             <div>
-                                <div class="font-bold text-sm" style="color:var(--text)">{{ $ico }} {{ $name }}</div>
-                                <div class="text-xs mt-0.5" style="color:var(--muted)">{{ $desc }}</div>
+                                <div class="font-bold text-sm" style="color:var(--text)">{{ $path->icon }} {{ $path->name }}</div>
+                                <div class="text-xs mt-0.5" style="color:var(--muted)">{{ $path->description }}</div>
                             </div>
                         </label>
                         @endforeach
                     </div>
-                    @error('jalur')<p class="ppdb-hint text-red-500 mt-2">{{ $message }}</p>@enderror
+                    @error('admission_path_id')<p class="ppdb-hint text-red-500 mt-2">{{ $message }}</p>@enderror
                 </div>
 
                 {{-- Asal Sekolah --}}

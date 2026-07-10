@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\AcademicYear;
+use App\Models\AdmissionPath;
+use App\Models\RegistrationWave;
 use App\Models\Setting;
 use App\Models\SpmbRegistration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,6 +14,25 @@ class SpmbRegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
+    private AcademicYear $year;
+
+    private RegistrationWave $openWave;
+
+    private AdmissionPath $path;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->year = AcademicYear::factory()->active()->create();
+        $this->openWave = RegistrationWave::factory()->open()->create(['academic_year_id' => $this->year->id]);
+        $this->path = AdmissionPath::firstOrCreate(
+            ['slug' => 'zonasi'],
+            ['name' => 'Zonasi', 'is_active' => true],
+        );
+        Setting::set('spmb_form_enabled', '1');
+    }
+
     public function test_ppdb_page_is_accessible(): void
     {
         $response = $this->get(route('ppdb.index'));
@@ -19,41 +41,43 @@ class SpmbRegistrationTest extends TestCase
         $response->assertSee('PPDB');
     }
 
-    public function test_registration_form_submission_creates_record(): void
+    public function test_registration_form_submission_creates_record_and_assigns_active_wave(): void
     {
-        Setting::set('spmb_open', '1');
-        Setting::set('spmb_form_enabled', '1');
-
-        $payload = [
+        $response = $this->post(route('ppdb.store'), [
             'full_name' => 'Budi Santoso',
+            'nik' => '3273010101080001',
             'phone' => '081234567890',
             'email' => 'budi@example.com',
             'previous_school' => 'SMP Negeri 1 Bandung',
-            'jalur' => 'zonasi',
-        ];
-
-        $response = $this->post(route('ppdb.store'), $payload);
+            'admission_path_id' => $this->path->id,
+        ]);
 
         $response->assertRedirect(route('ppdb.index'));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('spmb_registrations', [
             'full_name' => 'Budi Santoso',
+            'nik' => '3273010101080001',
             'phone' => '081234567890',
-            'jalur' => 'zonasi',
+            'admission_path_id' => $this->path->id,
+            'academic_year_id' => $this->year->id,
+            'registration_wave_id' => $this->openWave->id,
             'status' => 'pending',
         ]);
     }
 
-    public function test_registration_fails_when_spmb_is_closed(): void
+    public function test_registration_fails_when_no_wave_is_open(): void
     {
-        Setting::set('spmb_open', '0');
+        $this->openWave->update([
+            'start_date' => now()->subMonths(2),
+            'end_date' => now()->subMonth(),
+        ]);
 
         $response = $this->post(route('ppdb.store'), [
             'full_name' => 'Ani Lestari',
             'phone' => '089876543210',
             'previous_school' => 'SMP Swasta',
-            'jalur' => 'prestasi',
+            'admission_path_id' => $this->path->id,
         ]);
 
         $response->assertRedirect();
@@ -64,14 +88,13 @@ class SpmbRegistrationTest extends TestCase
 
     public function test_registration_fails_when_form_is_disabled(): void
     {
-        Setting::set('spmb_open', '1');
         Setting::set('spmb_form_enabled', '0');
 
         $response = $this->post(route('ppdb.store'), [
             'full_name' => 'Dewi Rahayu',
             'phone' => '08111111111',
             'previous_school' => 'SMP Negeri 2',
-            'jalur' => 'afirmasi',
+            'admission_path_id' => $this->path->id,
         ]);
 
         $response->assertRedirect();
@@ -82,35 +105,80 @@ class SpmbRegistrationTest extends TestCase
 
     public function test_registration_validates_required_fields(): void
     {
-        Setting::set('spmb_open', '1');
-        Setting::set('spmb_form_enabled', '1');
-
         $response = $this->post(route('ppdb.store'), []);
 
-        $response->assertSessionHasErrors(['full_name', 'phone', 'previous_school', 'jalur']);
+        $response->assertSessionHasErrors(['full_name', 'nik', 'phone', 'previous_school', 'admission_path_id']);
     }
 
-    public function test_registration_validates_jalur_enum(): void
+    public function test_registration_rejects_duplicate_nik(): void
     {
-        Setting::set('spmb_open', '1');
-        Setting::set('spmb_form_enabled', '1');
+        SpmbRegistration::factory()->create(['nik' => '3273010101080001']);
+
+        $response = $this->post(route('ppdb.store'), [
+            'full_name' => 'Calon Kedua',
+            'nik' => '3273010101080001',
+            'phone' => '081234567890',
+            'previous_school' => 'SMP Negeri 3',
+            'admission_path_id' => $this->path->id,
+        ]);
+
+        $response->assertSessionHasErrors(['nik']);
+        $this->assertDatabaseMissing('spmb_registrations', ['full_name' => 'Calon Kedua']);
+    }
+
+    public function test_registration_rejects_invalid_nik_length(): void
+    {
+        $response = $this->post(route('ppdb.store'), [
+            'full_name' => 'NIK Pendek',
+            'nik' => '12345',
+            'phone' => '081234567890',
+            'previous_school' => 'SMP Negeri 4',
+            'admission_path_id' => $this->path->id,
+        ]);
+
+        $response->assertSessionHasErrors(['nik']);
+    }
+
+    public function test_registration_rejects_inactive_admission_path(): void
+    {
+        $inactive = AdmissionPath::factory()->create(['is_active' => false]);
 
         $response = $this->post(route('ppdb.store'), [
             'full_name' => 'Test User',
+            'nik' => '3273010101080002',
             'phone' => '081234567890',
             'previous_school' => 'SMP Test',
-            'jalur' => 'invalid_jalur',
+            'admission_path_id' => $inactive->id,
         ]);
 
-        $response->assertSessionHasErrors(['jalur']);
+        $response->assertSessionHasErrors(['admission_path_id']);
     }
 
-    public function test_spmb_registration_factory_creates_valid_records(): void
+    public function test_is_open_reflects_wave_dates_and_form_toggle(): void
     {
-        $registration = SpmbRegistration::factory()->create();
+        $this->assertTrue(SpmbRegistration::isOpen());
 
-        $this->assertDatabaseHas('spmb_registrations', ['id' => $registration->id]);
-        $this->assertContains($registration->jalur, ['zonasi', 'prestasi', 'afirmasi', 'mutasi']);
-        $this->assertContains($registration->status, ['pending', 'verified', 'accepted', 'rejected']);
+        Setting::set('spmb_form_enabled', '0');
+        $this->assertFalse(SpmbRegistration::isOpen());
+
+        Setting::set('spmb_form_enabled', '1');
+        $this->openWave->update(['is_active' => false]);
+        $this->assertFalse(SpmbRegistration::isOpen());
+    }
+
+    public function test_only_one_academic_year_stays_active(): void
+    {
+        $newest = AcademicYear::factory()->active()->create();
+
+        $this->assertTrue($newest->fresh()->is_active);
+        $this->assertFalse($this->year->fresh()->is_active);
+        $this->assertSame($newest->id, AcademicYear::active()?->id);
+    }
+
+    public function test_current_open_only_considers_active_year(): void
+    {
+        $this->year->update(['is_active' => false]);
+
+        $this->assertNull(RegistrationWave::currentOpen());
     }
 }
