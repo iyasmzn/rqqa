@@ -39,27 +39,50 @@ class LandingPageSettings extends Page
             ['key' => 'section_stats',       'label' => '📊  Statistik Sekolah',         'visible' => true],
             ['key' => 'section_principal',   'label' => '👨‍💼  Sambutan Para Tokoh',     'visible' => true],
             ['key' => 'section_spmb_steps',  'label' => '📝  Tahapan SPMB',             'visible' => true],
+            ['key' => 'section_programs',    'label' => '🎓  Program Unggulan',          'visible' => true],
             ['key' => 'section_activities',  'label' => '⚽  Kegiatan & Ekskul',         'visible' => true],
+            ['key' => 'section_events',      'label' => '📅  Agenda Kegiatan',           'visible' => true],
+            ['key' => 'section_books',       'label' => '📚  Buku',                     'visible' => true],
             ['key' => 'section_gallery',     'label' => '🖼️  Galeri Foto',              'visible' => true],
             ['key' => 'section_blog',        'label' => '📰  Blog & Berita',             'visible' => true],
+            ['key' => 'section_donasi',      'label' => '💝  Donasi',                   'visible' => true],
             ['key' => 'section_contact',     'label' => '📞  Kontak Kami',               'visible' => true],
         ];
     }
 
     public function mount(): void
     {
+        $defaults = self::defaultSections();
+        $labelMap = collect($defaults)->keyBy('key');
+
         $saved = Setting::get('section_order');
-        $sections = $saved
-            ? (json_decode($saved, true) ?: self::defaultSections())
-            : self::defaultSections();
+        $savedSections = $saved ? (json_decode($saved, true) ?: []) : [];
 
-        // Ensure label is always present (in case old data lacked it)
-        $labelMap = collect(self::defaultSections())->keyBy('key');
-        $sections = array_map(function (array $section) use ($labelMap): array {
-            $section['label'] = $labelMap->get($section['key'])['label'] ?? $section['key'];
+        // Preserve the saved order and visibility for known sections, always
+        // refreshing the label from the canonical list.
+        $sections = [];
+        $seen = [];
+        foreach ($savedSections as $section) {
+            $key = $section['key'] ?? null;
+            if (! $key || ! $labelMap->has($key)) {
+                continue;
+            }
 
-            return $section;
-        }, $sections);
+            $sections[] = [
+                'key' => $key,
+                'label' => $labelMap->get($key)['label'],
+                'visible' => (bool) ($section['visible'] ?? true),
+            ];
+            $seen[$key] = true;
+        }
+
+        // Append any sections added after the saved order was stored so they
+        // remain toggleable (e.g. the gallery section).
+        foreach ($defaults as $section) {
+            if (! isset($seen[$section['key']])) {
+                $sections[] = $section;
+            }
+        }
 
         $this->form->fill(['sections' => $sections]);
     }

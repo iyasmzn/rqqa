@@ -207,6 +207,7 @@
         ['key' => 'section_programs',    'visible' => true],
         ['key' => 'section_activities',  'visible' => true],
         ['key' => 'section_events',      'visible' => true],
+        ['key' => 'section_books',       'visible' => true],
         ['key' => 'section_gallery',     'visible' => true],
         ['key' => 'section_blog',        'visible' => true],
         ['key' => 'section_donasi',      'visible' => true],
@@ -214,6 +215,15 @@
     ];
 
     $sectionOrder = json_decode(setting('section_order', ''), true) ?: $defaultSectionOrder;
+
+    // Forward-compat: append sections added after the saved order was stored
+    // so newly introduced sections (e.g. gallery) still render.
+    $orderedKeys = array_column($sectionOrder, 'key');
+    foreach ($defaultSectionOrder as $defaultSection) {
+        if (! in_array($defaultSection['key'], $orderedKeys, true)) {
+            $sectionOrder[] = $defaultSection;
+        }
+    }
 
     $sectionPartials = [
         'section_hero'        => 'sections.hero',
