@@ -8,7 +8,9 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserForm
 {
@@ -73,8 +75,31 @@ class UserForm
                             ->preload()
                             ->searchable()
                             ->native(false)
+                            ->live()
+                            ->helperText('Login ke panel admin hanya bisa dilakukan oleh user dengan role super_admin atau panel_user. Tambahkan role panel_user bersama role lainnya agar user bisa login.')
+                            ->hint(fn (?array $state): ?string => self::hasPanelAccessRole($state)
+                                ? null
+                                : 'User tidak akan bisa login ke panel')
+                            ->hintColor('warning')
+                            ->hintIcon(fn (?array $state): ?Heroicon => self::hasPanelAccessRole($state)
+                                ? null
+                                : Heroicon::ExclamationTriangle)
                             ->columnSpanFull(),
                     ]),
             ]);
+    }
+
+    /**
+     * @param  array<int|string>|null  $roleIds
+     */
+    protected static function hasPanelAccessRole(?array $roleIds): bool
+    {
+        if (blank($roleIds)) {
+            return false;
+        }
+
+        return Role::whereIn('id', $roleIds)
+            ->whereIn('name', ['super_admin', 'panel_user'])
+            ->exists();
     }
 }
