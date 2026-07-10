@@ -257,7 +257,7 @@ class MediaTable
                 ->color('info')
                 ->icon(Heroicon::OutlinedRectangleStack)
                 ->size(TextSize::ExtraSmall)
-                ->hidden(fn (Media $record): bool => blank($record->album)),
+                ->placeholder(''),
 
             TextColumn::make('created_at')
                 ->state(function (Media $record): string {
