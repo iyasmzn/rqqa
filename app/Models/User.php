@@ -33,6 +33,23 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    /**
+     * URL avatar — file di storage jika di-upload, URL penuh dari Google,
+     * atau fallback ke avatar yang dibuat dari inisial nama.
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if (blank($this->avatar)) {
+            return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=08484A&color=fff&size=200&bold=true';
+        }
+
+        if (str_starts_with($this->avatar, 'http://') || str_starts_with($this->avatar, 'https://')) {
+            return $this->avatar;
+        }
+
+        return asset('storage/'.$this->avatar);
+    }
+
     public function authorRequest(): HasOne
     {
         return $this->hasOne(AuthorRequest::class);

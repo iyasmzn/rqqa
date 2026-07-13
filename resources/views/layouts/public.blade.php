@@ -268,10 +268,9 @@
                         <button @click="userOpen = !userOpen"
                                 class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:bg-black/5"
                                 style="color:var(--text)">
-                            <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
-                                 style="background:var(--primary)">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </div>
+                            <img src="{{ Auth::user()->avatar_url }}" alt="{{ Auth::user()->name }}"
+                                 class="w-7 h-7 rounded-full object-cover shrink-0">
+
                             <span class="hidden md:inline max-w-24 truncate">{{ Auth::user()->name }}</span>
                             <svg class="w-3 h-3 transition-transform" :class="userOpen ? 'rotate-180' : ''"
                                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -304,6 +303,16 @@
                                     <span class="ml-auto text-xs font-bold px-2 py-0.5 rounded-full text-white"
                                           style="background:var(--primary)">{{ $cartCount }}</span>
                                 @endif
+                            </a>
+
+                            <a href="{{ route('profile.edit') }}"
+                               class="flex items-center gap-2.5 px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors"
+                               style="color:var(--text)">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                Pengaturan Profil
                             </a>
 
                             <form method="POST" action="{{ route('logout') }}">
@@ -393,15 +402,25 @@
 
                 @auth
                     <div class="flex items-center gap-3 px-4 py-3">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
-                             style="background:var(--primary)">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                        </div>
+                        <img src="{{ Auth::user()->avatar_url }}" alt="{{ Auth::user()->name }}"
+                             class="w-8 h-8 rounded-full object-cover shrink-0">
+
                         <div class="min-w-0">
                             <p class="text-sm font-semibold truncate" style="color:var(--text)">{{ Auth::user()->name }}</p>
                             <p class="text-xs truncate" style="color:var(--muted)">{{ Auth::user()->email }}</p>
                         </div>
                     </div>
+
+                    <a href="{{ route('profile.edit') }}"
+                       @click="mobileOpen = false"
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-black/5"
+                       style="color:var(--text)">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Pengaturan Profil
+                    </a>
 
                     <form method="POST" action="{{ route('logout') }}" class="px-4 pb-3">
                         @csrf

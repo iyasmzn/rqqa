@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -20,6 +21,18 @@ class UserForm
             ->components([
                 Section::make('Informasi Akun')
                     ->schema([
+                        FileUpload::make('avatar')
+                            ->label('Foto Profil')
+                            ->image()
+                            ->disk('public')
+                            ->directory('avatars')
+                            ->visibility('public')
+                            ->avatar()
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+                            ->maxSize(8192)
+                            ->helperText('JPG, PNG, WEBP, atau GIF. Maks 8MB.')
+                            ->columnSpanFull(),
+
                         Grid::make(2)->schema([
                             TextInput::make('name')
                                 ->label('Nama Lengkap')

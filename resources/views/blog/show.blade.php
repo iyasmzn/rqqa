@@ -506,4 +506,13 @@
         </section>
     @endif
 
+    {{-- ── Ajakan menjadi author (tamu) ───────────── --}}
+    @guest
+        <section class="py-14">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <x-author-cta />
+            </div>
+        </section>
+    @endguest
+
 @endsection

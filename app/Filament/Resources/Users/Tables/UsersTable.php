@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
@@ -20,6 +21,10 @@ class UsersTable
     {
         return $table
             ->columns([
+                ImageColumn::make('avatar_url')
+                    ->label('Foto')
+                    ->circular(),
+
                 TextColumn::make('name')
                     ->label('Nama')
                     ->searchable()

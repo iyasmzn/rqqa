@@ -90,6 +90,10 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Pengaturan')
+                    // Grup 'Pengaturan' sudah punya ikon; Filament melarang grup & itemnya
+                    // sama-sama ber-ikon, jadi kosongkan ikon resource Roles bawaan Shield.
+                    ->navigationIcon('')
+                    ->activeNavigationIcon('')
                     ->navigationSort(99)
                     ->gridColumns([
                         'default' => 1,

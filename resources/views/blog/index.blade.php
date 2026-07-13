@@ -293,6 +293,11 @@
             @endif
         @endif
 
+        {{-- ── Ajakan menjadi author (tamu) ───────────── --}}
+        <div class="mt-16">
+            <x-author-cta />
+        </div>
+
     </div>
 
 @endsection
