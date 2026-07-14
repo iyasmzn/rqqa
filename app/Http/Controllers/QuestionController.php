@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Question;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class QuestionController extends Controller
@@ -34,6 +36,16 @@ class QuestionController extends Controller
             'email' => ['nullable', 'email', 'max:200'],
             'question' => ['required', 'string', 'max:2000'],
         ]);
+
+        if ($validated['post_id'] ?? null) {
+            $post = Post::findOrFail($validated['post_id']);
+
+            if (! $post->allow_questions) {
+                throw ValidationException::withMessages([
+                    'question' => 'Pertanyaan tidak diizinkan pada artikel ini.',
+                ]);
+            }
+        }
 
         Question::create($validated);
 

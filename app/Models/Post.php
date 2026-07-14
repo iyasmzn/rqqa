@@ -18,13 +18,14 @@ class Post extends Model
     protected $fillable = [
         'user_id', 'title', 'slug', 'excerpt', 'content', 'image', 'blocks',
         'category', 'author', 'author_initials',
-        'read_time', 'is_published', 'published_at', 'allow_comments',
+        'read_time', 'is_published', 'published_at', 'allow_comments', 'allow_questions',
     ];
 
     protected $casts = [
         'blocks' => 'array',
         'is_published' => 'boolean',
         'allow_comments' => 'boolean',
+        'allow_questions' => 'boolean',
         'published_at' => 'datetime',
     ];
 

@@ -418,6 +418,7 @@
             @endif
 
             {{-- Submit Form --}}
+            @if($post->allow_questions)
             <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
                 <h3 class="font-bold text-base text-gray-900 mb-1">Punya Pertanyaan?</h3>
                 <p class="text-xs text-gray-400 mb-5">Pertanyaan yang dijawab akan ditampilkan di sini.</p>
@@ -466,6 +467,11 @@
                     </button>
                 </form>
             </div>
+            @else
+            <div class="bg-gray-50 rounded-xl border border-gray-100 p-6 text-center">
+                <p class="text-sm text-gray-500">Kolom tanya jawab untuk artikel ini ditutup.</p>
+            </div>
+            @endif
         </div>
     </section>
 
