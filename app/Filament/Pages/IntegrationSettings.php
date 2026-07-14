@@ -55,7 +55,7 @@ class IntegrationSettings extends Page
                 icon: Heroicon::OutlinedGlobeAlt,
                 description: 'Login menggunakan akun Google. Dapatkan Client ID dan Secret dari Google Cloud Console → APIs & Services → Credentials.',
                 helpUrl: 'https://console.cloud.google.com/apis/credentials',
-                redirectUri: url('/auth/google/callback'),
+                redirectUri: route('auth.google.callback'),
             ),
 
             // Tambahkan provider baru di sini dengan memanggil $this->providerSection(...)

@@ -35,9 +35,14 @@ class GoogleAuthController extends Controller
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
                 'avatar' => $googleUser->getAvatar(),
-                'email_verified_at' => now(),
             ]
         );
+
+        // Email dari Google sudah terverifikasi. Diset eksplisit karena
+        // email_verified_at bukan atribut yang mass-assignable pada User.
+        if ($user->email_verified_at === null) {
+            $user->forceFill(['email_verified_at' => now()])->save();
+        }
 
         Auth::login($user, remember: true);
 
@@ -55,6 +60,9 @@ class GoogleAuthController extends Controller
         config([
             'services.google.client_id' => $clientId,
             'services.google.client_secret' => $clientSecret,
+            // Redirect URI selalu diturunkan dari domain aktif agar tidak perlu
+            // diatur lewat env (GOOGLE_REDIRECT_URI) saat pindah domain/production.
+            'services.google.redirect' => route('auth.google.callback'),
         ]);
     }
 }
