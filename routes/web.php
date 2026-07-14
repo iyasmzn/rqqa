@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DownloadController;
@@ -28,6 +29,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Blog
 Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [PostController::class, 'show'])->name('blog.show');
+Route::post('/blog/{post}/komentar', [CommentController::class, 'store'])
+    ->middleware('auth')
+    ->name('comments.store');
 
 // Tenaga Pendidik
 Route::get('/guru', [TeacherController::class, 'index'])->name('teachers.index');

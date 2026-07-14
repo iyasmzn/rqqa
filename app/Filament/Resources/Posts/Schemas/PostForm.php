@@ -144,6 +144,11 @@ class PostForm
                                     ->dehydrated($canPublish),
                             ])
                             ->visible($canPublish),
+
+                        Toggle::make('allow_comments')
+                            ->label('Izinkan Komentar')
+                            ->default(true)
+                            ->helperText('Jika dinonaktifkan, pengunjung tidak dapat mengirim komentar pada artikel ini.'),
                     ])
                     ->description($canPublish ? null : 'Tulisan Anda akan berstatus draft dan menunggu publikasi oleh admin.'),
             ]);

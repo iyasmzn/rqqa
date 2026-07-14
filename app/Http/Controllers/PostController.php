@@ -72,6 +72,12 @@ class PostController extends Controller
             ->orderByDesc('answered_at')
             ->get();
 
-        return view('blog.show', compact('post', 'related', 'seo', 'postQuestions'));
+        $comments = $post->comments()
+            ->approved()
+            ->with('user')
+            ->latest()
+            ->get();
+
+        return view('blog.show', compact('post', 'related', 'seo', 'postQuestions', 'comments'));
     }
 }

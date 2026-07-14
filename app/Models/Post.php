@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -17,12 +18,13 @@ class Post extends Model
     protected $fillable = [
         'user_id', 'title', 'slug', 'excerpt', 'content', 'image', 'blocks',
         'category', 'author', 'author_initials',
-        'read_time', 'is_published', 'published_at',
+        'read_time', 'is_published', 'published_at', 'allow_comments',
     ];
 
     protected $casts = [
         'blocks' => 'array',
         'is_published' => 'boolean',
+        'allow_comments' => 'boolean',
         'published_at' => 'datetime',
     ];
 
@@ -31,6 +33,11 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     // ── Scopes ──────────────────────────────────────────────
