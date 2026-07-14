@@ -20,9 +20,16 @@ class User extends Authenticatable implements FilamentUser
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;
 
+    /**
+     * Roles that grant access to the admin panel.
+     *
+     * @var list<string>
+     */
+    public const PANEL_ROLES = ['super_admin', 'panel_user', 'author', 'author_super'];
+
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasAnyRole(['super_admin', 'panel_user', 'author', 'author_super']);
+        return $this->hasAnyRole(self::PANEL_ROLES);
     }
 
     protected function casts(): array

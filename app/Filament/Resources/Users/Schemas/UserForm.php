@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Models\User;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -89,7 +90,7 @@ class UserForm
                             ->searchable()
                             ->native(false)
                             ->live()
-                            ->helperText('Login ke panel admin hanya bisa dilakukan oleh user dengan role super_admin atau panel_user. Tambahkan role panel_user bersama role lainnya agar user bisa login.')
+                            ->helperText('Login ke panel admin hanya bisa dilakukan oleh user dengan salah satu role: '.implode(', ', User::PANEL_ROLES).'.')
                             ->hint(fn (?array $state): ?string => self::hasPanelAccessRole($state)
                                 ? null
                                 : 'User tidak akan bisa login ke panel')
@@ -112,7 +113,7 @@ class UserForm
         }
 
         return Role::whereIn('id', $roleIds)
-            ->whereIn('name', ['super_admin', 'panel_user'])
+            ->whereIn('name', User::PANEL_ROLES)
             ->exists();
     }
 }
