@@ -25,26 +25,27 @@
     }
 
     /* ── Prose typography ─────────────────────────────────── */
-    .page-prose { line-height: 1.85; color: #374151; font-size: .9375rem; }
+    .page-prose { line-height: 1.85; color: #374151; font-size: 1.0625rem; }
+    @media (min-width: 640px) { .page-prose { font-size: 1.125rem; } }
 
     .page-prose h2 {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         font-weight: 800;
         color: #111827;
-        margin-top: 2.5rem;
+        margin-top: 2.75rem;
         margin-bottom: 1rem;
         padding-bottom: .625rem;
         border-bottom: 2px solid var(--primary-200);
         display: inline-block;
     }
     .page-prose h3 {
-        font-size: 1.05rem;
+        font-size: 1.2rem;
         font-weight: 700;
         color: #1f2937;
         margin-top: 2rem;
         margin-bottom: .75rem;
     }
-    .page-prose p { margin-bottom: 1.25rem; }
+    .page-prose p { margin-bottom: 1.375rem; }
     .page-prose ul, .page-prose ol {
         padding-left: 1.75rem;
         margin-bottom: 1.25rem;

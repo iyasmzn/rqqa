@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\Stories\Schemas;
 
+use App\Filament\Concerns\InteractsWithImagePicker;
+use App\Filament\Schemas\ContentBlocks;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -11,10 +12,13 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 class StoryForm
 {
+    use InteractsWithImagePicker;
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -74,30 +78,31 @@ class StoryForm
                                     ->hint('Contoh: 2024'),
                             ]),
 
-                        FileUpload::make('author_photo')
-                            ->label('Foto Santri')
-                            ->image()
-                            ->disk('public')
-                            ->directory('stories/photos')
-                            ->visibility('public')
-                            ->avatar()
-                            ->columnSpanFull(),
+                        self::imagePicker(
+                            key: 'author_photo',
+                            label: 'Foto Santri',
+                            hint: 'Foto persegi (1:1) disarankan. Akan di-resize ke 400×400.',
+                            accepted: ['image/jpeg', 'image/png', 'image/webp'],
+                            width: 400,
+                            height: 400,
+                            directory: 'stories/photos',
+                            aspectRatio: '1:1',
+                        )->columnSpanFull(),
                     ])
                     ->columns(2),
 
                 Section::make('Gambar & Publikasi')
                     ->schema([
-                        FileUpload::make('image')
-                            ->label('Gambar Utama Cerita')
-                            ->image()
-                            ->disk('public')
-                            ->directory('stories/images')
-                            ->visibility('public')
-                            ->automaticallyCropImagesToAspectRatio('16:9')
-                            ->automaticallyResizeImagesMode('cover')
-                            ->automaticallyResizeImagesToWidth('1200')
-                            ->automaticallyResizeImagesToHeight('675')
-                            ->columnSpanFull(),
+                        self::imagePicker(
+                            key: 'image',
+                            label: 'Gambar Utama Cerita',
+                            hint: 'Rasio 16:9 disarankan. Akan di-resize ke 1200×675.',
+                            accepted: ['image/jpeg', 'image/png', 'image/webp'],
+                            width: 1200,
+                            height: 675,
+                            directory: 'stories/images',
+                            aspectRatio: '16:9',
+                        )->columnSpanFull(),
 
                         Grid::make(2)
                             ->schema([
@@ -122,6 +127,15 @@ class StoryForm
                             ->numeric()
                             ->default(0),
                     ]),
+
+                Section::make('Konten Tambahan')
+                    ->description('Tambahkan blok gambar opsional (cover, carousel, galeri) yang ditampilkan di bawah isi cerita.')
+                    ->icon(Heroicon::OutlinedPhoto)
+                    ->schema([
+                        ContentBlocks::make('stories/blocks'),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
             ]);
     }
 }

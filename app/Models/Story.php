@@ -15,13 +15,14 @@ class Story extends Model
 
     protected $fillable = [
         'title', 'slug', 'author_name', 'author_class', 'author_year',
-        'author_photo', 'excerpt', 'content', 'image',
+        'author_photo', 'excerpt', 'content', 'image', 'blocks',
         'is_published', 'published_at', 'sort_order',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
+        'blocks' => 'array',
     ];
 
     // ── Scopes ──────────────────────────────────────────────

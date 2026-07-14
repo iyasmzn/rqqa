@@ -75,28 +75,28 @@
 
     /* Prose typography */
     .article-prose h2 {
-        font-size: 1.35rem;
+        font-size: 1.5rem;
         font-weight: 800;
-        margin-top: 2.25rem;
-        margin-bottom: .875rem;
+        margin-top: 2.75rem;
+        margin-bottom: 1rem;
         color: #030712;
-        line-height: 1.35;
+        line-height: 1.3;
         padding-bottom: .5rem;
         border-bottom: 2px solid #fde68a;
         display: inline-block;
     }
     .article-prose h3 {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         font-weight: 700;
-        margin-top: 1.75rem;
-        margin-bottom: .625rem;
+        margin-top: 2rem;
+        margin-bottom: .75rem;
         color: #1f2937;
     }
     .article-prose p {
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.375rem;
         line-height: 1.85;
         color: #374151;
-        font-size: .9375rem;
+        font-size: 1.0625rem;
     }
     .article-prose ul, .article-prose ol {
         padding-left: 1.5rem;
@@ -248,6 +248,9 @@
 
             {{-- ── Main Content ──────────────────────────────── --}}
             <div class="lg:col-span-3">
+              <div class="fi-card overflow-hidden">
+                <div style="height:3px;background:linear-gradient(90deg,#d97706,#fbbf24 60%,transparent)"></div>
+                <div class="p-6 sm:p-8 lg:p-10">
 
                 {{-- Meta bar --}}
                 <div class="flex flex-wrap items-center gap-x-5 gap-y-3 pb-6 mb-8 border-b border-gray-100">
@@ -314,6 +317,8 @@
                         </button>
                     </div>
                 </div>
+                </div>
+              </div>
             </div>
 
             {{-- ── Sidebar ────────────────────────────────────── --}}
