@@ -9,21 +9,30 @@
                 {{-- Left: copy ─────────────────────────────── --}}
                 <div class="lg:col-span-3 p-10 lg:p-14" data-aos="fade-right" data-aos-delay="80">
 
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6"
-                         style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:#6ee7b7">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
-                        Program Donasi
-                    </div>
+                    @php
+                        $eyebrow   = setting('section_donasi_eyebrow', 'Program Donasi');
+                        $highlight = setting('section_donasi_title_highlight', 'Pendidikan Berkualitas');
+                        $subtitle  = setting('section_donasi_subtitle', 'Setiap kontribusi Anda sangat berarti bagi perkembangan pendidikan santri. Donasi Anda akan digunakan untuk pengadaan sarana belajar, beasiswa, dan program-program pesantren.');
+                    @endphp
+
+                    @if($eyebrow)
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6"
+                             style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:#6ee7b7">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+                            {{ $eyebrow }}
+                        </div>
+                    @endif
 
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-white mb-4">
-                        Bersama Wujudkan<br>
-                        <span style="color:#6ee7b7">Pendidikan Berkualitas</span>
+                        {{ setting('section_donasi_title') ?: 'Bersama Wujudkan' }}@if($highlight)<br>
+                        <span style="color:#6ee7b7">{{ $highlight }}</span>@endif
                     </h2>
 
-                    <p class="text-base leading-relaxed mb-8" style="color:rgba(255,255,255,.7)">
-                        Setiap kontribusi Anda sangat berarti bagi perkembangan pendidikan santri.
-                        Donasi Anda akan digunakan untuk pengadaan sarana belajar, beasiswa, dan program-program pesantren.
-                    </p>
+                    @if($subtitle)
+                        <p class="text-base leading-relaxed mb-8" style="color:rgba(255,255,255,.7)">
+                            {{ $subtitle }}
+                        </p>
+                    @endif
 
                     {{-- Impact stats --}}
                     <div class="grid grid-cols-3 gap-4 mb-8">

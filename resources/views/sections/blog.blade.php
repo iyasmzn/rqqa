@@ -2,13 +2,21 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Section header --}}
+        @php
+            $eyebrow  = setting('section_blog_eyebrow', 'Berita & Artikel');
+            $subtitle = setting('section_blog_subtitle', 'Blog inspiratif dari berbagai sumber.');
+        @endphp
         <div class="flex items-end justify-between gap-6 mb-14" data-aos="fade-up">
             <div>
-                <div class="fi-label mb-3">Berita & Artikel</div>
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">Artikel</h2>
-                <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
-                    Blog inspiratif dari berbagai sumber.
-                </p>
+                @if($eyebrow)
+                    <div class="fi-label mb-3">{{ $eyebrow }}</div>
+                @endif
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">{{ setting('section_blog_title') ?: 'Artikel' }}</h2>
+                @if($subtitle)
+                    <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
+                        {{ $subtitle }}
+                    </p>
+                @endif
             </div>
             <a href="{{ route('blog.index') }}"
                class="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:opacity-75"

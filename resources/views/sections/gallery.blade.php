@@ -54,13 +54,21 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Section header --}}
+        @php
+            $eyebrow  = setting('section_gallery_eyebrow', 'Foto & Video');
+            $subtitle = setting('section_gallery_subtitle', 'Momen-momen berharga dari kehidupan sekolah kami.');
+        @endphp
         <div class="flex items-end justify-between gap-6 mb-14" data-aos="fade-up">
             <div>
-                <div class="fi-label mb-3">Foto & Video</div>
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">Galeri Sekolah</h2>
-                <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
-                    Momen-momen berharga dari kehidupan sekolah kami.
-                </p>
+                @if($eyebrow)
+                    <div class="fi-label mb-3">{{ $eyebrow }}</div>
+                @endif
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">{{ setting('section_gallery_title') ?: 'Galeri Sekolah' }}</h2>
+                @if($subtitle)
+                    <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
+                        {{ $subtitle }}
+                    </p>
+                @endif
             </div>
             <a href="{{ route('gallery.index') }}"
                class="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:opacity-75"

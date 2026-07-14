@@ -6,10 +6,12 @@ use App\Models\Setting;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -52,6 +54,76 @@ class LandingPageSettings extends Page
         ];
     }
 
+    /**
+     * Sections whose header text (eyebrow, title, subtitle) can be edited here.
+     * Keys map to the `section_{key}_*` setting keys read by the Blade partials.
+     * `highlight` marks a section whose title has an accented second line.
+     *
+     * @return array<string, array{label: string, icon: Heroicon, eyebrow: string, title: string, subtitle: string, highlight?: string}>
+     */
+    private static function contentSections(): array
+    {
+        return [
+            'programs' => [
+                'label' => 'Program Unggulan',
+                'icon' => Heroicon::OutlinedAcademicCap,
+                'eyebrow' => 'Keunggulan Kami',
+                'title' => 'Program Unggulan',
+                'subtitle' => 'Berbagai program yang dirancang untuk membentuk santri berprestasi dan berakhlak mulia.',
+            ],
+            'events' => [
+                'label' => 'Agenda Kegiatan',
+                'icon' => Heroicon::OutlinedCalendarDays,
+                'eyebrow' => 'Agenda Pesantren',
+                'title' => 'Kegiatan Akan Datang',
+                'subtitle' => 'Pengajian, seminar, dan berbagai kegiatan menarik yang segera diselenggarakan.',
+            ],
+            'books' => [
+                'label' => 'Buku',
+                'icon' => Heroicon::OutlinedBookOpen,
+                'eyebrow' => 'Toko Buku',
+                'title' => 'Koleksi Buku Pilihan',
+                'subtitle' => 'Kitab, buku agama, dan referensi pendidikan berkualitas tersedia untuk dipesan.',
+            ],
+            'gallery' => [
+                'label' => 'Galeri Foto',
+                'icon' => Heroicon::OutlinedPhoto,
+                'eyebrow' => 'Foto & Video',
+                'title' => 'Galeri Sekolah',
+                'subtitle' => 'Momen-momen berharga dari kehidupan sekolah kami.',
+            ],
+            'blog' => [
+                'label' => 'Blog & Berita',
+                'icon' => Heroicon::OutlinedNewspaper,
+                'eyebrow' => 'Berita & Artikel',
+                'title' => 'Artikel',
+                'subtitle' => 'Blog inspiratif dari berbagai sumber.',
+            ],
+            'principal' => [
+                'label' => 'Sambutan Para Tokoh',
+                'icon' => Heroicon::OutlinedChatBubbleLeftRight,
+                'eyebrow' => 'Sambutan',
+                'title' => 'Sambutan Para Tokoh',
+                'subtitle' => '',
+            ],
+            'contact' => [
+                'label' => 'Kontak Kami',
+                'icon' => Heroicon::OutlinedPhone,
+                'eyebrow' => 'Hubungi Kami',
+                'title' => 'Kami Siap Membantu Anda',
+                'subtitle' => 'Punya pertanyaan seputar SPMB, akademik, atau kegiatan sekolah? Jangan ragu untuk menghubungi kami.',
+            ],
+            'donasi' => [
+                'label' => 'Donasi',
+                'icon' => Heroicon::OutlinedHeart,
+                'eyebrow' => 'Program Donasi',
+                'title' => 'Bersama Wujudkan',
+                'subtitle' => 'Setiap kontribusi Anda sangat berarti bagi perkembangan pendidikan santri. Donasi Anda akan digunakan untuk pengadaan sarana belajar, beasiswa, dan program-program pesantren.',
+                'highlight' => 'Pendidikan Berkualitas',
+            ],
+        ];
+    }
+
     public function mount(): void
     {
         $defaults = self::defaultSections();
@@ -86,7 +158,25 @@ class LandingPageSettings extends Page
             }
         }
 
-        $this->form->fill(['sections' => $sections]);
+        $fill = [
+            'sections' => $sections,
+            'home_meta_title' => Setting::get('home_meta_title', ''),
+            'home_meta_description' => Setting::get('home_meta_description', ''),
+        ];
+
+        // Pre-fill each editable section's content with its current value,
+        // falling back to the canonical default text so admins see what is live.
+        foreach (self::contentSections() as $key => $content) {
+            $fill["section_{$key}_eyebrow"] = Setting::get("section_{$key}_eyebrow", $content['eyebrow']);
+            $fill["section_{$key}_title"] = Setting::get("section_{$key}_title", $content['title']);
+            $fill["section_{$key}_subtitle"] = Setting::get("section_{$key}_subtitle", $content['subtitle']);
+
+            if (isset($content['highlight'])) {
+                $fill["section_{$key}_title_highlight"] = Setting::get("section_{$key}_title_highlight", $content['highlight']);
+            }
+        }
+
+        $this->form->fill($fill);
     }
 
     public function defaultForm(Schema $schema): Schema
@@ -96,7 +186,7 @@ class LandingPageSettings extends Page
 
     public function form(Schema $schema): Schema
     {
-        return $schema->components([
+        $components = [
             Section::make('Urutan & Visibilitas Seksi')
                 ->description('Drag dan drop untuk mengatur urutan tampilan. Aktifkan atau nonaktifkan setiap seksi.')
                 ->icon(Heroicon::OutlinedQueueList)
@@ -127,7 +217,79 @@ class LandingPageSettings extends Page
                         ])
                         ->columns(4),
                 ]),
-        ]);
+
+            Section::make('SEO Halaman Depan')
+                ->description('Judul dan deskripsi meta khusus halaman depan untuk mesin pencari (Google) dan berbagi ke media sosial.')
+                ->icon(Heroicon::OutlinedGlobeAlt)
+                ->collapsible()
+                ->schema([
+                    TextInput::make('home_meta_title')
+                        ->label('Meta Title')
+                        ->maxLength(70)
+                        ->placeholder(setting('site_name', config('app.name')).' — '.setting('site_tagline', 'Unggul, Berkarakter, Berprestasi'))
+                        ->helperText('Judul di tab browser & hasil pencarian. Ideal 50–60 karakter. Kosongkan untuk memakai Nama Sekolah + Tagline.')
+                        ->columnSpanFull(),
+
+                    Textarea::make('home_meta_description')
+                        ->label('Meta Description')
+                        ->rows(3)
+                        ->maxLength(160)
+                        ->helperText('Ringkasan yang tampil di hasil pencarian Google. Ideal 150–160 karakter. Kosongkan untuk memakai Deskripsi Singkat dari Pengaturan Umum.')
+                        ->columnSpanFull(),
+                ]),
+        ];
+
+        foreach (self::contentSections() as $key => $content) {
+            $components[] = Section::make('Konten: '.$content['label'])
+                ->description('Ubah teks judul dan deskripsi seksi ini. Kosongkan sebuah kolom untuk memakai teks bawaan.')
+                ->icon($content['icon'])
+                ->collapsible()
+                ->collapsed()
+                ->schema([
+                    Grid::make(2)->schema($this->contentFields($key, $content)),
+                ]);
+        }
+
+        return $schema->components($components);
+    }
+
+    /**
+     * @param  array{label: string, icon: Heroicon, eyebrow: string, title: string, subtitle: string, highlight?: string}  $content
+     * @return array<int, TextInput|Textarea>
+     */
+    private function contentFields(string $key, array $content): array
+    {
+        $fields = [
+            TextInput::make("section_{$key}_eyebrow")
+                ->label('Label Kecil')
+                ->maxLength(60)
+                ->placeholder($content['eyebrow'])
+                ->helperText('Teks kecil di atas judul. Kosongkan untuk menyembunyikan.'),
+
+            TextInput::make("section_{$key}_title")
+                ->label('Judul')
+                ->maxLength(120)
+                ->placeholder($content['title']),
+        ];
+
+        if (isset($content['highlight'])) {
+            $fields[] = TextInput::make("section_{$key}_title_highlight")
+                ->label('Judul — Bagian Disorot')
+                ->maxLength(120)
+                ->placeholder($content['highlight'])
+                ->helperText('Ditampilkan di baris kedua judul dengan warna aksen.')
+                ->columnSpanFull();
+        }
+
+        $fields[] = Textarea::make("section_{$key}_subtitle")
+            ->label('Deskripsi')
+            ->rows(2)
+            ->maxLength(300)
+            ->placeholder($content['subtitle'])
+            ->helperText('Kosongkan untuk menyembunyikan deskripsi.')
+            ->columnSpanFull();
+
+        return $fields;
     }
 
     public function save(): void
@@ -135,13 +297,14 @@ class LandingPageSettings extends Page
         $data = $this->form->getState();
 
         // array_values preserves drag-and-drop order from Repeater
-        $sections = array_values($data['sections'] ?? []);
+        $payload = collect($data)->except('sections')->all();
+        $payload['section_order'] = json_encode(array_values($data['sections'] ?? []));
 
-        Setting::set('section_order', json_encode($sections));
+        Setting::setMany($payload);
 
         Notification::make()
             ->success()
-            ->title('Urutan dan visibilitas seksi disimpan')
+            ->title('Pengaturan halaman depan disimpan')
             ->send();
     }
 

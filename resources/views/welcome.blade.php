@@ -3,8 +3,35 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ setting('site_name', config('app.name', "Qurrota A'yun")) }} — {{ setting('site_tagline', 'Membentuk Generasi Qurani yang Berilmu dan Berakhlak') }}</title>
-    <meta name="description" content="{{ setting('site_description', 'Website resmi Pondok Pesantren ' . setting('site_name', config('app.name')) . '. Informasi penerimaan santri baru, program tahfidz, kegiatan, dan berita pesantren.') }}">
+    @php
+        // Homepage SEO — dedicated meta overrides fall back to global identity settings.
+        $siteName  = setting('site_name', config('app.name', "Qurrota A'yun"));
+        $metaTitle = setting('home_meta_title')
+            ?: $siteName.' — '.setting('site_tagline', 'Membentuk Generasi Qurani yang Berilmu dan Berakhlak');
+        $metaDesc  = setting('home_meta_description')
+            ?: setting('site_description', 'Website resmi Pondok Pesantren '.$siteName.'. Informasi penerimaan santri baru, program tahfidz, kegiatan, dan berita pesantren.');
+        $canonical = url('/');
+        $ogImage   = setting('site_logo') ? asset('storage/'.setting('site_logo')) : null;
+    @endphp
+    <title>{{ $metaTitle }}</title>
+    <meta name="description" content="{{ $metaDesc }}">
+    <link rel="canonical" href="{{ $canonical }}">
+
+    {{-- ── Open Graph / social sharing ──────────────────────── --}}
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDesc }}">
+    <meta property="og:url"         content="{{ $canonical }}">
+    <meta property="og:site_name"   content="{{ $siteName }}">
+    @if($ogImage)
+        <meta property="og:image" content="{{ $ogImage }}">
+    @endif
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDesc }}">
+    @if($ogImage)
+        <meta name="twitter:image" content="{{ $ogImage }}">
+    @endif
 
     {{-- ── Favicon ─────────────────────────────────────────── --}}
     @if(setting('site_favicon'))

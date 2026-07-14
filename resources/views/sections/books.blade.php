@@ -2,13 +2,21 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Section header --}}
+        @php
+            $eyebrow  = setting('section_books_eyebrow', 'Toko Buku');
+            $subtitle = setting('section_books_subtitle', 'Kitab, buku agama, dan referensi pendidikan berkualitas tersedia untuk dipesan.');
+        @endphp
         <div class="flex items-end justify-between gap-6 mb-14" data-aos="fade-up">
             <div>
-                <div class="fi-label mb-3">Toko Buku</div>
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">Koleksi Buku Pilihan</h2>
-                <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
-                    Kitab, buku agama, dan referensi pendidikan berkualitas tersedia untuk dipesan.
-                </p>
+                @if($eyebrow)
+                    <div class="fi-label mb-3">{{ $eyebrow }}</div>
+                @endif
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">{{ setting('section_books_title') ?: 'Koleksi Buku Pilihan' }}</h2>
+                @if($subtitle)
+                    <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
+                        {{ $subtitle }}
+                    </p>
+                @endif
             </div>
             <a href="{{ route('books.index') }}"
                class="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:opacity-75"

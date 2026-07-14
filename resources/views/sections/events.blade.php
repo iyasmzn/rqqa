@@ -2,15 +2,23 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Section header --}}
+        @php
+            $eyebrow  = setting('section_events_eyebrow', 'Agenda Pesantren');
+            $subtitle = setting('section_events_subtitle', 'Pengajian, seminar, dan berbagai kegiatan menarik yang segera diselenggarakan.');
+        @endphp
         <div class="flex items-end justify-between gap-6 mb-14" data-aos="fade-up">
             <div>
-                <div class="fi-label mb-3">Agenda Pesantren</div>
+                @if($eyebrow)
+                    <div class="fi-label mb-3">{{ $eyebrow }}</div>
+                @endif
                 <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">
-                    Kegiatan Akan Datang
+                    {{ setting('section_events_title') ?: 'Kegiatan Akan Datang' }}
                 </h2>
-                <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
-                    Pengajian, seminar, dan berbagai kegiatan menarik yang segera diselenggarakan.
-                </p>
+                @if($subtitle)
+                    <p class="mt-2 text-base max-w-md leading-relaxed" style="color:var(--muted)">
+                        {{ $subtitle }}
+                    </p>
+                @endif
             </div>
             <a href="{{ route('events.index') }}"
                class="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:opacity-75"

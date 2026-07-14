@@ -7,11 +7,22 @@
 <section id="sambutan" class="py-20 sm:py-28" style="background:var(--bg-alt)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+        @php
+            $eyebrow  = setting('section_principal_eyebrow', 'Sambutan');
+            $subtitle = setting('section_principal_subtitle', '');
+        @endphp
         <div class="text-center mb-14" data-aos="fade-up">
-            <div class="fi-label mb-3">Sambutan</div>
+            @if($eyebrow)
+                <div class="fi-label mb-3">{{ $eyebrow }}</div>
+            @endif
             <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" style="color:var(--text)">
-                Sambutan Para Tokoh
+                {{ setting('section_principal_title') ?: 'Sambutan Para Tokoh' }}
             </h2>
+            @if($subtitle)
+                <p class="mt-3 text-base max-w-lg mx-auto leading-relaxed" style="color:var(--muted)">
+                    {{ $subtitle }}
+                </p>
+            @endif
         </div>
 
         <div class="relative" data-aos="fade-up" data-aos-delay="80"
