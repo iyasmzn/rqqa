@@ -39,6 +39,27 @@ class ShieldSeeder extends Seeder
             ['name' => 'panel_user', 'guard_name' => 'web']
         );
 
+        // 5b. Role penulis blog.
+        //
+        // author       : hanya kelola artikel miliknya sendiri, tanpa publikasi.
+        //                Draft-nya harus dipublikasikan oleh admin/author_super.
+        // author_super : editor blog — bisa melihat, mengubah, menghapus, dan
+        //                mempublikasikan artikel semua penulis.
+        $authorPermissions = [
+            'ViewAny:Post', 'View:Post', 'Create:Post', 'Update:Post',
+            'Replicate:Post', 'Reorder:Post',
+        ];
+
+        $author = Role::firstOrCreate(['name' => 'author', 'guard_name' => 'web']);
+        $author->syncPermissions(Permission::whereIn('name', $authorPermissions)->get());
+
+        $superAuthorPermissions = array_merge($authorPermissions, [
+            'Delete:Post', 'DeleteAny:Post', 'Publish:Post', 'ViewAll:Post',
+        ]);
+
+        $superAuthor = Role::firstOrCreate(['name' => 'author_super', 'guard_name' => 'web']);
+        $superAuthor->syncPermissions(Permission::whereIn('name', $superAuthorPermissions)->get());
+
         // 6. Assign super_admin ke user admin (fallback ke user pertama jika email tidak ditemukan)
         $admin = User::where('email', 'admin@email.com')->first()
             ?? User::first();

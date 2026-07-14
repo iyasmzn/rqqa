@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use App\Filament\Resources\Posts\PostResource;
 use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Filament\Pages\Dashboard;
 use Filament\Widgets\AccountWidget;
@@ -175,6 +176,23 @@ return [
                 'create',
                 'update',
                 'delete',
+            ],
+            PostResource::class => [
+                'viewAny',
+                'view',
+                'create',
+                'update',
+                'delete',
+                'deleteAny',
+                'restore',
+                'forceDelete',
+                'forceDeleteAny',
+                'restoreAny',
+                'replicate',
+                'reorder',
+                // Custom permissions: gate publishing and cross-author visibility.
+                'publish',
+                'viewAll',
             ],
         ],
         'exclude' => [

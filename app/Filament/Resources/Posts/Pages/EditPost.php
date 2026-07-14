@@ -26,6 +26,12 @@ class EditPost extends EditRecord
             self::imageBaseName($data['title'] ?? null, 'Blog'),
         );
 
+        // Authors without publish permission cannot change the publish state;
+        // preserve whatever the record already has.
+        if (! auth()->user()?->can('Publish:Post')) {
+            unset($data['is_published'], $data['published_at']);
+        }
+
         return $data;
     }
 

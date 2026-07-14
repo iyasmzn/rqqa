@@ -23,6 +23,9 @@ class PostForm
 
     public static function configure(Schema $schema): Schema
     {
+        $user = auth()->user();
+        $canPublish = (bool) $user?->can('Publish:Post');
+
         return $schema
             ->components([
                 Section::make('Konten')
@@ -107,14 +110,16 @@ class PostForm
                                 TextInput::make('author')
                                     ->label('Nama Penulis')
                                     ->required()
-                                    ->default('Admin'),
+                                    ->default($canPublish ? 'Admin' : ($user?->name ?? 'Admin'))
+                                    ->readOnly(! $canPublish),
 
                                 TextInput::make('author_initials')
                                     ->label('Inisial Penulis')
                                     ->required()
-                                    ->default('AD')
+                                    ->default($canPublish ? 'AD' : self::initialsFor($user?->name))
                                     ->maxLength(3)
-                                    ->hint('Contoh: AF, SR, BS'),
+                                    ->hint('Contoh: AF, SR, BS')
+                                    ->readOnly(! $canPublish),
                             ]),
 
                         Grid::make(2)
@@ -123,6 +128,8 @@ class PostForm
                                     ->label('Publikasikan')
                                     ->default(false)
                                     ->live()
+                                    ->visible($canPublish)
+                                    ->dehydrated($canPublish)
                                     ->afterStateUpdated(function (Set $set, bool $state): void {
                                         if ($state) {
                                             $set('published_at', now()->format('Y-m-d H:i:s'));
@@ -132,9 +139,26 @@ class PostForm
                                 DateTimePicker::make('published_at')
                                     ->label('Tanggal Publikasi')
                                     ->native(false)
-                                    ->seconds(false),
-                            ]),
-                    ]),
+                                    ->seconds(false)
+                                    ->visible($canPublish)
+                                    ->dehydrated($canPublish),
+                            ])
+                            ->visible($canPublish),
+                    ])
+                    ->description($canPublish ? null : 'Tulisan Anda akan berstatus draft dan menunggu publikasi oleh admin.'),
             ]);
+    }
+
+    /** Build up-to-3-char uppercase initials from a name for the author badge. */
+    protected static function initialsFor(?string $name): string
+    {
+        $words = preg_split('/\s+/', trim((string) $name), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        $initials = collect($words)
+            ->take(3)
+            ->map(fn (string $word): string => Str::upper(Str::substr($word, 0, 1)))
+            ->implode('');
+
+        return $initials !== '' ? $initials : 'AD';
     }
 }

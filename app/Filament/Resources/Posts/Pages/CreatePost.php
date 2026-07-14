@@ -25,6 +25,14 @@ class CreatePost extends CreateRecord
             self::imageBaseName($data['title'] ?? null, 'Blog'),
         );
 
+        $data['user_id'] = auth()->id();
+
+        // Authors without publish permission can only create drafts.
+        if (! auth()->user()?->can('Publish:Post')) {
+            $data['is_published'] = false;
+            $data['published_at'] = null;
+        }
+
         return $data;
     }
 }

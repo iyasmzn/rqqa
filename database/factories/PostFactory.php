@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -34,6 +35,7 @@ class PostFactory extends Factory
         $pubAt = $this->faker->dateTimeBetween('-6 months', 'now');
 
         return [
+            'user_id' => User::factory(),
             'title' => $title,
             'slug' => Str::slug($title).'-'.$this->faker->unique()->numberBetween(1, 9999),
             'excerpt' => $this->faker->paragraph(2),

@@ -6,6 +6,7 @@ use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -14,7 +15,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug', 'excerpt', 'content', 'image', 'blocks',
+        'user_id', 'title', 'slug', 'excerpt', 'content', 'image', 'blocks',
         'category', 'author', 'author_initials',
         'read_time', 'is_published', 'published_at',
     ];
@@ -24,6 +25,13 @@ class Post extends Model
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];
+
+    // ── Relations ───────────────────────────────────────────
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     // ── Scopes ──────────────────────────────────────────────
 
