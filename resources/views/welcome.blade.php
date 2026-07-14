@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth overflow-x-hidden">
+<html lang="id" class="scroll-smooth overflow-x-clip">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -241,7 +241,7 @@
     ];
 @endphp
 
-<body class="min-h-screen antialiased overflow-x-hidden"
+<body class="min-h-screen antialiased overflow-x-clip"
       x-data="{
           mobileOpen: false,
           scrolled: false,
