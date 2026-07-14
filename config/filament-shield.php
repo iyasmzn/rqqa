@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 use App\Filament\Resources\Posts\PostResource;
+use App\Filament\Widgets\GreetingWidget;
 use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Filament\Pages\Dashboard;
 use Filament\Widgets\AccountWidget;
@@ -236,6 +237,7 @@ return [
         'exclude' => [
             AccountWidget::class,
             FilamentInfoWidget::class,
+            GreetingWidget::class,
         ],
     ],
 

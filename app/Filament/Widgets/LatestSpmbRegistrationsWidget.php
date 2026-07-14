@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Resources\SpmbRegistrations\SpmbRegistrationResource;
 use App\Models\SpmbRegistration;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Actions\Action;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class LatestSpmbRegistrationsWidget extends TableWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = 4;
 
     protected int|string|array $columnSpan = 'full';

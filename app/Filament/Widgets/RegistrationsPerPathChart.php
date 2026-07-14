@@ -4,11 +4,14 @@ namespace App\Filament\Widgets;
 
 use App\Models\AcademicYear;
 use App\Models\AdmissionPath;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Database\Eloquent\Builder;
 
 class RegistrationsPerPathChart extends ChartWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = 5;
 
     protected ?string $pollingInterval = null;

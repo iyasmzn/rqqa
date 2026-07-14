@@ -3,11 +3,14 @@
 namespace App\Filament\Widgets;
 
 use App\Models\SpmbRegistration;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
 
 class SpmbRegistrationsChartWidget extends ChartWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = 3;
 
     protected ?string $heading = 'Pendaftaran SPMB per Bulan';

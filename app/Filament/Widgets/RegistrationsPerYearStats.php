@@ -4,11 +4,14 @@ namespace App\Filament\Widgets;
 
 use App\Models\AcademicYear;
 use App\Models\SpmbRegistration;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
 
 class RegistrationsPerYearStats extends Widget
 {
+    use HasWidgetShield;
+
     protected string $view = 'filament.widgets.registrations-per-year-stats';
 
     protected static ?int $sort = 4;

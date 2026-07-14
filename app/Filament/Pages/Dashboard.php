@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\GreetingWidget;
 use App\Filament\Widgets\LatestQuestionsWidget;
 use App\Filament\Widgets\LatestSpmbRegistrationsWidget;
 use App\Filament\Widgets\PostsChartWidget;
@@ -32,6 +33,7 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
+            GreetingWidget::class,
             StatsOverviewWidget::class,
             RegistrationsPerYearStats::class,
             PostsChartWidget::class,

@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Resources\Questions\QuestionResource;
 use App\Models\Question;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Actions\Action;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class LatestQuestionsWidget extends TableWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = 5;
 
     protected int|string|array $columnSpan = 'full';

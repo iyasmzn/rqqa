@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use App\Services\MediaLibraryService;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
@@ -18,6 +19,8 @@ use UnitEnum;
 
 class GeneralSettings extends Page
 {
+    use HasPageShield;
+
     protected string $view = 'filament.pages.general-settings';
 
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';

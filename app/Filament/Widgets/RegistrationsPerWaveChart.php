@@ -4,10 +4,13 @@ namespace App\Filament\Widgets;
 
 use App\Models\AcademicYear;
 use App\Models\RegistrationWave;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 
 class RegistrationsPerWaveChart extends ChartWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = 6;
 
     protected ?string $pollingInterval = null;

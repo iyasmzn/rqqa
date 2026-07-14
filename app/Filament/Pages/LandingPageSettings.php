@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
@@ -16,6 +17,8 @@ use UnitEnum;
 
 class LandingPageSettings extends Page
 {
+    use HasPageShield;
+
     protected string $view = 'filament.pages.general-settings';
 
     protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';

@@ -5,11 +5,14 @@ namespace App\Filament\Widgets;
 use App\Models\Event;
 use App\Models\Post;
 use App\Models\Story;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
 
 class PostsChartWidget extends ChartWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = 2;
 
     protected ?string $heading = 'Aktivitas Konten (6 Bulan Terakhir)';

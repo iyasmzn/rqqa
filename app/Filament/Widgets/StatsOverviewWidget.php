@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\Question;
 use App\Models\SpmbRegistration;
 use App\Models\Teacher;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget as BaseStatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -16,6 +17,8 @@ use Illuminate\Support\Carbon;
 
 class StatsOverviewWidget extends BaseStatsOverviewWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = 1;
 
     protected ?string $pollingInterval = '60s';

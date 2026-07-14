@@ -34,7 +34,8 @@ class ShieldSeeder extends Seeder
 
         $superAdmin->syncPermissions(Permission::all());
 
-        // 5. Buat role panel_user (tanpa permissions)
+        // 5. Buat role panel_user — akses panel dasar tanpa permission khusus.
+        //    Dashboard (kartu sambutan) terbuka untuk semua user panel.
         Role::firstOrCreate(
             ['name' => 'panel_user', 'guard_name' => 'web']
         );
