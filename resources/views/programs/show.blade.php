@@ -10,6 +10,7 @@
     .article-prose img { border-radius:.75rem;max-width:100%;height:auto;margin:1.5rem 0 }
     .article-prose a  { color:var(--primary);text-decoration:underline }
 </style>
+@include('partials.content-block-styles')
 @endpush
 
 @section('content')
@@ -66,6 +67,9 @@
             {!! $program->content !!}
         </div>
         @endif
+
+        {{-- Konten tambahan (blocks) --}}
+        @include('partials.content-blocks', ['blocks' => $program->blocks, 'title' => $program->title])
 
         <div class="mt-10">
             <a href="{{ route('programs.index') }}" class="btn-outline">← Semua Program</a>

@@ -14,12 +14,13 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug', 'excerpt', 'content', 'image',
+        'title', 'slug', 'excerpt', 'content', 'image', 'blocks',
         'category', 'author', 'author_initials',
         'read_time', 'is_published', 'published_at',
     ];
 
     protected $casts = [
+        'blocks' => 'array',
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];

@@ -19,7 +19,14 @@ class EditPost extends EditRecord
      */
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        return self::applyImagePickers($data, ['image']);
+        $data = self::applyImagePickers($data, ['image']);
+
+        $data['blocks'] = self::applyBlockImagePickers(
+            $data['blocks'] ?? [],
+            self::imageBaseName($data['title'] ?? null, 'Blog'),
+        );
+
+        return $data;
     }
 
     protected function getHeaderActions(): array

@@ -14,11 +14,12 @@ class Program extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug', 'excerpt', 'content', 'image',
+        'title', 'slug', 'excerpt', 'content', 'image', 'blocks',
         'icon', 'category', 'is_published', 'sort_order',
     ];
 
     protected $casts = [
+        'blocks' => 'array',
         'is_published' => 'boolean',
     ];
 

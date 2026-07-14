@@ -208,6 +208,7 @@
         }, { passive: true });
     });
 </script>
+@include('partials.content-block-styles')
 @endpush
 
 @section('content')
@@ -281,6 +282,9 @@
                 <div class="article-prose" itemprop="articleBody">
                     {!! $post->content !!}
                 </div>
+
+                {{-- Konten tambahan (blocks) --}}
+                @include('partials.content-blocks', ['blocks' => $post->blocks, 'title' => $post->title])
 
                 {{-- Share buttons --}}
                 <div class="mt-10 pt-8 border-t border-gray-100">

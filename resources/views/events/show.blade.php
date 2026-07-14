@@ -1,5 +1,9 @@
 @extends('layouts.public')
 
+@push('head')
+@include('partials.content-block-styles')
+@endpush
+
 @section('content')
 
 {{-- ── Breadcrumb ──────────────────────────────────────────── --}}
@@ -110,6 +114,9 @@
             {!! $event->content !!}
         </div>
         @endif
+
+        {{-- Konten tambahan (blocks) --}}
+        @include('partials.content-blocks', ['blocks' => $event->blocks, 'title' => $event->title])
 
         {{-- Back --}}
         <div class="mt-10">

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Events\Schemas;
 
+use App\Filament\Schemas\ContentBlocks;
 use App\Models\Category;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -13,6 +14,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 class EventForm
@@ -88,6 +90,15 @@ class EventForm
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
+
+                Section::make('Konten Tambahan')
+                    ->description('Tambahkan blok gambar opsional yang ditampilkan di bawah konten utama.')
+                    ->icon(Heroicon::OutlinedPhoto)
+                    ->schema([
+                        ContentBlocks::make('events/blocks'),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
 
                 Section::make('Waktu & Publikasi')
                     ->schema([

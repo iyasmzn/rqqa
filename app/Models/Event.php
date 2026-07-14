@@ -13,12 +13,13 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug', 'excerpt', 'content', 'image', 'youtube_url',
+        'title', 'slug', 'excerpt', 'content', 'image', 'blocks', 'youtube_url',
         'category', 'location', 'starts_at', 'ends_at',
         'is_published', 'sort_order',
     ];
 
     protected $casts = [
+        'blocks' => 'array',
         'is_published' => 'boolean',
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',

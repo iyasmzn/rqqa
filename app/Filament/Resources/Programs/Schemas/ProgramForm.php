@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Programs\Schemas;
 
+use App\Filament\Schemas\ContentBlocks;
 use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -12,6 +13,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 class ProgramForm
@@ -81,6 +83,15 @@ class ProgramForm
                             ->maxLength(10),
                     ])
                     ->columns(2),
+
+                Section::make('Konten Tambahan')
+                    ->description('Tambahkan blok gambar opsional yang ditampilkan di bawah konten utama.')
+                    ->icon(Heroicon::OutlinedPhoto)
+                    ->schema([
+                        ContentBlocks::make('programs/blocks'),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
 
                 Section::make('Pengaturan Tampil')
                     ->schema([
