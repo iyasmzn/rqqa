@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ContactItems\Schemas;
 
+use App\Filament\Support\IconUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
@@ -45,6 +46,9 @@ class ContactItemForm
                         ->maxLength(500)
                         ->placeholder('https://maps.google.com/... atau tel:+62... atau mailto:...')
                         ->hint('Kosongkan jika tidak perlu tautan klik.')
+                        ->columnSpanFull(),
+
+                    IconUpload::make()
                         ->columnSpanFull(),
                 ]),
 

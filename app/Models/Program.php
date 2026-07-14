@@ -15,7 +15,7 @@ class Program extends Model
 
     protected $fillable = [
         'title', 'slug', 'excerpt', 'content', 'image', 'blocks',
-        'icon', 'category', 'is_published', 'sort_order',
+        'icon', 'icon_image', 'category', 'is_published', 'sort_order',
     ];
 
     protected $casts = [

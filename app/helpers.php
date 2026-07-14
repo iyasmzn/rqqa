@@ -3,6 +3,25 @@
 use App\Models\AcademicYear;
 use App\Models\RegistrationWave;
 use App\Models\Setting;
+use Illuminate\Support\Str;
+
+if (! function_exists('icon_url')) {
+    /**
+     * Resolve a stored icon-image value to a usable URL. Accepts absolute URLs
+     * and root-relative paths as-is; otherwise treats it as a path on the public
+     * disk. Returns null when empty so callers can fall back to an emoji icon.
+     */
+    function icon_url(?string $path): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        return Str::startsWith($path, ['http://', 'https://', '/'])
+            ? $path
+            : asset('storage/'.$path);
+    }
+}
 
 if (! function_exists('setting')) {
     /**

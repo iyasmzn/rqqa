@@ -17,6 +17,7 @@ class AdmissionPath extends Model
         'name',
         'slug',
         'icon',
+        'icon_image',
         'description',
         'color',
         'is_active',

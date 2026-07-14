@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\AdmissionPaths\Schemas;
 
+use App\Filament\Support\IconUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -50,6 +51,9 @@ class AdmissionPathForm
                         ->label('Deskripsi')
                         ->rows(2)
                         ->maxLength(300)
+                        ->columnSpanFull(),
+
+                    IconUpload::make()
                         ->columnSpanFull(),
 
                     Grid::make(3)->schema([

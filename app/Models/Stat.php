@@ -12,7 +12,7 @@ class Stat extends Model
     /** @use HasFactory<StatFactory> */
     use HasFactory;
 
-    protected $fillable = ['icon', 'label', 'value', 'sub', 'sort_order'];
+    protected $fillable = ['icon', 'icon_image', 'label', 'value', 'sub', 'sort_order'];
 
     /**
      * @return Builder<static>

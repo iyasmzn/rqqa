@@ -23,6 +23,12 @@ class ProgramsTable
                     ->label('Ikon')
                     ->width(40),
 
+                ImageColumn::make('icon_image')
+                    ->label('Ikon (gambar)')
+                    ->disk('public')
+                    ->height(32)
+                    ->width(32),
+
                 ImageColumn::make('image')
                     ->label('Gambar')
                     ->disk('public')

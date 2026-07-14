@@ -24,10 +24,12 @@
                          loading="lazy"
                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.5),transparent 60%)"></div>
-                    @if($program->icon)
-                    <div class="absolute bottom-4 left-4 w-8 h-8 text-white drop-shadow">
-                        @svg('heroicon-o-' . $program->icon, 'w-full h-full')
+                    @if($url = icon_url($program->icon_image))
+                    <div class="absolute bottom-4 left-4 w-8 h-8 drop-shadow">
+                        <img src="{{ $url }}" alt="{{ $program->title }}" loading="lazy" class="w-full h-full object-contain">
                     </div>
+                    @elseif($program->icon)
+                    <div class="absolute bottom-4 left-4 text-3xl drop-shadow">{{ $program->icon }}</div>
                     @endif
                 </a>
 

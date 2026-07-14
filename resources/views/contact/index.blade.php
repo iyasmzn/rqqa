@@ -77,7 +77,13 @@
             <div>
                 @if($item->link)
                     <a href="{{ $item->link }}" target="_blank" rel="noopener noreferrer" class="contact-item-card block">
-                        <div class="contact-icon">{{ $item->icon }}</div>
+                        <div class="contact-icon">
+                            @if($url = icon_url($item->icon_image))
+                                <img src="{{ $url }}" alt="{{ $item->label }}" loading="lazy" style="width:1.5rem;height:1.5rem;object-fit:contain">
+                            @else
+                                {{ $item->icon }}
+                            @endif
+                        </div>
                         <div class="min-w-0">
                             <p class="text-xs font-semibold mb-0.5" style="color:var(--muted)">{{ $item->label }}</p>
                             <p class="text-sm font-bold leading-snug" style="color:var(--text)">{{ $item->value }}</p>
@@ -85,7 +91,13 @@
                     </a>
                 @else
                     <div class="contact-item-card">
-                        <div class="contact-icon">{{ $item->icon }}</div>
+                        <div class="contact-icon">
+                            @if($url = icon_url($item->icon_image))
+                                <img src="{{ $url }}" alt="{{ $item->label }}" loading="lazy" style="width:1.5rem;height:1.5rem;object-fit:contain">
+                            @else
+                                {{ $item->icon }}
+                            @endif
+                        </div>
                         <div class="min-w-0">
                             <p class="text-xs font-semibold mb-0.5" style="color:var(--muted)">{{ $item->label }}</p>
                             <p class="text-sm font-bold leading-snug" style="color:var(--text)">{{ $item->value }}</p>

@@ -56,7 +56,11 @@
                          loading="lazy"
                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.5),transparent 60%)"></div>
-                    @if($program->icon)
+                    @if($url = icon_url($program->icon_image))
+                    <div class="absolute bottom-4 left-4 w-9 h-9">
+                        <img src="{{ $url }}" alt="{{ $program->title }}" loading="lazy" class="w-full h-full object-contain drop-shadow">
+                    </div>
+                    @elseif($program->icon)
                     <div class="absolute bottom-4 left-4 text-3xl">{{ $program->icon }}</div>
                     @endif
                 </a>

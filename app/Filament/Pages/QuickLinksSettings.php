@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Support\IconUpload;
 use App\Models\Setting;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
@@ -85,6 +86,9 @@ class QuickLinksSettings extends Page
                                     ->onColor('success')
                                     ->inline(false)
                                     ->columnSpan(2),
+
+                                IconUpload::make()
+                                    ->columnSpanFull(),
                             ]),
                         ])
                         ->addActionLabel('+ Tambah Tautan')

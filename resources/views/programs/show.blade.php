@@ -46,7 +46,9 @@
     <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
         <div class="max-w-7xl mx-auto">
             <div class="flex items-center gap-3 mb-3">
-                @if($program->icon)
+                @if($url = icon_url($program->icon_image))
+                <img src="{{ $url }}" alt="{{ $program->title }}" class="w-10 h-10 object-contain drop-shadow">
+                @elseif($program->icon)
                 <span class="text-4xl">{{ $program->icon }}</span>
                 @endif
                 @if($program->category)

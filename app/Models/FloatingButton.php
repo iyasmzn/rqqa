@@ -13,7 +13,7 @@ class FloatingButton extends Model
     use HasFactory;
 
     protected $fillable = [
-        'label', 'url', 'icon', 'color',
+        'label', 'url', 'icon', 'icon_image', 'color',
         'open_in_new_tab', 'is_active', 'sort_order',
     ];
 

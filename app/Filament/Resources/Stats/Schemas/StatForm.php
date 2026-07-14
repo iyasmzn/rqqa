@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Stats\Schemas;
 
+use App\Filament\Support\IconUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -50,6 +51,9 @@ class StatForm
                         ->label('Keterangan Tambahan')
                         ->maxLength(150)
                         ->placeholder('Tingkat nasional')
+                        ->columnSpanFull(),
+
+                    IconUpload::make()
                         ->columnSpanFull(),
                 ]),
         ]);

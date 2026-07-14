@@ -5,7 +5,12 @@
                 @foreach($stats as $stat)
                     <div class="fi-card fi-card-hover p-7 sm:p-8 text-center"
                          data-aos="zoom-in" data-aos-delay="{{ $loop->index * 80 }}">
-                        <div class="text-4xl mb-3">{{ $stat->icon }}</div>
+                        @if($url = icon_url($stat->icon_image))
+                            <img src="{{ $url }}" alt="{{ $stat->label }}" loading="lazy"
+                                 class="w-10 h-10 mx-auto mb-3 object-contain">
+                        @else
+                            <div class="text-4xl mb-3">{{ $stat->icon }}</div>
+                        @endif
                         <div class="text-3xl sm:text-4xl font-black tracking-tight" style="color:var(--primary)">{{ $stat->value }}</div>
                         <div class="text-sm font-semibold mt-2" style="color:var(--text)">{{ $stat->label }}</div>
                         @if($stat->sub)

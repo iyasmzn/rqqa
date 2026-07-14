@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Stats\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -22,6 +23,12 @@ class StatsTable
                 TextColumn::make('icon')
                     ->label('Ikon')
                     ->width(50),
+
+                ImageColumn::make('icon_image')
+                    ->label('Ikon (gambar)')
+                    ->disk('public')
+                    ->height(32)
+                    ->width(32),
 
                 TextColumn::make('value')
                     ->label('Nilai')

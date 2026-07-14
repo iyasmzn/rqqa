@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContactItem extends Model
 {
-    protected $fillable = ['icon', 'label', 'value', 'link', 'sort_order', 'is_active'];
+    protected $fillable = ['icon', 'icon_image', 'label', 'value', 'link', 'sort_order', 'is_active'];
 
     protected $casts = ['is_active' => 'boolean'];
 

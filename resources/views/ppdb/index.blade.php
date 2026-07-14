@@ -142,7 +142,11 @@
                     <div class="space-y-2.5">
                         @foreach($paths as $path)
                         <div class="flex items-center gap-3 p-3 rounded-xl bg-white/8 border border-white/10">
-                            <span class="text-xl">{{ $path->icon }}</span>
+                            @if($url = icon_url($path->icon_image))
+                                <img src="{{ $url }}" alt="{{ $path->name }}" loading="lazy" class="w-6 h-6 object-contain shrink-0">
+                            @else
+                                <span class="text-xl">{{ $path->icon }}</span>
+                            @endif
                             <span class="text-white font-semibold text-sm">{{ $path->name }}</span>
                         </div>
                         @endforeach
@@ -204,7 +208,11 @@
             @foreach($procedures as $index => $step)
             <div class="fi-card fi-card-hover p-6 pt-8 step-card" data-aos="fade-up" data-aos-delay="{{ $index * 80 }}">
                 <div class="step-num">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
-                <div class="text-2xl mb-3">{{ $step['icon'] ?? '📌' }}</div>
+                @if($url = icon_url($step['icon_image'] ?? null))
+                    <img src="{{ $url }}" alt="{{ $step['title'] ?? '' }}" loading="lazy" class="w-8 h-8 mb-3 object-contain">
+                @else
+                    <div class="text-2xl mb-3">{{ $step['icon'] ?? '📌' }}</div>
+                @endif
                 <div class="font-bold text-sm mb-2" style="color:var(--text)">{{ $step['title'] ?? '' }}</div>
                 <p class="text-xs leading-relaxed" style="color:var(--muted)">{{ $step['description'] ?? '' }}</p>
             </div>
@@ -439,7 +447,14 @@
                         <label class="jalur-card">
                             <input type="radio" name="admission_path_id" value="{{ $path->id }}" {{ (int) old('admission_path_id', $paths->first()?->id) === $path->id ? 'checked' : '' }}>
                             <div>
-                                <div class="font-bold text-sm" style="color:var(--text)">{{ $path->icon }} {{ $path->name }}</div>
+                                <div class="font-bold text-sm flex items-center gap-1.5" style="color:var(--text)">
+                                    @if($url = icon_url($path->icon_image))
+                                        <img src="{{ $url }}" alt="" loading="lazy" class="w-5 h-5 object-contain shrink-0">
+                                    @else
+                                        <span>{{ $path->icon }}</span>
+                                    @endif
+                                    <span>{{ $path->name }}</span>
+                                </div>
                                 <div class="text-xs mt-0.5" style="color:var(--muted)">{{ $path->description }}</div>
                             </div>
                         </label>

@@ -30,9 +30,13 @@
                          style="background:radial-gradient(ellipse at top left,rgba(217,119,6,.07),transparent 70%)"></div>
 
                     {{-- Icon --}}
-                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 transition-all duration-300 group-hover:scale-110"
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 transition-all duration-300 group-hover:scale-110 overflow-hidden"
                          style="background:rgba(217,119,6,.1);border:1px solid rgba(217,119,6,.2)">
-                        {{ $ci->icon }}
+                        @if($url = icon_url($ci->icon_image))
+                            <img src="{{ $url }}" alt="{{ $ci->label }}" loading="lazy" class="w-8 h-8 object-contain">
+                        @else
+                            {{ $ci->icon }}
+                        @endif
                     </div>
 
                     {{-- Content --}}

@@ -38,7 +38,11 @@
                          style="color:var(--primary-100)">
                         {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                     </div>
-                    <div class="text-3xl mb-4">{{ $step['icon'] ?? '📌' }}</div>
+                    @if($url = icon_url($step['icon_image'] ?? null))
+                        <img src="{{ $url }}" alt="{{ $step['title'] ?? '' }}" loading="lazy" class="w-9 h-9 mb-4 object-contain">
+                    @else
+                        <div class="text-3xl mb-4">{{ $step['icon'] ?? '📌' }}</div>
+                    @endif
                     <div class="font-bold text-base mb-2.5" style="color:var(--text)">{{ $step['title'] ?? '' }}</div>
                     <p class="text-sm leading-relaxed" style="color:var(--muted)">{{ $step['description'] ?? '' }}</p>
                 </div>

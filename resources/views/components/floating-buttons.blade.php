@@ -25,7 +25,11 @@
        "
        onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(0,0,0,.3)'"
        onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(0,0,0,.25)'">
-        <span style="font-size:1.125rem;line-height:1">{{ $btn->icon }}</span>
+        @if($url = icon_url($btn->icon_image))
+            <img src="{{ $url }}" alt="{{ $btn->label }}" style="width:1.25rem;height:1.25rem;object-fit:contain">
+        @else
+            <span style="font-size:1.125rem;line-height:1">{{ $btn->icon }}</span>
+        @endif
         <span>{{ $btn->label }}</span>
     </a>
 
@@ -65,7 +69,11 @@
                "
                onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.3)'"
                onmouseout="this.style.transform='';this.style.boxShadow='0 3px 12px rgba(0,0,0,.25)'">
-                {{ $btn->icon }}
+                @if($url = icon_url($btn->icon_image))
+                    <img src="{{ $url }}" alt="{{ $btn->label }}" style="width:1.5rem;height:1.5rem;object-fit:contain">
+                @else
+                    {{ $btn->icon }}
+                @endif
             </a>
         </div>
         @endforeach

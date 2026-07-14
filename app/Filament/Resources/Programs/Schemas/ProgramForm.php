@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Programs\Schemas;
 
 use App\Filament\Schemas\ContentBlocks;
+use App\Filament\Support\IconUpload;
 use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -81,6 +82,9 @@ class ProgramForm
                             ->label('Emoji / Ikon')
                             ->hint('Gunakan emoji, contoh: 📖, 🕌, 🎓')
                             ->maxLength(10),
+
+                        IconUpload::make()
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
 

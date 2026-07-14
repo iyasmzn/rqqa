@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Support\IconUpload;
 use App\Models\Setting;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
@@ -194,6 +195,9 @@ class SpmbSettings extends Page
                                     ->label('Deskripsi')
                                     ->rows(2)
                                     ->maxLength(300)
+                                    ->columnSpanFull(),
+
+                                IconUpload::make()
                                     ->columnSpanFull(),
                             ]),
                         ])

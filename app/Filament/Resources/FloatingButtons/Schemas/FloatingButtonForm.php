@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\FloatingButtons\Schemas;
 
+use App\Filament\Support\IconUpload;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -32,6 +33,9 @@ class FloatingButtonForm
                                     ->placeholder('💬')
                                     ->hint('Emoji atau karakter singkat yang tampil di tombol.'),
                             ]),
+
+                        IconUpload::make()
+                            ->columnSpanFull(),
 
                         TextInput::make('url')
                             ->label('URL / Link')
