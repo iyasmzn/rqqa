@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Widgets\GreetingWidget;
+use App\Filament\Widgets\LatestCommentsWidget;
 use App\Filament\Widgets\LatestQuestionsWidget;
 use App\Filament\Widgets\LatestSpmbRegistrationsWidget;
 use App\Filament\Widgets\PostsChartWidget;
@@ -42,6 +43,7 @@ class Dashboard extends BaseDashboard
             SpmbRegistrationsChartWidget::class,
             LatestSpmbRegistrationsWidget::class,
             LatestQuestionsWidget::class,
+            LatestCommentsWidget::class,
         ];
     }
 }

@@ -25,6 +25,13 @@ class GreetingWidget extends Widget
     }
 
     /**
+     * Timezone used for the greeting and date. The application stores
+     * timestamps in UTC, so the dashboard is presented in Western
+     * Indonesian Time (WIB) to match the school's local time.
+     */
+    private const TIMEZONE = 'Asia/Jakarta';
+
+    /**
      * @return array<string, mixed>
      */
     protected function getViewData(): array
@@ -32,29 +39,45 @@ class GreetingWidget extends Widget
         /** @var User|null $user */
         $user = Filament::auth()?->user();
 
+        $now = Carbon::now(self::TIMEZONE);
+
         return [
             'name' => $user?->name ?? '',
             'avatarUrl' => $user?->avatar_url,
             'roles' => $user?->getRoleNames()->all() ?? [],
-            'greeting' => $this->timeGreeting(),
-            'date' => $this->formattedDate(),
+            'greeting' => $this->timeGreeting($now),
+            'greetingIcon' => $this->greetingIcon($now),
+            'date' => $this->formattedDate($now),
+            'time' => $now->format('H:i').' WIB',
+            'siteName' => setting('site_name', config('app.name')),
         ];
     }
 
-    private function timeGreeting(): string
+    private function timeGreeting(Carbon $now): string
     {
         return match (true) {
-            Carbon::now()->hour < 11 => 'Selamat pagi',
-            Carbon::now()->hour < 15 => 'Selamat siang',
-            Carbon::now()->hour < 18 => 'Selamat sore',
+            $now->hour < 11 => 'Selamat pagi',
+            $now->hour < 15 => 'Selamat siang',
+            $now->hour < 18 => 'Selamat sore',
             default => 'Selamat malam',
         };
     }
 
-    private function formattedDate(): string
+    /**
+     * A heroicon name matching the time of day, shown beside the greeting.
+     */
+    private function greetingIcon(Carbon $now): string
     {
-        $now = Carbon::now();
+        return match (true) {
+            $now->hour < 11 => 'heroicon-o-sun',
+            $now->hour < 15 => 'heroicon-o-sun',
+            $now->hour < 18 => 'heroicon-o-cloud',
+            default => 'heroicon-o-moon',
+        };
+    }
 
+    private function formattedDate(Carbon $now): string
+    {
         $days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $months = [
             1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',

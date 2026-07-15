@@ -9,6 +9,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
@@ -66,6 +67,10 @@ class GeneralSettings extends Page
             'donasi_bank_name' => Setting::get('donasi_bank_name', 'Bank Syariah Indonesia (BSI)'),
             'donasi_bank_account' => Setting::get('donasi_bank_account'),
             'donasi_bank_holder' => Setting::get('donasi_bank_holder'),
+
+            // Komentar
+            'comment_guest_auto_publish' => setting_bool('comment_guest_auto_publish', true),
+            'comment_user_auto_publish' => setting_bool('comment_user_auto_publish', true),
         ]);
     }
 
@@ -230,6 +235,21 @@ class GeneralSettings extends Page
                             ->label('Nama Pemilik Rekening (a.n.)')
                             ->placeholder('Pondok Pesantren ...'),
                     ]),
+                ]),
+
+            Section::make('Komentar Artikel')
+                ->description('Atur apakah komentar baru langsung tampil atau menunggu persetujuan admin.')
+                ->icon(Heroicon::OutlinedChatBubbleLeftRight)
+                ->schema([
+                    Toggle::make('comment_user_auto_publish')
+                        ->label('Komentar pengguna terdaftar langsung tampil')
+                        ->default(true)
+                        ->helperText('Nonaktifkan agar komentar dari pengguna yang login harus disetujui admin dulu.'),
+
+                    Toggle::make('comment_guest_auto_publish')
+                        ->label('Komentar tamu (tanpa login) langsung tampil')
+                        ->default(true)
+                        ->helperText('Nonaktifkan agar komentar dari tamu masuk sebagai menunggu persetujuan admin.'),
                 ]),
         ]);
     }

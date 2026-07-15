@@ -14,7 +14,7 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'post_id', 'user_id', 'body',
+        'post_id', 'user_id', 'guest_name', 'body',
         'admin_reply', 'replied_at', 'is_approved',
     ];
 
@@ -40,5 +40,26 @@ class Comment extends Model
     public function scopeApproved(Builder $query): Builder
     {
         return $query->where('is_approved', true);
+    }
+
+    // ── Computed Attributes ──────────────────────────────────
+
+    /** Whether this comment was left by a guest (no linked account). */
+    public function getIsGuestAttribute(): bool
+    {
+        return $this->user_id === null;
+    }
+
+    /** Display name — the account name for members, or the typed guest name. */
+    public function getAuthorNameAttribute(): string
+    {
+        return $this->user?->name ?? $this->guest_name ?? 'Tamu';
+    }
+
+    /** Avatar URL — the member avatar, or a generated initial avatar for guests. */
+    public function getAuthorAvatarUrlAttribute(): string
+    {
+        return $this->user?->avatar_url
+            ?? 'https://ui-avatars.com/api/?name='.urlencode($this->author_name).'&background=08484A&color=fff&size=200&bold=true';
     }
 }

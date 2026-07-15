@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,8 +21,10 @@ class QuestionFactory extends Factory
         $answered = fake()->boolean(60);
 
         return [
+            'user_id' => User::factory(),
             'name' => fake()->name(),
             'email' => fake()->optional()->safeEmail(),
+            'is_anonymous' => false,
             'question' => fake()->paragraph(),
             'answer' => $answered ? fake()->paragraph() : null,
             'is_answered' => $answered,
@@ -46,5 +49,11 @@ class QuestionFactory extends Factory
             'answer' => null,
             'answered_at' => null,
         ]);
+    }
+
+    /** The asker chose to have their name hidden publicly. */
+    public function anonymous(): static
+    {
+        return $this->state(['is_anonymous' => true]);
     }
 }

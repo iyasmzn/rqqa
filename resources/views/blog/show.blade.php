@@ -380,11 +380,11 @@
                     <div class="flex items-start gap-3 mb-4">
                         <div class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-extrabold text-xs text-white"
                              style="background:linear-gradient(135deg,#f59e0b,#d97706)">
-                            {{ strtoupper(substr($qa->name, 0, 1)) }}
+                            {{ strtoupper(substr($qa->display_name, 0, 1)) }}
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex flex-wrap items-center gap-2 mb-1">
-                                <span class="font-bold text-sm text-gray-900">{{ $qa->name }}</span>
+                                <span class="font-bold text-sm text-gray-900">{{ $qa->display_name }}</span>
                                 <span class="text-xs text-gray-400">{{ $qa->created_at->diffForHumans() }}</span>
                             </div>
                             <p class="text-sm text-gray-700 leading-relaxed">{{ $qa->question }}</p>
@@ -419,55 +419,60 @@
 
             {{-- Submit Form --}}
             @if($post->allow_questions)
-            <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-                <h3 class="font-bold text-base text-gray-900 mb-1">Punya Pertanyaan?</h3>
-                <p class="text-xs text-gray-400 mb-5">Pertanyaan yang dijawab akan ditampilkan di sini.</p>
+                @auth
+                <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+                    <h3 class="font-bold text-base text-gray-900 mb-1">Punya Pertanyaan?</h3>
+                    <p class="text-xs text-gray-400 mb-5">Pertanyaan yang dijawab akan ditampilkan di sini.</p>
 
-                @if(session('success') && request()->is('blog/*'))
-                <div class="flex items-center gap-2 p-3 rounded-lg mb-5 bg-amber-50 border border-amber-200">
-                    <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <p class="text-xs font-medium text-amber-700">{{ session('success') }}</p>
-                </div>
-                @endif
-
-                <form method="POST" action="{{ route('questions.store') }}" class="space-y-4">
-                    @csrf
-                    <input type="hidden" name="post_id" value="{{ $post->id }}">
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Nama <span class="text-red-500">*</span></label>
-                            <input type="text" name="name" value="{{ old('name') }}" required
-                                   @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('name'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('name')])
-                                   placeholder="Nama Anda">
-                            @error('name')<p class="text-xs mt-1 text-red-500">{{ $message }}</p>@enderror
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Email <span class="text-gray-400 font-normal">(opsional)</span></label>
-                            <input type="email" name="email" value="{{ old('email') }}"
-                                   @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('email'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('email')])
-                                   placeholder="email@contoh.com">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Pertanyaan <span class="text-red-500">*</span></label>
-                        <textarea name="question" rows="3" required
-                                  @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('question'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('question')])
-                                  placeholder="Tulis pertanyaan Anda tentang artikel ini...">{{ old('question') }}</textarea>
-                        @error('question')<p class="text-xs mt-1 text-red-500">{{ $message }}</p>@enderror
-                    </div>
-                    <x-spam-guard />
-                    <button type="submit"
-                            class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80"
-                            style="background:linear-gradient(135deg,#f59e0b,#d97706)">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    @if(session('success') && request()->is('blog/*'))
+                    <div class="flex items-center gap-2 p-3 rounded-lg mb-5 bg-amber-50 border border-amber-200">
+                        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Kirim Pertanyaan
-                    </button>
-                </form>
-            </div>
+                        <p class="text-xs font-medium text-amber-700">{{ session('success') }}</p>
+                    </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('questions.store') }}" class="space-y-4">
+                        @csrf
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <div class="flex items-center gap-2.5 mb-1">
+                            <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}"
+                                 class="w-7 h-7 rounded-full object-cover">
+                            <span class="text-sm font-semibold text-gray-700">{{ auth()->user()->name }}</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Pertanyaan <span class="text-red-500">*</span></label>
+                            <textarea name="question" rows="3" required
+                                      @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('question'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('question')])
+                                      placeholder="Tulis pertanyaan Anda tentang artikel ini...">{{ old('question') }}</textarea>
+                            @error('question')<p class="text-xs mt-1 text-red-500">{{ $message }}</p>@enderror
+                        </div>
+                        <label class="flex items-center gap-2 text-xs font-medium text-gray-600 cursor-pointer">
+                            <input type="checkbox" name="is_anonymous" value="1" @checked(old('is_anonymous'))
+                                   class="rounded border-gray-300 text-amber-600 focus:ring-amber-400">
+                            Tampilkan sebagai anonim (sembunyikan nama saya)
+                        </label>
+                        <button type="submit"
+                                class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80"
+                                style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                            </svg>
+                            Kirim Pertanyaan
+                        </button>
+                    </form>
+                </div>
+                @else
+                <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm text-center">
+                    <p class="text-sm text-gray-600 mb-4">Anda harus masuk terlebih dahulu untuk mengajukan pertanyaan.</p>
+                    <a href="{{ route('login') }}"
+                       class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80"
+                       style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+                        Masuk untuk Bertanya
+                    </a>
+                </div>
+                @endauth
             @else
             <div class="bg-gray-50 rounded-xl border border-gray-100 p-6 text-center">
                 <p class="text-sm text-gray-500">Kolom tanya jawab untuk artikel ini ditutup.</p>
@@ -494,13 +499,16 @@
                 @foreach($comments as $comment)
                 <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
                     <div class="flex items-start gap-3">
-                        <img src="{{ $comment->user->avatar_url }}"
-                             alt="{{ $comment->user->name }}"
+                        <img src="{{ $comment->author_avatar_url }}"
+                             alt="{{ $comment->author_name }}"
                              class="shrink-0 w-8 h-8 rounded-full object-cover"
                              loading="lazy">
                         <div class="flex-1 min-w-0">
                             <div class="flex flex-wrap items-center gap-2 mb-1">
-                                <span class="font-bold text-sm text-gray-900">{{ $comment->user->name }}</span>
+                                <span class="font-bold text-sm text-gray-900">{{ $comment->author_name }}</span>
+                                @if($comment->is_guest)
+                                    <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500">Tamu</span>
+                                @endif
                                 <span class="text-xs text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
                             </div>
                             <p class="text-sm text-gray-700 leading-relaxed">{{ $comment->body }}</p>
@@ -536,7 +544,6 @@
 
             {{-- Form komentar --}}
             @if($post->allow_comments)
-                @auth
                 <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
                     <h3 class="font-bold text-base text-gray-900 mb-5">Tinggalkan Komentar</h3>
 
@@ -551,17 +558,33 @@
 
                     <form method="POST" action="{{ route('comments.store', $post) }}" class="space-y-4">
                         @csrf
+                        @auth
                         <div class="flex items-center gap-2.5 mb-1">
                             <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}"
                                  class="w-7 h-7 rounded-full object-cover">
                             <span class="text-sm font-semibold text-gray-700">{{ auth()->user()->name }}</span>
                         </div>
+                        @else
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Nama <span class="text-red-500">*</span></label>
+                            <input type="text" name="name" value="{{ old('name') }}" required
+                                   @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('name'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('name')])
+                                   placeholder="Nama Anda">
+                            @error('name')<p class="text-xs mt-1 text-red-500">{{ $message }}</p>@enderror
+                        </div>
+                        @endauth
                         <div>
                             <textarea name="body" rows="3" required
                                       @class(['w-full px-3 py-2 text-sm rounded-lg border bg-gray-50 focus:outline-none focus:ring-2 transition-colors', 'border-red-400 focus:border-red-400 focus:ring-red-100' => $errors->has('body'), 'border-gray-200 focus:border-amber-400 focus:ring-amber-100' => !$errors->has('body')])
                                       placeholder="Tulis komentar Anda...">{{ old('body') }}</textarea>
                             @error('body')<p class="text-xs mt-1 text-red-500">{{ $message }}</p>@enderror
                         </div>
+                        @guest
+                        <x-spam-guard />
+                        <p class="text-xs text-gray-400">
+                            Sudah punya akun? <a href="{{ route('login') }}" class="text-amber-600 font-semibold hover:underline">Masuk</a> untuk berkomentar dengan nama akun Anda.
+                        </p>
+                        @endguest
                         <button type="submit"
                                 class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80"
                                 style="background:linear-gradient(135deg,#f59e0b,#d97706)">
@@ -572,16 +595,6 @@
                         </button>
                     </form>
                 </div>
-                @else
-                <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm text-center">
-                    <p class="text-sm text-gray-600 mb-4">Anda harus masuk terlebih dahulu untuk berkomentar.</p>
-                    <a href="{{ route('login') }}"
-                       class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80"
-                       style="background:linear-gradient(135deg,#f59e0b,#d97706)">
-                        Masuk untuk Berkomentar
-                    </a>
-                </div>
-                @endauth
             @else
                 <div class="bg-gray-50 rounded-xl border border-gray-100 p-6 text-center">
                     <p class="text-sm text-gray-500">Kolom komentar untuk artikel ini ditutup.</p>

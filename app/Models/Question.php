@@ -14,11 +14,12 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = [
-        'post_id', 'name', 'email', 'question',
+        'post_id', 'user_id', 'name', 'email', 'is_anonymous', 'question',
         'answer', 'is_answered', 'is_published', 'answered_at',
     ];
 
     protected $casts = [
+        'is_anonymous' => 'boolean',
         'is_answered' => 'boolean',
         'is_published' => 'boolean',
         'answered_at' => 'datetime',
@@ -42,5 +43,18 @@ class Question extends Model
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // ── Computed Attributes ──────────────────────────────────
+
+    /** Public display name — "Anonim" when the asker opted to hide it. */
+    public function getDisplayNameAttribute(): string
+    {
+        return $this->is_anonymous ? 'Anonim' : $this->name;
     }
 }

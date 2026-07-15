@@ -33,6 +33,23 @@ if (! function_exists('setting')) {
     }
 }
 
+if (! function_exists('setting_bool')) {
+    /**
+     * Get a setting value interpreted as a boolean. Handles the "1"/"0" strings
+     * that Toggle fields persist as well as real booleans and the default.
+     */
+    function setting_bool(string $key, bool $default = false): bool
+    {
+        $value = Setting::get($key);
+
+        if ($value === null) {
+            return $default;
+        }
+
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+}
+
 if (! function_exists('spmb_year_label')) {
     /**
      * The active academic year label (e.g. "2026/2027"), falling back to the

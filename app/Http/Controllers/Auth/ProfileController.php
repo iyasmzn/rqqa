@@ -16,8 +16,18 @@ class ProfileController extends Controller
 {
     public function edit(): View
     {
+        $user = Auth::user();
+
         return view('auth.profile', [
-            'user' => Auth::user(),
+            'user' => $user,
+            'myQuestions' => $user->questions()
+                ->with('post')
+                ->latest()
+                ->get(),
+            'myComments' => $user->comments()
+                ->with('post')
+                ->latest()
+                ->get(),
         ]);
     }
 

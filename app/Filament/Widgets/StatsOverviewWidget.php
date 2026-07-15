@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Comment;
 use App\Models\Donation;
 use App\Models\Event;
 use App\Models\Media;
@@ -75,6 +76,8 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
 
         $unansweredQuestions = Question::where('is_answered', false)->count();
 
+        $pendingComments = Comment::where('is_approved', false)->count();
+
         $upcomingEvents = Event::where('is_published', true)
             ->where('starts_at', '>=', $now)
             ->count();
@@ -106,6 +109,11 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
                 ->description('Dari total '.Question::count().' pertanyaan masuk')
                 ->descriptionIcon(Heroicon::ChatBubbleLeftRight)
                 ->color($unansweredQuestions > 0 ? 'warning' : 'success'),
+
+            Stat::make('Komentar Perlu Moderasi', $pendingComments)
+                ->description('Dari total '.Comment::count().' komentar masuk')
+                ->descriptionIcon(Heroicon::ChatBubbleBottomCenterText)
+                ->color($pendingComments > 0 ? 'warning' : 'success'),
 
             Stat::make('Event Mendatang', $upcomingEvents)
                 ->description('Dari total '.Event::where('is_published', true)->count().' event aktif')

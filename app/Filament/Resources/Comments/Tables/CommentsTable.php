@@ -18,10 +18,13 @@ class CommentsTable
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')
+                TextColumn::make('author_name')
                     ->label('Pengguna')
-                    ->searchable()
-                    ->sortable(),
+                    ->description(fn ($record): ?string => $record->is_guest ? 'Tamu' : null)
+                    ->state(fn ($record): string => $record->author_name)
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query
+                        ->where('guest_name', 'like', "%{$search}%")
+                        ->orWhereHas('user', fn (Builder $q) => $q->where('name', 'like', "%{$search}%"))),
 
                 TextColumn::make('post.title')
                     ->label('Artikel')

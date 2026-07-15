@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Concerns\ProtectsAgainstSpam;
 use App\Models\Post;
 use App\Models\Question;
 use Illuminate\Http\RedirectResponse;
@@ -12,8 +11,6 @@ use Illuminate\View\View;
 
 class QuestionController extends Controller
 {
-    use ProtectsAgainstSpam;
-
     public function index(): View
     {
         $questions = Question::published()->answered()->general()
@@ -33,13 +30,12 @@ class QuestionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $request->validate($this->spamProtectionRules($request));
+        $user = $request->user();
 
         $validated = $request->validate([
             'post_id' => ['nullable', 'integer', 'exists:posts,id'],
-            'name' => ['required', 'string', 'max:150'],
-            'email' => ['nullable', 'email', 'max:200'],
             'question' => ['required', 'string', 'max:2000'],
+            'is_anonymous' => ['nullable', 'boolean'],
         ]);
 
         if ($validated['post_id'] ?? null) {
@@ -52,7 +48,14 @@ class QuestionController extends Controller
             }
         }
 
-        Question::create($validated);
+        Question::create([
+            'post_id' => $validated['post_id'] ?? null,
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_anonymous' => (bool) ($validated['is_anonymous'] ?? false),
+            'question' => $validated['question'],
+        ]);
 
         return back()->with('success', 'Pertanyaan Anda telah terkirim. Kami akan segera menjawabnya.');
     }

@@ -20,6 +20,7 @@ class QuestionsTable
             ->columns([
                 TextColumn::make('name')
                     ->label('Nama')
+                    ->description(fn ($record): ?string => $record->is_anonymous ? 'Tampil anonim' : null)
                     ->searchable()
                     ->sortable(),
 

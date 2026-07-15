@@ -30,7 +30,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [PostController::class, 'show'])->name('blog.show');
 Route::post('/blog/{post}/komentar', [CommentController::class, 'store'])
-    ->middleware('auth')
+    ->middleware('throttle:15,1')
     ->name('comments.store');
 
 // Tenaga Pendidik
@@ -104,7 +104,9 @@ Route::post('/donasi', [DonationController::class, 'store'])->middleware('thrott
 
 // Tanya Jawab
 Route::get('/tanya-jawab', [QuestionController::class, 'index'])->name('questions.index');
-Route::post('/tanya-jawab', [QuestionController::class, 'store'])->middleware('throttle:8,1')->name('questions.store');
+Route::post('/tanya-jawab', [QuestionController::class, 'store'])
+    ->middleware(['auth', 'throttle:8,1'])
+    ->name('questions.store');
 
 // Kontak
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');

@@ -1,5 +1,9 @@
 @extends('layouts.public')
 
+@push('head')
+<style>[x-cloak] { display: none !important; }</style>
+@endpush
+
 @section('content')
 
 @php
@@ -9,7 +13,8 @@
 <section class="min-h-screen py-16 px-4"
          style="background:linear-gradient(135deg,#082828 0%,#08484A 60%,#0a6060 100%)">
 
-    <div class="w-full max-w-2xl mx-auto" data-aos="fade-up">
+    <div class="w-full max-w-2xl mx-auto" data-aos="fade-up"
+         x-data="{ tab: new URLSearchParams(location.search).get('tab') || 'akun' }">
 
         {{-- Header --}}
         <div class="text-center mb-8">
@@ -17,11 +22,30 @@
                  class="w-20 h-20 rounded-full object-cover mx-auto mb-4 ring-4 ring-white/20 bg-white/10">
             <h1 class="text-2xl font-extrabold text-white">Pengaturan Profil</h1>
             <p class="text-sm mt-1" style="color:rgba(255,255,255,.65)">
-                Kelola informasi akun Anda
+                Kelola informasi akun & aktivitas Anda
             </p>
         </div>
 
-        <div class="space-y-6">
+        {{-- ── Tabs ───────────────────────────────────────────── --}}
+        <div class="flex flex-wrap gap-1 p-1 mb-6 rounded-2xl bg-white/10 backdrop-blur">
+            @php
+                $tabs = [
+                    'akun' => 'Akun',
+                    'pertanyaan' => 'Pertanyaan Saya ('.$myQuestions->count().')',
+                    'komentar' => 'Komentar Saya ('.$myComments->count().')',
+                ];
+            @endphp
+            @foreach($tabs as $key => $label)
+                <button type="button" @click="tab = '{{ $key }}'"
+                        class="flex-1 min-w-max px-4 py-2 rounded-xl text-sm font-semibold transition-colors"
+                        :class="tab === '{{ $key }}' ? 'bg-white text-gray-900 shadow' : 'text-white/80 hover:text-white'">
+                    {{ $label }}
+                </button>
+            @endforeach
+        </div>
+
+        {{-- ── Tab: Akun ──────────────────────────────────────── --}}
+        <div x-show="tab === 'akun'" x-cloak class="space-y-6">
 
             {{-- ── CTA / Status Jadi Author ────────────────────── --}}
             <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8">
@@ -220,11 +244,91 @@
                     </button>
                 </form>
             </div>
-
-            <p class="text-center text-sm" style="color:rgba(255,255,255,.65)">
-                <a href="{{ route('home') }}" class="hover:opacity-75 transition-opacity">← Kembali ke Beranda</a>
-            </p>
         </div>
+
+        {{-- ── Tab: Pertanyaan Saya ───────────────────────────── --}}
+        <div x-show="tab === 'pertanyaan'" x-cloak class="space-y-4">
+            @forelse($myQuestions as $question)
+                <div class="bg-white rounded-2xl shadow-xl p-5 sm:p-6">
+                    <div class="flex items-center gap-2 mb-2 flex-wrap">
+                        @if($question->is_answered)
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
+                                ✓ Dijawab
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">
+                                Menunggu jawaban
+                            </span>
+                        @endif
+                        @if($question->is_anonymous)
+                            <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-500">Anonim</span>
+                        @endif
+                        @if($question->post)
+                            <a href="{{ route('blog.show', $question->post->slug) }}"
+                               class="text-[11px] font-semibold text-amber-600 hover:underline truncate max-w-[16rem]">
+                                {{ $question->post->title }}
+                            </a>
+                        @endif
+                        <span class="text-[11px] text-gray-400 ml-auto">{{ $question->created_at->diffForHumans() }}</span>
+                    </div>
+                    <p class="text-sm font-medium text-gray-800 mb-2">{{ $question->question }}</p>
+                    @if($question->answer)
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <p class="text-xs font-bold text-amber-700 mb-1">Jawaban {{ setting('site_name', config('app.name')) }}</p>
+                            <p class="text-sm text-gray-700 leading-relaxed">{!! nl2br(e($question->answer)) !!}</p>
+                        </div>
+                    @endif
+                </div>
+            @empty
+                <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
+                    <p class="text-sm text-gray-500 mb-4">Anda belum pernah mengirim pertanyaan.</p>
+                    <a href="{{ route('questions.index') }}" class="btn-primary text-sm py-2.5 px-5 justify-center inline-flex">
+                        Ajukan Pertanyaan
+                    </a>
+                </div>
+            @endforelse
+        </div>
+
+        {{-- ── Tab: Komentar Saya ─────────────────────────────── --}}
+        <div x-show="tab === 'komentar'" x-cloak class="space-y-4">
+            @forelse($myComments as $comment)
+                <div class="bg-white rounded-2xl shadow-xl p-5 sm:p-6">
+                    <div class="flex items-center gap-2 mb-2 flex-wrap">
+                        @if($comment->is_approved)
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
+                                Tampil
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">
+                                Menunggu persetujuan
+                            </span>
+                        @endif
+                        @if($comment->post)
+                            <a href="{{ route('blog.show', $comment->post->slug) }}#komentar"
+                               class="text-[11px] font-semibold text-amber-600 hover:underline truncate max-w-[16rem]">
+                                {{ $comment->post->title }}
+                            </a>
+                        @endif
+                        <span class="text-[11px] text-gray-400 ml-auto">{{ $comment->created_at->diffForHumans() }}</span>
+                    </div>
+                    <p class="text-sm text-gray-800">{{ $comment->body }}</p>
+                    @if($comment->admin_reply)
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                            <p class="text-xs font-bold text-amber-700 mb-1">Balasan Admin</p>
+                            <p class="text-sm text-gray-700 leading-relaxed">{!! nl2br(e($comment->admin_reply)) !!}</p>
+                        </div>
+                    @endif
+                </div>
+            @empty
+                <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
+                    <p class="text-sm text-gray-500">Anda belum pernah menulis komentar.</p>
+                </div>
+            @endforelse
+        </div>
+
+        <p class="text-center text-sm mt-6" style="color:rgba(255,255,255,.65)">
+            <a href="{{ route('home') }}" class="hover:opacity-75 transition-opacity">← Kembali ke Beranda</a>
+        </p>
     </div>
 </section>
 

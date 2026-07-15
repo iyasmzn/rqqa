@@ -16,9 +16,11 @@ class CommentForm
             ->components([
                 Section::make('Komentar Pengguna')
                     ->schema([
-                        Placeholder::make('user.name')
+                        Placeholder::make('author')
                             ->label('Pengguna')
-                            ->content(fn ($record) => $record?->user?->name ?? '—'),
+                            ->content(fn ($record) => $record === null
+                                ? '—'
+                                : $record->author_name.($record->is_guest ? ' (Tamu)' : '')),
 
                         Placeholder::make('post.title')
                             ->label('Artikel')

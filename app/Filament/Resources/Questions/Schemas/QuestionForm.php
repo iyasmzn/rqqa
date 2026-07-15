@@ -41,6 +41,10 @@ class QuestionForm
                                     ->maxLength(200),
                             ]),
 
+                        Toggle::make('is_anonymous')
+                            ->label('Ditampilkan sebagai Anonim')
+                            ->helperText('Jika aktif, nama penanya disembunyikan (tampil "Anonim") di halaman publik.'),
+
                         Textarea::make('question')
                             ->label('Pertanyaan')
                             ->required()

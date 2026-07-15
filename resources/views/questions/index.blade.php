@@ -80,23 +80,13 @@
             </div>
             @endif
 
+            @auth
             <form method="POST" action="{{ route('questions.store') }}" class="space-y-5">
                 @csrf
-                <div class="grid sm:grid-cols-2 gap-5">
-                    <div>
-                        <label class="qa-label">Nama <span style="color:#ef4444">*</span></label>
-                        <input type="text" name="name" value="{{ old('name') }}"
-                               class="qa-form-input @error('name') border-red-400 @enderror"
-                               placeholder="Nama Anda">
-                        @error('name')<p class="text-xs mt-1" style="color:#ef4444">{{ $message }}</p>@enderror
-                    </div>
-                    <div>
-                        <label class="qa-label">Email <span style="color:var(--muted);font-weight:400">(opsional)</span></label>
-                        <input type="email" name="email" value="{{ old('email') }}"
-                               class="qa-form-input @error('email') border-red-400 @enderror"
-                               placeholder="email@contoh.com">
-                        @error('email')<p class="text-xs mt-1" style="color:#ef4444">{{ $message }}</p>@enderror
-                    </div>
+                <div class="flex items-center gap-2.5">
+                    <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}"
+                         class="w-8 h-8 rounded-full object-cover">
+                    <span class="text-sm font-semibold" style="color:var(--text)">{{ auth()->user()->name }}</span>
                 </div>
                 <div>
                     <label class="qa-label">Pertanyaan <span style="color:#ef4444">*</span></label>
@@ -105,7 +95,11 @@
                               placeholder="Tulis pertanyaan Anda di sini...">{{ old('question') }}</textarea>
                     @error('question')<p class="text-xs mt-1" style="color:#ef4444">{{ $message }}</p>@enderror
                 </div>
-                <x-spam-guard />
+                <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:var(--muted)">
+                    <input type="checkbox" name="is_anonymous" value="1" @checked(old('is_anonymous'))
+                           class="rounded" style="accent-color:var(--primary)">
+                    Tampilkan sebagai anonim (sembunyikan nama saya)
+                </label>
                 <button type="submit"
                         class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white transition-opacity hover:opacity-80"
                         style="background:var(--primary)">
@@ -115,6 +109,16 @@
                     Kirim Pertanyaan
                 </button>
             </form>
+            @else
+            <div class="text-center py-6">
+                <p class="text-sm mb-4" style="color:var(--muted)">Anda harus masuk terlebih dahulu untuk mengajukan pertanyaan.</p>
+                <a href="{{ route('login') }}"
+                   class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white transition-opacity hover:opacity-80"
+                   style="background:var(--primary)">
+                    Masuk untuk Bertanya
+                </a>
+            </div>
+            @endauth
         </div>
 
         {{-- ── Q&A List ──────────────────────────────────────── --}}
@@ -129,11 +133,11 @@
                     <div class="flex items-start gap-3 mb-4">
                         <div class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-extrabold text-sm text-white"
                              style="background:var(--primary)">
-                            {{ strtoupper(substr($qa->name, 0, 1)) }}
+                            {{ strtoupper(substr($qa->display_name, 0, 1)) }}
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex flex-wrap items-center gap-2 mb-1">
-                                <span class="font-bold text-sm" style="color:var(--text)">{{ $qa->name }}</span>
+                                <span class="font-bold text-sm" style="color:var(--text)">{{ $qa->display_name }}</span>
                                 <span class="text-xs" style="color:var(--muted)">{{ $qa->created_at->diffForHumans() }}</span>
                             </div>
                             <p class="text-sm leading-relaxed" style="color:var(--text)">{{ $qa->question }}</p>
