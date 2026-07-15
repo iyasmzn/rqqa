@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Concerns\ProtectsAgainstSpam;
 use App\Models\Post;
 use App\Models\Question;
 use Illuminate\Http\RedirectResponse;
@@ -11,6 +12,8 @@ use Illuminate\View\View;
 
 class QuestionController extends Controller
 {
+    use ProtectsAgainstSpam;
+
     public function index(): View
     {
         $questions = Question::published()->answered()->general()
@@ -30,6 +33,8 @@ class QuestionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $request->validate($this->spamProtectionRules($request));
+
         $validated = $request->validate([
             'post_id' => ['nullable', 'integer', 'exists:posts,id'],
             'name' => ['required', 'string', 'max:150'],

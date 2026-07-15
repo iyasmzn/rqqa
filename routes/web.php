@@ -42,7 +42,7 @@ Route::get('/page/{slug}', [StaticPageController::class, 'show'])->name('page.sh
 
 // PPDB / SPMB
 Route::get('/ppdb', [SpmbController::class, 'index'])->name('ppdb.index');
-Route::post('/ppdb', [SpmbController::class, 'store'])->name('ppdb.store');
+Route::post('/ppdb', [SpmbController::class, 'store'])->middleware('throttle:8,1')->name('ppdb.store');
 
 // Unduhan
 Route::get('/unduhan', [DownloadController::class, 'index'])->name('downloads.index');
@@ -100,11 +100,11 @@ Route::get('/cerita-santri/{story:slug}', [StoryController::class, 'show'])->nam
 
 // Donasi
 Route::get('/donasi', [DonationController::class, 'index'])->name('donasi.index');
-Route::post('/donasi', [DonationController::class, 'store'])->name('donasi.store');
+Route::post('/donasi', [DonationController::class, 'store'])->middleware('throttle:8,1')->name('donasi.store');
 
 // Tanya Jawab
 Route::get('/tanya-jawab', [QuestionController::class, 'index'])->name('questions.index');
-Route::post('/tanya-jawab', [QuestionController::class, 'store'])->name('questions.store');
+Route::post('/tanya-jawab', [QuestionController::class, 'store'])->middleware('throttle:8,1')->name('questions.store');
 
 // Kontak
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');

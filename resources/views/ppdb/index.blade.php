@@ -520,6 +520,8 @@
                     @error('notes')<p class="ppdb-hint text-red-500">{{ $message }}</p>@enderror
                 </div>
 
+                <x-spam-guard />
+
                 {{-- Submit --}}
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-xl border border-amber-200 bg-amber-50" data-aos="fade-up">
                     <p class="text-xs text-amber-800 max-w-sm">

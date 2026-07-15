@@ -105,6 +105,7 @@
                               placeholder="Tulis pertanyaan Anda di sini...">{{ old('question') }}</textarea>
                     @error('question')<p class="text-xs mt-1" style="color:#ef4444">{{ $message }}</p>@enderror
                 </div>
+                <x-spam-guard />
                 <button type="submit"
                         class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white transition-opacity hover:opacity-80"
                         style="background:var(--primary)">

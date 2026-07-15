@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Concerns\ProtectsAgainstSpam;
 use App\Models\AcademicYear;
 use App\Models\AdmissionPath;
 use App\Models\RegistrationWave;
@@ -14,6 +15,8 @@ use Illuminate\View\View;
 
 class SpmbController extends Controller
 {
+    use ProtectsAgainstSpam;
+
     public function index(): View
     {
         $procedures = json_decode(Setting::get('spmb_procedures', ''), true) ?: $this->defaultProcedures();
@@ -37,6 +40,8 @@ class SpmbController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $request->validate($this->spamProtectionRules($request));
+
         if (! (bool) Setting::get('spmb_form_enabled', true)) {
             return back()->with('error', Setting::get('spmb_closed_message', 'Form pendaftaran saat ini sedang ditutup.'));
         }

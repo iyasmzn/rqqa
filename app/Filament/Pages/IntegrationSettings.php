@@ -40,6 +40,11 @@ class IntegrationSettings extends Page
             'oauth_google_enabled' => (bool) Setting::get('oauth_google_enabled', false),
             'oauth_google_client_id' => Setting::get('oauth_google_client_id'),
             'oauth_google_client_secret' => Setting::get('oauth_google_client_secret'),
+
+            // Cloudflare Turnstile
+            'turnstile_enabled' => (bool) Setting::get('turnstile_enabled', false),
+            'turnstile_site_key' => Setting::get('turnstile_site_key'),
+            'turnstile_secret_key' => Setting::get('turnstile_secret_key'),
         ]);
     }
 
@@ -64,7 +69,43 @@ class IntegrationSettings extends Page
             // Tambahkan provider baru di sini dengan memanggil $this->providerSection(...)
             // Contoh: $this->providerSection('github', 'GitHub', ...),
 
+            $this->turnstileSection(),
+
         ]);
+    }
+
+    private function turnstileSection(): Section
+    {
+        return Section::make('Cloudflare Turnstile (Captcha)')
+            ->description('Lindungi form publik (Tanya Jawab, Donasi, PPDB) dari bot & spam. Gratis tanpa batas. Dapatkan Site Key dan Secret Key dari dashboard Cloudflare → Turnstile → Add Site.')
+            ->icon(Heroicon::OutlinedShieldCheck)
+            ->schema([
+                Toggle::make('turnstile_enabled')
+                    ->label('Aktifkan Turnstile')
+                    ->helperText('Captcha hanya tampil di form publik bila diaktifkan dan kedua key terisi.')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->live()
+                    ->columnSpanFull(),
+
+                Grid::make(1)->schema([
+                    TextInput::make('turnstile_site_key')
+                        ->label('Site Key')
+                        ->placeholder('0x4AAAA...')
+                        ->visible(fn (Get $get): bool => (bool) $get('turnstile_enabled'))
+                        ->required(fn (Get $get): bool => (bool) $get('turnstile_enabled'))
+                        ->maxLength(255),
+
+                    TextInput::make('turnstile_secret_key')
+                        ->label('Secret Key')
+                        ->password()
+                        ->revealable()
+                        ->placeholder('Isi untuk mengubah secret yang tersimpan')
+                        ->visible(fn (Get $get): bool => (bool) $get('turnstile_enabled'))
+                        ->maxLength(255)
+                        ->hint('Disimpan aman di server, tidak pernah tampil ke publik. Kosongkan jika tidak ingin mengubah secret yang sudah tersimpan.'),
+                ])->columnSpanFull(),
+            ]);
     }
 
     private function providerSection(
@@ -143,6 +184,14 @@ class IntegrationSettings extends Page
             if (! blank($data[$secretKey] ?? null)) {
                 $toSave[$secretKey] = $data[$secretKey];
             }
+        }
+
+        // Cloudflare Turnstile
+        $toSave['turnstile_enabled'] = $data['turnstile_enabled'] ?? false;
+        $toSave['turnstile_site_key'] = $data['turnstile_site_key'] ?? null;
+
+        if (! blank($data['turnstile_secret_key'] ?? null)) {
+            $toSave['turnstile_secret_key'] = $data['turnstile_secret_key'];
         }
 
         Setting::setMany($toSave);

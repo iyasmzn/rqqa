@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Concerns\ProtectsAgainstSpam;
 use App\Models\Donation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -9,6 +10,8 @@ use Illuminate\View\View;
 
 class DonationController extends Controller
 {
+    use ProtectsAgainstSpam;
+
     public function index(): View
     {
         $siteName = setting('site_name', config('app.name'));
@@ -24,6 +27,8 @@ class DonationController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $request->validate($this->spamProtectionRules($request));
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'email' => ['nullable', 'email', 'max:150'],

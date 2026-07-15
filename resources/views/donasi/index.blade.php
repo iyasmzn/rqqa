@@ -304,6 +304,8 @@
                     @error('message')<p class="donasi-hint text-red-500">{{ $message }}</p>@enderror
                 </div>
 
+                <x-spam-guard />
+
                 {{-- Submit --}}
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-xl border border-emerald-200 bg-emerald-50" data-aos="fade-up">
                     <p class="text-xs text-emerald-800 max-w-sm">

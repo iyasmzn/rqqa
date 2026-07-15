@@ -457,6 +457,7 @@
                                   placeholder="Tulis pertanyaan Anda tentang artikel ini...">{{ old('question') }}</textarea>
                         @error('question')<p class="text-xs mt-1 text-red-500">{{ $message }}</p>@enderror
                     </div>
+                    <x-spam-guard />
                     <button type="submit"
                             class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80"
                             style="background:linear-gradient(135deg,#f59e0b,#d97706)">
