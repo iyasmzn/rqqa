@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthorRequestController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ProfileController;
@@ -59,6 +60,20 @@ Route::middleware('guest')->group(function () {
 });
 Route::post('/keluar', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
+// ── Verifikasi Email ─────────────────────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', [EmailVerificationController::class, 'notice'])
+        ->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+
+    Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
+});
+
 // ── Pengaturan Profil & Permintaan Menjadi Author ────────────
 Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -105,7 +120,7 @@ Route::post('/donasi', [DonationController::class, 'store'])->middleware('thrott
 // Tanya Jawab
 Route::get('/tanya-jawab', [QuestionController::class, 'index'])->name('questions.index');
 Route::post('/tanya-jawab', [QuestionController::class, 'store'])
-    ->middleware(['auth', 'throttle:8,1'])
+    ->middleware(['auth', 'verified', 'throttle:8,1'])
     ->name('questions.store');
 
 // Kontak
