@@ -55,23 +55,12 @@
 
     {{-- Dynamic Google Font loading based on admin setting --}}
     @php
-        $fontMap = [
-            'instrument-sans'   => ['family' => "'Instrument Sans', ui-sans-serif, system-ui, sans-serif", 'google' => null],
-            'inter'             => ['family' => "'Inter', ui-sans-serif, system-ui, sans-serif",             'google' => 'Inter:wght@300;400;500;600;700;800;900'],
-            'plus-jakarta-sans' => ['family' => "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif", 'google' => 'Plus+Jakarta+Sans:wght@300;400;500;600;700;800'],
-            'outfit'            => ['family' => "'Outfit', ui-sans-serif, system-ui, sans-serif",            'google' => 'Outfit:wght@300;400;500;600;700;800;900'],
-            'dm-sans'           => ['family' => "'DM Sans', ui-sans-serif, system-ui, sans-serif",           'google' => 'DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400'],
-            'nunito'            => ['family' => "'Nunito', ui-sans-serif, system-ui, sans-serif",            'google' => 'Nunito:wght@300;400;500;600;700;800'],
-            'poppins'           => ['family' => "'Poppins', ui-sans-serif, system-ui, sans-serif",           'google' => 'Poppins:wght@300;400;500;600;700;800'],
-            'sora'              => ['family' => "'Sora', ui-sans-serif, system-ui, sans-serif",              'google' => 'Sora:wght@300;400;500;600;700;800'],
-        ];
-        $selectedFont = setting('theme_font', 'instrument-sans');
-        $font = $fontMap[$selectedFont] ?? $fontMap['instrument-sans'];
+        $font = resolved_font();
     @endphp
-    @if($font['google'])
+    @if($font['href'])
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ $font['google'] }}&display=swap">
+        <link rel="stylesheet" href="{{ $font['href'] }}">
     @endif
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -91,6 +80,10 @@
             --text:   #1d1d1f;
             --muted:  #6e6e73;
 
+            /* Override Tailwind's baked font token so the admin-selected font applies everywhere */
+            --font-sans: {!! $font['family'] !!};
+            --default-font-family: {!! $font['family'] !!};
+
             --primary: {{ setting('theme_primary_color', '#08484A') }};
 
             --primary-50:  color-mix(in oklab, var(--primary)  8%, white);
@@ -108,7 +101,7 @@
         body {
             background: var(--bg);
             color: var(--text);
-            font-family: {{ $font['family'] }};
+            font-family: {!! $font['family'] !!};
             -webkit-font-smoothing: antialiased;
         }
 

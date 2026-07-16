@@ -6,14 +6,18 @@ use App\Models\Setting;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\HtmlString;
 use UnitEnum;
 
 class ThemeSettings extends Page
@@ -42,6 +46,8 @@ class ThemeSettings extends Page
             'theme_preset' => $this->matchPreset($savedColor),
             'theme_primary_color' => $savedColor,
             'theme_font' => $savedFont,
+            'theme_font_custom_url' => Setting::get('theme_font_custom_url', ''),
+            'theme_font_custom_family' => Setting::get('theme_font_custom_family', ''),
         ]);
     }
 
@@ -91,9 +97,40 @@ class ThemeSettings extends Page
                     Select::make('theme_font')
                         ->label('Font Website')
                         ->options(self::fonts())
-                        ->searchable(false)
+                        ->allowHtml()
+                        ->searchable()
+                        ->live()
                         ->default('instrument-sans')
-                        ->hint('Perubahan font akan langsung terlihat setelah disimpan.'),
+                        ->hint('Setiap opsi ditampilkan dengan font aslinya. Perubahan langsung terlihat setelah disimpan.'),
+
+                    TextInput::make('theme_font_custom_url')
+                        ->label('URL / Embed Google Fonts')
+                        ->placeholder('<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700"> — atau tempel URL-nya saja')
+                        ->visible(fn (Get $get): bool => $get('theme_font') === 'custom')
+                        ->live(debounce: 600)
+                        ->afterStateUpdated(function (Set $set, ?string $state): void {
+                            if ($family = google_font_family($state)) {
+                                $set('theme_font_custom_family', $family);
+                            }
+                        })
+                        ->helperText('Buka fonts.google.com → pilih font → "Get font" → "Get embed code" → salin baris <link> atau @import, lalu tempel di sini. Pratinjau muncul otomatis.'),
+
+                    TextInput::make('theme_font_custom_family')
+                        ->label('Nama Font (font-family)')
+                        ->placeholder('mis. Roboto Slab')
+                        ->visible(fn (Get $get): bool => $get('theme_font') === 'custom')
+                        ->live(debounce: 600)
+                        ->helperText('Terisi otomatis dari URL di atas — samakan persis dengan nama font di Google Fonts.'),
+
+                    Placeholder::make('font_preview')
+                        ->label('Pratinjau')
+                        ->content(function (Get $get): HtmlString {
+                            if (($get('theme_font') ?? 'instrument-sans') === 'custom') {
+                                return self::customFontPreview($get('theme_font_custom_family'), $get('theme_font_custom_url'));
+                            }
+
+                            return self::fontPreview($get('theme_font') ?? 'instrument-sans');
+                        }),
                 ]),
         ]);
     }
@@ -104,6 +141,8 @@ class ThemeSettings extends Page
 
         Setting::set('theme_primary_color', $data['theme_primary_color'] ?? '#d97706');
         Setting::set('theme_font', $data['theme_font'] ?? 'instrument-sans');
+        Setting::set('theme_font_custom_url', google_font_url($data['theme_font_custom_url'] ?? '') ?? '');
+        Setting::set('theme_font_custom_family', clean_font_family_name($data['theme_font_custom_family'] ?? ''));
 
         Notification::make()
             ->success()
@@ -130,11 +169,15 @@ class ThemeSettings extends Page
                 ->action(function (): void {
                     Setting::set('theme_primary_color', '#d97706');
                     Setting::set('theme_font', 'instrument-sans');
+                    Setting::set('theme_font_custom_url', '');
+                    Setting::set('theme_font_custom_family', '');
 
                     $this->form->fill([
                         'theme_preset' => '#d97706',
                         'theme_primary_color' => '#d97706',
                         'theme_font' => 'instrument-sans',
+                        'theme_font_custom_url' => '',
+                        'theme_font_custom_family' => '',
                     ]);
 
                     Notification::make()
@@ -168,22 +211,94 @@ class ThemeSettings extends Page
     }
 
     /**
-     * Returns available font options.
+     * Single source of truth for the available fonts. Pulled from config/fonts.php
+     * and shared with the public layouts.
      *
-     * @return array<string, string>
+     * @return array<string, array{label: string, family: string, google: string, group: string, bundled?: bool}>
+     */
+    public static function fontFamilies(): array
+    {
+        return config('fonts');
+    }
+
+    /**
+     * Returns available font options grouped by category, with each label
+     * rendered in its own font. Requires `allowHtml()` + `searchable()`.
+     *
+     * @return array<string, array<string, string>>
      */
     public static function fonts(): array
     {
-        return [
-            'instrument-sans' => '✦ Instrument Sans (Default)',
-            'inter' => '▪ Inter — Clean & Modern',
-            'plus-jakarta-sans' => '▪ Plus Jakarta Sans — Elegant',
-            'outfit' => '▪ Outfit — Geometric',
-            'dm-sans' => '▪ DM Sans — Rounded & Friendly',
-            'nunito' => '▪ Nunito — Soft & Rounded',
-            'poppins' => '▪ Poppins — Bold & Geometric',
-            'sora' => '▪ Sora — Modern Sans',
-        ];
+        $options = [];
+
+        foreach (self::fontFamilies() as $key => $font) {
+            $options[$font['group']][$key] = '<span style="font-family: '.e($font['family']).'; font-size: 0.95rem;">'.e($font['label']).'</span>';
+        }
+
+        $options['Kustom']['custom'] = '<span style="font-size: 0.95rem;">✎ Font Kustom — tempel dari Google Fonts</span>';
+
+        return $options;
+    }
+
+    /**
+     * Builds the live preview markup for the given predefined font key.
+     */
+    public static function fontPreview(string $key): HtmlString
+    {
+        $family = self::fontFamilies()[$key]['family'] ?? self::fontFamilies()['instrument-sans']['family'];
+
+        return self::buildPreview($family);
+    }
+
+    /**
+     * Builds the live preview markup for a custom, admin-provided font. The
+     * webfont stylesheet is embedded directly in the preview so it loads
+     * server-side as soon as the URL is pasted — no extra client script needed.
+     */
+    public static function customFontPreview(?string $name, ?string $url): HtmlString
+    {
+        $name = clean_font_family_name($name);
+        $family = $name !== ''
+            ? '"'.$name.'", ui-sans-serif, system-ui, sans-serif'
+            : 'ui-sans-serif, system-ui, sans-serif';
+
+        $href = google_font_url($url);
+        $stylesheet = $href ? '<link rel="stylesheet" href="'.e($href).'">' : '';
+
+        return self::buildPreview($family, $stylesheet);
+    }
+
+    /**
+     * Renders the shared preview card for a resolved CSS font-family stack,
+     * optionally preceded by a stylesheet that loads the webfont.
+     */
+    protected static function buildPreview(string $family, string $stylesheet = ''): HtmlString
+    {
+        $family = e($family);
+
+        return new HtmlString(<<<HTML
+            {$stylesheet}
+            <div style="font-family: {$family}; border: 1px solid rgba(0,0,0,.1); border-radius: .75rem; padding: 1rem 1.25rem; background: #fff;">
+                <div style="font-size: 1.5rem; font-weight: 700; line-height: 1.3; color: #1d1d1f;">Ar-Rahman Qur'an Academy</div>
+                <div style="font-size: 1rem; font-weight: 500; margin-top: .25rem; color: #1d1d1f;">Menyemai generasi Qur'ani yang berakhlak.</div>
+                <p style="font-size: .875rem; margin-top: .5rem; color: #6e6e73;">The quick brown fox jumps over the lazy dog — 0123456789</p>
+            </div>
+        HTML);
+    }
+
+    /**
+     * Combined Google Fonts stylesheet URL that loads every selectable font so
+     * the dropdown options and the live preview render in their real typeface.
+     */
+    public function googleFontsHref(): string
+    {
+        $families = collect(self::fontFamilies())
+            ->pluck('google')
+            ->filter()
+            ->map(fn (string $google): string => 'family='.$google)
+            ->implode('&');
+
+        return 'https://fonts.googleapis.com/css2?'.$families.'&display=swap';
     }
 
     /**
