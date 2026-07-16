@@ -10,10 +10,10 @@ class AdmissionPathSeeder extends Seeder
     public function run(): void
     {
         $paths = [
-            ['slug' => 'zonasi', 'name' => 'Zonasi', 'icon' => '🏡', 'color' => 'info', 'description' => 'Berdasarkan jarak domisili ke sekolah.', 'sort_order' => 1],
-            ['slug' => 'prestasi', 'name' => 'Prestasi', 'icon' => '🏆', 'color' => 'success', 'description' => 'Berdasarkan nilai rapor atau prestasi akademik/non-akademik.', 'sort_order' => 2],
-            ['slug' => 'afirmasi', 'name' => 'Afirmasi', 'icon' => '💚', 'color' => 'warning', 'description' => 'Untuk peserta didik dari keluarga tidak mampu.', 'sort_order' => 3],
-            ['slug' => 'mutasi', 'name' => 'Mutasi', 'icon' => '🔄', 'color' => 'gray', 'description' => 'Untuk anak guru/tenaga kependidikan atau pindah tugas orang tua.', 'sort_order' => 4],
+            ['slug' => 'reguler', 'name' => 'Reguler', 'icon' => '📝', 'color' => 'info', 'description' => 'Jalur pendaftaran umum yang terbuka untuk semua calon.', 'sort_order' => 1],
+            ['slug' => 'prestasi', 'name' => 'Prestasi', 'icon' => '🏆', 'color' => 'success', 'description' => 'Berdasarkan prestasi atau pencapaian yang dimiliki calon.', 'sort_order' => 2],
+            ['slug' => 'beasiswa', 'name' => 'Beasiswa', 'icon' => '💚', 'color' => 'warning', 'description' => 'Untuk calon yang membutuhkan keringanan biaya.', 'sort_order' => 3],
+            ['slug' => 'undangan', 'name' => 'Undangan', 'icon' => '✉️', 'color' => 'gray', 'description' => 'Jalur khusus melalui undangan atau rekomendasi.', 'sort_order' => 4],
         ];
 
         foreach ($paths as $path) {

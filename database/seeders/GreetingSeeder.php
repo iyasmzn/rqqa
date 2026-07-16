@@ -20,7 +20,7 @@ class GreetingSeeder extends Seeder
         if ($legacyName) {
             Greeting::create([
                 'name' => $legacyName,
-                'position' => Setting::get('principal_title', 'Kepala Sekolah'),
+                'position' => Setting::get('principal_title', 'Direktur'),
                 'nip' => Setting::get('principal_nip'),
                 'photo' => Setting::get('principal_photo'),
                 'excerpt' => Setting::get('principal_excerpt'),
@@ -34,21 +34,21 @@ class GreetingSeeder extends Seeder
 
         $greetings = [
             [
-                'name' => 'KH. Abdullah Mubarok, Lc., M.A.',
-                'position' => 'Kepala Yayasan',
+                'name' => 'Budi Santoso',
+                'position' => 'Direktur',
                 'nip' => null,
                 'photo' => null,
-                'excerpt' => "Bismillahirrahmanirrahim. Alhamdulillah, atas izin dan ridha Allah SWT, Pondok Pesantren kami terus berkembang menjadi lembaga pendidikan Islam yang amanah dan terpercaya.\n\nKami berkomitmen untuk mencetak generasi Qurani yang tidak hanya hafal Al-Qur'an, tetapi juga berilmu, berakhlak mulia, dan siap menghadapi tantangan zaman. Bersama seluruh asatidz dan keluarga besar pesantren, kami terus berijtihad demi masa depan santri yang gemilang di dunia dan akhirat.",
-                'page_slug' => 'sambutan-kepala-yayasan',
+                'excerpt' => "Selamat datang di website resmi kami. Dengan bangga kami menghadirkan platform digital yang dirancang untuk memudahkan Anda mengakses informasi, layanan, dan berbagai kegiatan kami.\n\nKami berkomitmen untuk terus berinovasi dan memberikan pelayanan terbaik. Bersama seluruh tim, kami berupaya menghadirkan pengalaman yang bermanfaat bagi setiap pengunjung, anggota, dan mitra kami.",
+                'page_slug' => 'sambutan-direktur',
                 'is_published' => true,
                 'sort_order' => 1,
             ],
             [
-                'name' => 'Ust. Muhammad Ridwan, S.Pd.I.',
-                'position' => 'Kepala Sekolah',
+                'name' => 'Dewi Lestari',
+                'position' => 'Manajer Operasional',
                 'nip' => null,
                 'photo' => null,
-                'excerpt' => "Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di website resmi kami. Melalui media ini, kami berharap dapat menjalin komunikasi yang baik dengan wali santri dan masyarakat luas.\n\nKami terus berupaya menghadirkan lingkungan belajar yang kondusif, modern, dan islami demi masa depan para santri.",
+                'excerpt' => "Terima kasih telah mengunjungi website kami. Melalui media ini, kami berharap dapat menjalin komunikasi yang baik dengan seluruh anggota, mitra, dan masyarakat luas.\n\nKami terus berupaya menghadirkan layanan yang responsif, transparan, dan modern demi kepuasan Anda.",
                 'page_slug' => null,
                 'is_published' => true,
                 'sort_order' => 2,

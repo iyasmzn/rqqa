@@ -15,24 +15,24 @@ class SlideSeeder extends Seeder
 
         $defaults = [
             [
-                'title' => 'Selamat Datang di Pondok Pesantren',
-                'subtitle' => 'Pondok pesantren modern yang membentuk generasi Qurani berilmu, berakhlak mulia, dan siap menghadapi tantangan zaman.',
-                'button_label' => 'Profil Pesantren',
+                'title' => 'Selamat Datang di Demo CMS',
+                'subtitle' => 'Platform serba guna untuk membangun dan mengelola website Anda dengan mudah, cepat, dan profesional.',
+                'button_label' => 'Pelajari Lebih Lanjut',
                 'button_url' => '#sambutan',
                 'sort_order' => 1,
                 'is_active' => true,
             ],
             [
-                'title' => 'Program Tahfidz Al-Qur\'an',
-                'subtitle' => 'Raih hafalan 30 juz dengan metode terbukti, dibimbing langsung oleh para asatidz berpengalaman dan hafidz Qur\'an.',
-                'button_label' => 'Lihat Program',
+                'title' => 'Kelola Konten Tanpa Ribet',
+                'subtitle' => 'Buat artikel, atur halaman, dan kelola media hanya dengan beberapa klik — tanpa perlu keahlian teknis.',
+                'button_label' => 'Lihat Fitur',
                 'button_url' => '/program',
                 'sort_order' => 2,
                 'is_active' => true,
             ],
             [
-                'title' => 'Penerimaan Santri Baru 2026/2027',
-                'subtitle' => 'Pendaftaran resmi dibuka. Tersedia program Tahfidz, Diniyah, dan Terpadu. Daftarkan putra-putri Anda sekarang.',
+                'title' => 'Pendaftaran 2026 Telah Dibuka',
+                'subtitle' => 'Segera daftarkan diri Anda dan nikmati seluruh layanan yang tersedia. Isi formulir pendaftaran online sekarang.',
                 'button_label' => 'Daftar Sekarang',
                 'button_url' => '/ppdb',
                 'sort_order' => 3,

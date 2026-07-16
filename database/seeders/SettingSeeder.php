@@ -70,14 +70,14 @@ class SettingSeeder extends Seeder
     private function general(): array
     {
         return [
-            'site_name' => 'Pondok Pesantren',
-            'site_tagline' => 'Membentuk Generasi Qurani',
-            'site_description' => 'Website resmi Pondok Pesantren. Informasi penerimaan santri baru, program pendidikan, kegiatan, dan cerita inspiratif dari pesantren.',
+            'site_name' => 'Demo CMS',
+            'site_tagline' => 'Kelola Website Anda dengan Mudah',
+            'site_description' => 'Website demo yang menampilkan fitur-fitur CMS: manajemen konten, blog, agenda kegiatan, katalog, formulir pendaftaran, dan lainnya dalam satu platform.',
 
-            'contact_address' => 'Jl. Pendidikan No. 1, Kota Anda',
+            'contact_address' => 'Jl. Merdeka No. 1, Jakarta 10110',
             'contact_phone' => '(021) 123-4567',
-            'contact_email' => 'info@pesantren.sch.id',
-            'contact_hours' => 'Senin–Sabtu, 07.00–17.00 WIB',
+            'contact_email' => 'info@demo.test',
+            'contact_hours' => 'Senin–Jumat, 09.00–17.00 WIB',
             'contact_map_url' => null,
 
             'social_facebook' => null,
@@ -99,8 +99,8 @@ class SettingSeeder extends Seeder
             'nav_items' => json_encode([
                 ['label' => 'Beranda',  'url' => '/',              'target' => '_self', 'is_active' => true, 'children' => []],
                 ['label' => 'Profil',   'url' => '#sambutan',      'target' => '_self', 'is_active' => true, 'children' => []],
-                ['label' => 'Program',  'url' => '/program',       'target' => '_self', 'is_active' => true, 'children' => []],
-                ['label' => 'Kegiatan', 'url' => '/kegiatan',      'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Layanan',  'url' => '/program',       'target' => '_self', 'is_active' => true, 'children' => []],
+                ['label' => 'Agenda',   'url' => '/kegiatan',      'target' => '_self', 'is_active' => true, 'children' => []],
                 ['label' => 'Cerita',   'url' => '/cerita-santri', 'target' => '_self', 'is_active' => true, 'children' => []],
                 ['label' => 'Blog',     'url' => '/blog',          'target' => '_self', 'is_active' => true, 'children' => []],
                 ['label' => 'Kontak',   'url' => '#kontak',        'target' => '_self', 'is_active' => true, 'children' => []],
@@ -137,54 +137,54 @@ class SettingSeeder extends Seeder
     {
         return [
             'quick_links' => json_encode([
-                ['icon' => '📋', 'label' => 'Daftar Santri', 'url' => '#spmb',          'is_active' => true],
-                ['icon' => '📚', 'label' => 'Buku',          'url' => '/buku',          'is_active' => true],
-                ['icon' => '🎓', 'label' => 'Program',       'url' => '/program',       'is_active' => true],
-                ['icon' => '🗓', 'label' => 'Kegiatan',      'url' => '/kegiatan',      'is_active' => true],
-                ['icon' => '📖', 'label' => 'Cerita Santri', 'url' => '/cerita-santri', 'is_active' => true],
-                ['icon' => '📞', 'label' => 'Kontak',        'url' => '#kontak',        'is_active' => true],
+                ['icon' => '📋', 'label' => 'Pendaftaran', 'url' => '#spmb',          'is_active' => true],
+                ['icon' => '📚', 'label' => 'Katalog',     'url' => '/buku',          'is_active' => true],
+                ['icon' => '🎓', 'label' => 'Layanan',     'url' => '/program',       'is_active' => true],
+                ['icon' => '🗓', 'label' => 'Agenda',      'url' => '/kegiatan',      'is_active' => true],
+                ['icon' => '📖', 'label' => 'Cerita',      'url' => '/cerita-santri', 'is_active' => true],
+                ['icon' => '📞', 'label' => 'Kontak',      'url' => '#kontak',        'is_active' => true],
             ]),
         ];
     }
 
-    // ── PPDB / Penerimaan Santri ─────────────────────────────────────
+    // ── Pendaftaran Online ───────────────────────────────────────────
 
     /** @return array<string, mixed> */
     private function spmb(): array
     {
         $procedures = [
-            ['icon' => '📝', 'title' => 'Isi Formulir Online',  'description' => 'Kunjungi halaman pendaftaran dan isi formulir dengan data calon santri secara lengkap dan benar.'],
-            ['icon' => '📁', 'title' => 'Siapkan Berkas',       'description' => 'Persiapkan dokumen: fotokopi KK, akta lahir, ijazah/SKHU, rapor, dan pas foto terbaru calon santri.'],
-            ['icon' => '✅', 'title' => 'Verifikasi & Tes',     'description' => 'Datang ke pesantren untuk verifikasi berkas dan mengikuti tes baca Al-Qur\'an serta wawancara.'],
-            ['icon' => '🎉', 'title' => 'Pengumuman Hasil',     'description' => 'Hasil penerimaan diumumkan melalui website resmi dan dihubungi langsung oleh panitia via WhatsApp.'],
+            ['icon' => '📝', 'title' => 'Isi Formulir Online',  'description' => 'Kunjungi halaman pendaftaran dan isi formulir dengan data diri secara lengkap dan benar.'],
+            ['icon' => '📁', 'title' => 'Siapkan Berkas',       'description' => 'Persiapkan dokumen pendukung: kartu identitas, pas foto terbaru, dan berkas lain sesuai persyaratan.'],
+            ['icon' => '✅', 'title' => 'Verifikasi Data',      'description' => 'Tim kami akan memverifikasi kelengkapan berkas dan menghubungi Anda untuk tahap selanjutnya.'],
+            ['icon' => '🎉', 'title' => 'Pengumuman Hasil',     'description' => 'Hasil pendaftaran diumumkan melalui website resmi dan dikirimkan langsung via email atau WhatsApp.'],
         ];
 
         $fees = [
-            ['category' => 'Biaya Pendaftaran', 'amount' => 'Rp 100.000',   'note' => 'Tidak dikembalikan'],
-            ['category' => 'Biaya Masuk',       'amount' => 'Rp 2.500.000', 'note' => 'Termasuk seragam & perlengkapan'],
-            ['category' => 'SPP Bulanan',       'amount' => 'Rp 750.000',   'note' => 'Sudah termasuk makan 3x sehari'],
-            ['category' => 'Kitab & Buku',      'amount' => 'Rp 350.000',   'note' => 'Per semester, sesuai tingkatan'],
+            ['category' => 'Biaya Pendaftaran', 'amount' => 'Rp 100.000', 'note' => 'Tidak dikembalikan'],
+            ['category' => 'Biaya Registrasi',  'amount' => 'Rp 500.000', 'note' => 'Sekali bayar di awal'],
+            ['category' => 'Iuran Bulanan',     'amount' => 'Rp 150.000', 'note' => 'Dibayar setiap bulan'],
+            ['category' => 'Paket Materi',      'amount' => 'Rp 250.000', 'note' => 'Opsional, sesuai kebutuhan'],
         ];
 
         return [
             // Kartu di halaman depan
-            'spmb_card_title' => 'Penerimaan Santri Baru {year} Dibuka!',
-            'spmb_card_description' => 'Pondok Pesantren membuka penerimaan santri baru. Tersedia program Tahfidz, Diniyah, dan Terpadu. Daftarkan putra-putri Anda sebelum batas waktu.',
+            'spmb_card_title' => 'Pendaftaran {year} Telah Dibuka!',
+            'spmb_card_description' => 'Segera daftarkan diri Anda dan bergabung bersama kami. Isi formulir pendaftaran online sebelum batas waktu berakhir.',
             'spmb_card_cta_label' => 'Daftar Sekarang',
             'spmb_card_cta_url' => '/ppdb',
             'spmb_card_secondary_label' => 'Info Selengkapnya',
 
             // Section tahapan di halaman depan
-            'spmb_steps_title' => 'Alur Pendaftaran Santri',
-            'spmb_steps_description' => 'Ikuti langkah-langkah berikut untuk mendaftarkan putra-putri Anda sebagai santri baru.',
+            'spmb_steps_title' => 'Alur Pendaftaran',
+            'spmb_steps_description' => 'Ikuti langkah-langkah berikut untuk menyelesaikan proses pendaftaran Anda.',
             'spmb_steps_cta_label' => 'Lihat Detail & Daftar',
             'spmb_steps_cta_url' => '/ppdb',
 
             // Form pendaftaran
             'spmb_form_enabled' => 1,
-            'spmb_form_title' => 'Formulir Pendaftaran Santri Baru',
-            'spmb_form_description' => 'Isi formulir di bawah ini dengan data yang benar dan lengkap. Panitia akan menghubungi Anda untuk proses verifikasi dan jadwal tes.',
-            'spmb_closed_message' => 'Pendaftaran santri baru saat ini sedang ditutup. Pantau informasi terbaru melalui halaman ini atau hubungi panitia via WhatsApp.',
+            'spmb_form_title' => 'Formulir Pendaftaran',
+            'spmb_form_description' => 'Isi formulir di bawah ini dengan data yang benar dan lengkap. Tim kami akan menghubungi Anda untuk proses verifikasi.',
+            'spmb_closed_message' => 'Pendaftaran saat ini sedang ditutup. Pantau informasi terbaru melalui halaman ini atau hubungi kami.',
 
             // Konten prosedur & biaya
             'spmb_procedures' => json_encode($procedures),
@@ -198,9 +198,9 @@ class SettingSeeder extends Seeder
     private function donasi(): array
     {
         return [
-            'donasi_bank_name' => 'Bank Syariah Indonesia (BSI)',
-            'donasi_bank_account' => '7123456789',
-            'donasi_bank_holder' => 'Pondok Pesantren',
+            'donasi_bank_name' => 'Bank Central Asia (BCA)',
+            'donasi_bank_account' => '1234567890',
+            'donasi_bank_holder' => 'Demo CMS',
         ];
     }
 

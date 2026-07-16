@@ -31,49 +31,39 @@ class CategorySeeder extends Seeder
                 'Pengumuman',
                 'Prestasi',
                 'Kegiatan',
-                'Akademik',
+                'Tips & Panduan',
                 'Inspirasi',
                 'Lainnya',
             ],
 
-            // ── Produk Buku ────────────────────────────────────────
+            // ── Produk / Katalog ───────────────────────────────────
             Category::TYPE_BOOK => [
-                'Kitab',
-                'Fikih',
-                'Tafsir',
-                'Hadits',
-                'Akidah',
-                'Tasawuf',
-                'Sejarah Islam',
-                'Bahasa Arab',
-                'Pendidikan',
+                'Teknologi',
+                'Bisnis',
+                'Desain',
+                'Manajemen',
+                'Fotografi',
+                'Pengembangan Diri',
                 'Umum',
             ],
 
             // ── Kegiatan / Event ───────────────────────────────────
             Category::TYPE_EVENT => [
-                'Pengajian',
                 'Seminar',
                 'Workshop',
+                'Webinar',
                 'Lomba',
-                'Wisuda',
-                'Haul',
+                'Pertemuan',
                 'Peringatan Hari Besar',
-                'Kegiatan Santri',
+                'Bakti Sosial',
                 'Lainnya',
             ],
 
-            // ── Program ────────────────────────────────────────────
+            // ── Program / Fitur ────────────────────────────────────
             Category::TYPE_PROGRAM => [
-                'Tahfidz',
-                'Tahsin',
-                'Diniyah',
-                'Terpadu',
-                'Bahasa',
-                'Akademik',
-                'Ekstra Kurikuler',
-                'Kepesantrenan',
-                'Keterampilan',
+                'Unggulan',
+                'Fitur',
+                'Layanan',
                 'Lainnya',
             ],
 
@@ -82,7 +72,7 @@ class CategorySeeder extends Seeder
                 'Formulir',
                 'Surat Edaran',
                 'Pengumuman',
-                'Akademik',
+                'Panduan',
                 'Administrasi',
                 'Kalender',
                 'Lainnya',
