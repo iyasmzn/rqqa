@@ -2,16 +2,23 @@
 
 namespace App\Providers;
 
+use App\Models\Event;
 use App\Models\Post;
+use App\Models\Program;
 use App\Models\Setting;
 use App\Models\Slide;
+use App\Models\StaticPage;
+use App\Models\Story;
 use App\Models\Teacher;
 use App\Observers\PostObserver;
 use App\Observers\SlideObserver;
 use App\Observers\TeacherObserver;
+use App\Services\SitemapBuilder;
 use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -41,6 +48,21 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureMailFromSettings();
         $this->localizeEmailVerification();
+        $this->invalidateSitemapCacheOnContentChange();
+    }
+
+    /**
+     * Forget the cached sitemap whenever content that appears in it is created,
+     * updated, or deleted, so /sitemap.xml regenerates on the next request.
+     */
+    private function invalidateSitemapCacheOnContentChange(): void
+    {
+        $forget = fn (Model $model) => Cache::forget(SitemapBuilder::CACHE_KEY);
+
+        foreach ([Post::class, Event::class, Program::class, Story::class, StaticPage::class] as $model) {
+            $model::saved($forget);
+            $model::deleted($forget);
+        }
     }
 
     /**
