@@ -40,7 +40,7 @@ class DownloadSeeder extends Seeder
             ],
             [
                 'title' => 'Surat Edaran Tata Tertib Siswa',
-                'description' => 'Peraturan dan tata tertib yang wajib dipatuhi oleh seluruh peserta didik SMA Muhammadiyah 5.',
+                'description' => 'Peraturan dan tata tertib yang wajib dipatuhi oleh seluruh santri Pondok Pesantren.',
                 'category' => 'Surat Edaran',
                 'file_path' => 'downloads/tata-tertib-siswa.pdf',
                 'original_filename' => 'Tata-Tertib-Siswa.pdf',

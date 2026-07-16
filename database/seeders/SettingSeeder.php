@@ -70,15 +70,15 @@ class SettingSeeder extends Seeder
     private function general(): array
     {
         return [
-            'site_name' => "Qurrota A'yun",
+            'site_name' => 'Pondok Pesantren',
             'site_tagline' => 'Membentuk Generasi Qurani',
-            'site_description' => "Website resmi Pondok Pesantren Qurrota A'yun. Informasi penerimaan santri baru, program pendidikan, kegiatan, dan cerita inspiratif dari pesantren.",
+            'site_description' => 'Website resmi Pondok Pesantren. Informasi penerimaan santri baru, program pendidikan, kegiatan, dan cerita inspiratif dari pesantren.',
 
-            'contact_address' => 'Jl. Pesantren No. 1, Kab. Pasuruan, Jawa Timur',
-            'contact_phone' => '(0343) 123-4567',
-            'contact_email' => 'info@qurrotaayun.sch.id',
+            'contact_address' => 'Jl. Pendidikan No. 1, Kota Anda',
+            'contact_phone' => '(021) 123-4567',
+            'contact_email' => 'info@pesantren.sch.id',
             'contact_hours' => 'Senin–Sabtu, 07.00–17.00 WIB',
-            'contact_map_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253622.43084814636!2d112.34993385!3d-7.6454081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e3aa3f5f1fcf%3A0x2d5c3a3e5b5b5b5b!2sPasuruan%2C%20East%20Java!5e0!3m2!1sid!2sid!4v1779677079761!5m2!1sid!2sid',
+            'contact_map_url' => null,
 
             'social_facebook' => null,
             'social_instagram' => null,
@@ -169,7 +169,7 @@ class SettingSeeder extends Seeder
         return [
             // Kartu di halaman depan
             'spmb_card_title' => 'Penerimaan Santri Baru {year} Dibuka!',
-            'spmb_card_description' => "Pondok Pesantren Qurrota A'yun membuka penerimaan santri baru. Tersedia program Tahfidz, Diniyah, dan Terpadu. Daftarkan putra-putri Anda sebelum batas waktu.",
+            'spmb_card_description' => 'Pondok Pesantren membuka penerimaan santri baru. Tersedia program Tahfidz, Diniyah, dan Terpadu. Daftarkan putra-putri Anda sebelum batas waktu.',
             'spmb_card_cta_label' => 'Daftar Sekarang',
             'spmb_card_cta_url' => '/ppdb',
             'spmb_card_secondary_label' => 'Info Selengkapnya',
@@ -200,7 +200,7 @@ class SettingSeeder extends Seeder
         return [
             'donasi_bank_name' => 'Bank Syariah Indonesia (BSI)',
             'donasi_bank_account' => '7123456789',
-            'donasi_bank_holder' => "Pondok Pesantren Qurrota A'yun",
+            'donasi_bank_holder' => 'Pondok Pesantren',
         ];
     }
 

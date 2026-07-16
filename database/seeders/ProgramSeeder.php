@@ -15,7 +15,7 @@ class ProgramSeeder extends Seeder
         [
             'title' => 'Tahfidz Al-Quran',
             'excerpt' => 'Program unggulan menghafal 30 juz Al-Quran dengan metode talaqqi dan musyafahah langsung kepada pengajar bersanad.',
-            'content' => '<p>Program Tahfidz Al-Quran adalah program unggulan Pondok Pesantren Qurrota A\'yun yang telah mencetak ratusan hafidz dan hafidzah berkualitas. Santri diajarkan menghafal Al-Quran dengan metode talaqqi—membaca langsung di hadapan guru—serta musyafahah untuk memastikan kefasihan makharijul huruf.</p><p>Setiap santri mendapatkan pembimbing pribadi (musyrif) yang memantau perkembangan hafalan setiap hari. Program ini ditempuh rata-rata dalam 3–4 tahun.</p><ul><li>Setoran hafalan harian minimal 1 halaman</li><li>Muraja\'ah (pengulangan) hafalan lama setiap minggu</li><li>Ujian tahfidz setiap akhir semester</li><li>Ijazah sanad keilmuan bagi wisudawan</li></ul>',
+            'content' => '<p>Program Tahfidz Al-Quran adalah program unggulan Pondok Pesantren yang telah mencetak ratusan hafidz dan hafidzah berkualitas. Santri diajarkan menghafal Al-Quran dengan metode talaqqi—membaca langsung di hadapan guru—serta musyafahah untuk memastikan kefasihan makharijul huruf.</p><p>Setiap santri mendapatkan pembimbing pribadi (musyrif) yang memantau perkembangan hafalan setiap hari. Program ini ditempuh rata-rata dalam 3–4 tahun.</p><ul><li>Setoran hafalan harian minimal 1 halaman</li><li>Muraja\'ah (pengulangan) hafalan lama setiap minggu</li><li>Ujian tahfidz setiap akhir semester</li><li>Ijazah sanad keilmuan bagi wisudawan</li></ul>',
             'icon' => 'book-open',
             'category' => 'Unggulan',
             'is_published' => true,
@@ -24,7 +24,7 @@ class ProgramSeeder extends Seeder
         [
             'title' => 'Madrasah Diniyah',
             'excerpt' => 'Pendidikan agama Islam komprehensif meliputi fiqih, tauhid, akhlak, nahwu-sharaf, dan kajian kitab kuning.',
-            'content' => '<p>Madrasah Diniyah adalah pondasi pendidikan Islam di Pesantren Qurrota A\'yun. Santri belajar ilmu-ilmu agama secara sistematis dan terstruktur, mulai dari tingkat Ula, Wustha, hingga Ulya.</p><p>Kurikulum Madrasah Diniyah meliputi:</p><ul><li><strong>Fiqih:</strong> Mabadi Fiqhiyah, Safinatun Naja, Fathul Qarib</li><li><strong>Tauhid:</strong> Aqidatul Awam, Ummu Al-Barahin</li><li><strong>Akhlak:</strong> Ta\'lim Al-Muta\'allim, Akhlaq lil Banin</li><li><strong>Nahwu & Sharaf:</strong> Al-Ajurumiyah, Imrithi, Alfiyah Ibnu Malik</li><li><strong>Tafsir:</strong> Tafsir Al-Jalalain, Tafsir Al-Maraghi</li><li><strong>Hadits:</strong> Bulugh Al-Maram, Riyadhus Shalihin</li></ul>',
+            'content' => '<p>Madrasah Diniyah adalah pondasi pendidikan Islam di pesantren kami. Santri belajar ilmu-ilmu agama secara sistematis dan terstruktur, mulai dari tingkat Ula, Wustha, hingga Ulya.</p><p>Kurikulum Madrasah Diniyah meliputi:</p><ul><li><strong>Fiqih:</strong> Mabadi Fiqhiyah, Safinatun Naja, Fathul Qarib</li><li><strong>Tauhid:</strong> Aqidatul Awam, Ummu Al-Barahin</li><li><strong>Akhlak:</strong> Ta\'lim Al-Muta\'allim, Akhlaq lil Banin</li><li><strong>Nahwu & Sharaf:</strong> Al-Ajurumiyah, Imrithi, Alfiyah Ibnu Malik</li><li><strong>Tafsir:</strong> Tafsir Al-Jalalain, Tafsir Al-Maraghi</li><li><strong>Hadits:</strong> Bulugh Al-Maram, Riyadhus Shalihin</li></ul>',
             'icon' => 'academic-cap',
             'category' => 'Non-Formal',
             'is_published' => true,
@@ -51,7 +51,7 @@ class ProgramSeeder extends Seeder
         [
             'title' => 'Kajian Kitab Kuning',
             'excerpt' => 'Pengkajian mendalam kitab-kitab klasik ulama salaf dengan metode bandongan dan sorogan bersama Kyai.',
-            'content' => '<p>Kajian Kitab Kuning adalah ruh dari pendidikan pesantren. Di Qurrota A\'yun, kajian ini dilakukan dengan dua metode utama:</p><p><strong>Metode Bandongan:</strong> Kyai membacakan dan menjelaskan kitab sementara santri menyimak dan mencatat makna di bawah tulisan arab.</p><p><strong>Metode Sorogan:</strong> Santri membaca kitab secara individu di hadapan Kyai untuk dievaluasi kemampuan membaca dan pemahamannya.</p><p>Kitab-kitab yang dikaji antara lain: Ihya Ulumuddin, Al-Umm, Fathul Bari, Al-Mughni, Tafsir Ibnu Katsir, dan berbagai kitab hadits.</p>',
+            'content' => '<p>Kajian Kitab Kuning adalah ruh dari pendidikan pesantren. Di pesantren kami, kajian ini dilakukan dengan dua metode utama:</p><p><strong>Metode Bandongan:</strong> Kyai membacakan dan menjelaskan kitab sementara santri menyimak dan mencatat makna di bawah tulisan arab.</p><p><strong>Metode Sorogan:</strong> Santri membaca kitab secara individu di hadapan Kyai untuk dievaluasi kemampuan membaca dan pemahamannya.</p><p>Kitab-kitab yang dikaji antara lain: Ihya Ulumuddin, Al-Umm, Fathul Bari, Al-Mughni, Tafsir Ibnu Katsir, dan berbagai kitab hadits.</p>',
             'icon' => 'heart',
             'category' => 'Unggulan',
             'is_published' => true,

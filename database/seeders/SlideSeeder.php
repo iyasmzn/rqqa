@@ -15,7 +15,7 @@ class SlideSeeder extends Seeder
 
         $defaults = [
             [
-                'title' => "Selamat Datang di Qurrota A'yun",
+                'title' => 'Selamat Datang di Pondok Pesantren',
                 'subtitle' => 'Pondok pesantren modern yang membentuk generasi Qurani berilmu, berakhlak mulia, dan siap menghadapi tantangan zaman.',
                 'button_label' => 'Profil Pesantren',
                 'button_url' => '#sambutan',

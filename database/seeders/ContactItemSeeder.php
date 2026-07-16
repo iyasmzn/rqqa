@@ -33,8 +33,8 @@ class ContactItemSeeder extends Seeder
             [
                 'icon' => '✉️',
                 'label' => 'Email',
-                'value' => 'info@sman1.sch.id',
-                'link' => 'mailto:info@sman1.sch.id',
+                'value' => 'info@pesantren.sch.id',
+                'link' => 'mailto:info@pesantren.sch.id',
                 'sort_order' => 3,
                 'is_active' => true,
             ],
