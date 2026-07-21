@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Program;
 use App\Models\Slide;
 use App\Models\Stat;
+use App\Models\Testimonial;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -26,6 +27,7 @@ class HomeController extends Controller
         $stats = Stat::ordered()->get();
         $slides = Slide::active()->get();
         $greetings = Greeting::published()->get();
+        $testimonials = Testimonial::published()->get();
         $contactItems = ContactItem::active()->get();
 
         $upcomingEvents = Event::published()
@@ -47,7 +49,7 @@ class HomeController extends Controller
         $galleryMedia = Media::inGallery()->limit(6)->get();
 
         return view('welcome', compact(
-            'posts', 'stats', 'slides', 'greetings', 'contactItems',
+            'posts', 'stats', 'slides', 'greetings', 'testimonials', 'contactItems',
             'upcomingEvents', 'programs', 'featuredBooks',
             'galleryMedia',
         ));

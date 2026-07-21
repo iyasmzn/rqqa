@@ -19,14 +19,14 @@
 @section('content')
 
 {{-- ── Breadcrumb ──────────────────────────────────────────── --}}
-<div style="background:var(--bg-alt);border-bottom:1px solid var(--border)">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-        <nav class="flex items-center gap-2 text-sm" style="color:var(--muted)">
+<div class="-mt-17" style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0c1a14 100%);border-bottom:1px solid rgba(255,255,255,.08)">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-5 sm:pt-28 sm:pb-6">
+        <nav class="flex items-center gap-2 text-sm" style="color:rgba(255,255,255,.6)">
             <a href="{{ route('home') }}" class="hover:opacity-75 transition-opacity">Beranda</a>
             <span>/</span>
             <a href="{{ route('stories.index') }}" class="hover:opacity-75 transition-opacity">Cerita Santri</a>
             <span>/</span>
-            <span class="font-medium line-clamp-1" style="color:var(--text)">{{ $story->title }}</span>
+            <span class="font-medium line-clamp-1" style="color:#fff">{{ $story->title }}</span>
         </nav>
     </div>
 </div>

@@ -217,7 +217,7 @@
     <div id="reading-progress"></div>
 
     {{-- ── Hero Image ───────────────────────────────────────── --}}
-    <div class="article-hero">
+    <div class="article-hero -mt-17">
         <img src="{{ $post->thumbnail_url }}"
              alt="{{ $post->title }}"
              loading="eager">

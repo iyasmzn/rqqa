@@ -21,7 +21,7 @@
 @section('content')
 
 {{-- ── Hero ──────────────────────────────────────────────── --}}
-<section class="stories-hero py-20 sm:py-28">
+<section class="stories-hero -mt-17 pt-36 pb-20 sm:pt-44 sm:pb-28">
 
     <x-hero-geo />
 

@@ -86,7 +86,7 @@
 @section('content')
 
 {{-- ── Hero ──────────────────────────────────────────────── --}}
-<section class="gallery-hero py-20 sm:py-28">
+<section class="gallery-hero -mt-17 pt-36 pb-20 sm:pt-44 sm:pb-28">
     <x-hero-geo />
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-1.5 rounded-full mb-6"

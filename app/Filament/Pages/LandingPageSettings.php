@@ -49,6 +49,7 @@ class LandingPageSettings extends Page
             ['key' => 'section_books',       'label' => '📚  Buku',                     'visible' => true],
             ['key' => 'section_gallery',     'label' => '🖼️  Galeri Foto',              'visible' => true],
             ['key' => 'section_blog',        'label' => '📰  Blog & Berita',             'visible' => true],
+            ['key' => 'section_testimonials', 'label' => '💬  Kesan & Pesan Alumni',      'visible' => true],
             ['key' => 'section_donasi',      'label' => '💝  Donasi',                   'visible' => true],
             ['key' => 'section_contact',     'label' => '📞  Kontak Kami',               'visible' => true],
         ];
@@ -98,6 +99,13 @@ class LandingPageSettings extends Page
                 'eyebrow' => 'Berita & Artikel',
                 'title' => 'Artikel',
                 'subtitle' => 'Blog inspiratif dari berbagai sumber.',
+            ],
+            'testimonials' => [
+                'label' => 'Kesan & Pesan Alumni',
+                'icon' => Heroicon::OutlinedChatBubbleBottomCenterText,
+                'eyebrow' => 'Kesan & Pesan',
+                'title' => 'Apa Kata Alumni',
+                'subtitle' => 'Cerita dan harapan dari para alumni yang telah menempuh pendidikan bersama kami.',
             ],
             'principal' => [
                 'label' => 'Sambutan Para Tokoh',

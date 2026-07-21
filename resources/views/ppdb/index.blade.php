@@ -95,7 +95,7 @@
 @endphp
 
 {{-- ═══════════════════════ HERO ═══════════════════════════════ --}}
-<section class="ppdb-hero py-16 sm:py-20">
+<section class="ppdb-hero -mt-17 pt-32 pb-16 sm:pt-36 sm:pb-20">
     <x-hero-geo />
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         <div class="flex flex-col lg:flex-row items-center gap-10">

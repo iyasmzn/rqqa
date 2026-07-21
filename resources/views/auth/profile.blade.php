@@ -10,7 +10,7 @@
     $authorRequest = $user->authorRequest;
 @endphp
 
-<section class="min-h-screen py-16 px-4"
+<section class="min-h-screen -mt-17 pt-28 pb-16 px-4"
          style="background:linear-gradient(135deg,#082828 0%,#08484A 60%,#0a6060 100%)">
 
     <div class="w-full max-w-2xl mx-auto" data-aos="fade-up"

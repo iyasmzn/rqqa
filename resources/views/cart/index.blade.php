@@ -11,7 +11,7 @@ $seo = [
 @section('content')
 
 {{-- ── Header ─────────────────────────────────────────────── --}}
-<div style="background:linear-gradient(135deg,#082828 0%,#08484A 100%)" class="py-14">
+<div style="background:linear-gradient(135deg,#082828 0%,#08484A 100%)" class="-mt-17 pt-30 pb-14">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-1.5 rounded-full mb-4"
              style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.2)">

@@ -138,7 +138,7 @@
 @section('content')
 
     {{-- ── Page Hero ──────────────────────────────────────────── --}}
-    <section class="dl-hero py-14 sm:py-20">
+    <section class="dl-hero -mt-17 pt-30 pb-14 sm:pt-36 sm:pb-20">
         <x-hero-geo />
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

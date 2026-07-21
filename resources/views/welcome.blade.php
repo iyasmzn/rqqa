@@ -182,17 +182,6 @@
             background: linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--primary) 55%, white) 60%, transparent);
         }
 
-        /* ── Navbar primary-based hover helpers ─────────────────── */
-        .nav-link-scrolled { transition: background .2s, color .2s; }
-        .nav-link-scrolled:hover { background: color-mix(in oklab, var(--primary) 8%, white); color: var(--primary); }
-        .nav-dropdown-item:hover { background: color-mix(in oklab, var(--primary) 8%, white); color: var(--primary); }
-        .nav-icon-scrolled:hover { background: color-mix(in oklab, var(--primary) 8%, white); }
-        .nav-auth-scrolled:hover { border-color: var(--primary); color: var(--primary); }
-        .mobile-nav-hover:hover .mobile-nav-num { color: var(--primary); }
-        .mobile-nav-hover:hover { border-color: color-mix(in oklab, var(--primary) 40%, transparent); }
-        .mobile-nav-arrow:hover { color: var(--primary); }
-        .mobile-subnav-hover:hover { color: color-mix(in oklab, var(--primary) 60%, white); }
-
         /* ── Section dividers replaced by spacing ─────────────────── */
         .section-divider {
             border: none;
@@ -229,6 +218,7 @@
         ['key' => 'section_books',       'visible' => true],
         ['key' => 'section_gallery',     'visible' => true],
         ['key' => 'section_blog',        'visible' => true],
+        ['key' => 'section_testimonials','visible' => true],
         ['key' => 'section_donasi',      'visible' => true],
         ['key' => 'section_contact',     'visible' => true],
     ];
@@ -256,6 +246,7 @@
         'section_books'       => 'sections.books',
         'section_gallery'     => 'sections.gallery',
         'section_blog'        => 'sections.blog',
+        'section_testimonials'=> 'sections.testimonials',
         'section_donasi'      => 'sections.donasi',
         'section_contact'     => 'sections.contact',
     ];
@@ -263,294 +254,13 @@
 
 <body class="min-h-screen antialiased overflow-x-clip"
       x-data="{
-          mobileOpen: false,
-          scrolled: false,
           slide: 0,
           total: {{ max($slides->count(), 1) }}
       }"
-      x-init="
-          setInterval(() => slide = (slide + 1) % total, 5000);
-          window.addEventListener('scroll', () => scrolled = window.scrollY > 60, { passive: true });
-      ">
+      x-init="setInterval(() => slide = (slide + 1) % total, 5000)">
 
-    {{-- ═══════════════════════════════════════════════════
-         NAVIGATION HEADER — transparan di atas, solid saat scroll
-    ═══════════════════════════════════════════════════ --}}
-    <header class="sticky top-0 z-50 transition-all duration-300"
-            :style="scrolled
-                ? 'background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;box-shadow:0 1px 3px 0 rgb(0 0 0/.1)'
-                : 'background:transparent;border-bottom:1px solid transparent'">
-
-        {{-- Amber bar — hanya tampil saat scrolled --}}
-        <div class="amber-bar overflow-hidden transition-all duration-300"
-             :style="scrolled ? 'height:3px;opacity:1' : 'height:0;opacity:0'"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 gap-4">
-
-                {{-- Logo --}}
-                <a href="/" class="flex items-center gap-2.5 shrink-0 min-w-0">
-                    @if(setting('site_logo'))
-                        <img src="{{ asset('storage/' . setting('site_logo')) }}"
-                             alt="{{ setting('site_name', config('app.name')) }}"
-                             class="w-9 h-9 rounded-xl object-contain shrink-0">
-                    @else
-                        <div class="w-9 h-9 shrink-0 rounded-xl shadow flex items-center justify-center" style="background:var(--primary)">
-                            <span class="text-white font-extrabold text-base">{{ strtoupper(substr(setting('site_name', config('app.name', 'S')), 0, 1)) }}</span>
-                        </div>
-                    @endif
-                    <div class="leading-tight min-w-0">
-                        <div class="font-bold text-sm truncate transition-colors duration-300"
-                             :class="scrolled ? 'text-gray-900' : 'text-white'">
-                            {{ setting('site_name', config('app.name', "Qurrota A'yun")) }}
-                        </div>
-                        <div class="text-[10px] font-medium uppercase tracking-widest transition-colors duration-300"
-                             :style="scrolled ? 'color:var(--primary)' : 'color:color-mix(in oklab,var(--primary) 65%,white)'">
-                            {{ setting('site_tagline', 'Unggul · Berkarakter') }}
-                        </div>
-                    </div>
-                </a>
-
-                {{-- Right: nav links + auth + hamburger --}}
-                <div class="flex items-center gap-2">
-
-                    {{-- Desktop nav --}}
-                    <nav class="hidden lg:flex items-center gap-0.5">
-                        @foreach($navItems as $item)
-                            @php $children = collect($item['children'] ?? [])->where('is_active', true)->values(); @endphp
-                            @if($children->isNotEmpty())
-                                <div x-data="{ dropOpen: false }" class="relative">
-                                    <button @mouseenter="dropOpen = true" @mouseleave="dropOpen = false"
-                                            class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1"
-                                            :class="scrolled ? 'text-gray-500 nav-link-scrolled' : 'text-white/80 hover:text-white hover:bg-white/10'">
-                                        {{ $item['label'] }}
-                                        <svg class="w-3 h-3 transition-transform duration-200" :class="dropOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </button>
-                                    <div x-show="dropOpen"
-                                         x-transition:enter="transition ease-out duration-150"
-                                         x-transition:enter-start="opacity-0 -translate-y-1"
-                                         x-transition:enter-end="opacity-100 translate-y-0"
-                                         x-transition:leave="transition ease-in duration-100"
-                                         x-transition:leave-start="opacity-100 translate-y-0"
-                                         x-transition:leave-end="opacity-0 -translate-y-1"
-                                         @mouseenter="dropOpen = true" @mouseleave="dropOpen = false"
-                                         class="absolute top-full left-0 mt-1 min-w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 py-1">
-                                        @foreach($children as $child)
-                                            <a href="{{ $child['url'] }}" target="{{ $child['target'] ?? '_self' }}"
-                                               class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-600 nav-dropdown-item transition-colors">
-                                                <span class="w-1 h-1 rounded-full shrink-0" style="background:var(--primary)"></span>
-                                                {{ $child['label'] }}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @else
-                                <a href="{{ $item['url'] }}" target="{{ $item['target'] ?? '_self' }}"
-                                   class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                                   :class="scrolled ? 'text-gray-500 nav-link-scrolled' : 'text-white/80 hover:text-white hover:bg-white/10'">
-                                    {{ $item['label'] }}
-                                </a>
-                            @endif
-                        @endforeach
-                    </nav>
-
-                    {{-- Cart icon --}}
-                    @php $cartCount = \App\Http\Controllers\CartController::itemCount(); @endphp
-                    <a href="{{ route('cart.index') }}"
-                       class="relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
-                       :class="scrolled ? 'nav-icon-scrolled' : 'hover:bg-white/10'"
-                       title="Keranjang">
-                        <svg class="w-5 h-5 transition-colors" :class="scrolled ? 'text-gray-700' : 'text-white'"
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
-                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                        @if($cartCount > 0)
-                            <span class="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 flex items-center justify-center rounded-full text-[10px] font-bold text-white bg-red-500">{{ $cartCount }}</span>
-                        @endif
-                    </a>
-
-                    {{-- Auth + hamburger --}}
-                    @auth
-                        <div x-data="{ userDropOpen: false }" class="relative hidden sm:block">
-                            <button @click="userDropOpen = !userDropOpen"
-                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold border transition-all duration-200"
-                                    :class="scrolled
-                                        ? 'border-gray-200 text-gray-700 bg-white nav-auth-scrolled'
-                                        : 'border-white/40 text-white hover:bg-white/10'">
-                                <div class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-                                     style="background:var(--primary)">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
-                                {{ Str::limit(Auth::user()->name, 12) }}
-                            </button>
-                            <div x-show="userDropOpen" @click.outside="userDropOpen = false"
-                                 x-transition:enter="transition ease-out duration-150"
-                                 x-transition:enter-start="opacity-0 -translate-y-1"
-                                 x-transition:enter-end="opacity-100 translate-y-0"
-                                 class="absolute right-0 top-full mt-1.5 min-w-40 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 py-1">
-                                <a href="{{ route('cart.index') }}"
-                                   class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 nav-dropdown-item transition-colors">
-                                    🛒 Keranjang
-                                    @if($cartCount > 0)
-                                        <span class="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full text-white bg-red-500">{{ $cartCount }}</span>
-                                    @endif
-                                </a>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
-                                        Keluar
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @else
-                        <a href="{{ route('login') }}"
-                           class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-200"
-                           :class="scrolled
-                               ? 'border-gray-200 text-gray-700 bg-white nav-auth-scrolled'
-                               : 'border-white/40 text-white hover:bg-white/10'">
-                            Masuk
-                        </a>
-                    @endauth
-
-                    {{-- Hamburger --}}
-                    <button @click="mobileOpen = !mobileOpen"
-                            class="lg:hidden w-9 h-9 rounded-lg flex flex-col items-center justify-center gap-1.5 transition-colors"
-                            :class="scrolled ? 'nav-icon-scrolled' : 'hover:bg-white/10'"
-                            :aria-expanded="mobileOpen" aria-label="Toggle menu">
-                        <span class="w-5 h-0.5 rounded transition-all duration-200"
-                              :class="[mobileOpen ? 'rotate-45 translate-y-2' : '', scrolled ? 'bg-gray-700' : 'bg-white']"></span>
-                        <span class="w-5 h-0.5 rounded transition-all duration-200"
-                              :class="[mobileOpen ? 'opacity-0' : '', scrolled ? 'bg-gray-700' : 'bg-white']"></span>
-                        <span class="w-5 h-0.5 rounded transition-all duration-200"
-                              :class="[mobileOpen ? '-rotate-45 -translate-y-2' : '', scrolled ? 'bg-gray-700' : 'bg-white']"></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-    </header>
-
-    {{-- ═══════════════════════════════════════════════════
-         MOBILE FULL-SCREEN MENU OVERLAY
-    ═══════════════════════════════════════════════════ --}}
-    <div x-show="mobileOpen"
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 scale-95"
-         x-transition:enter-end="opacity-100 scale-100"
-         x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100 scale-100"
-         x-transition:leave-end="opacity-0 scale-95"
-         class="lg:hidden fixed inset-0 flex flex-col"
-         style="z-index:60; background:linear-gradient(145deg,#0f172a 0%,#1a2744 50%,#0f2236 100%)"
-         x-trap.noscroll="mobileOpen">
-
-        {{-- Top bar: logo + close --}}
-        <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
-            <a href="/" @click="mobileOpen = false" class="flex items-center gap-3">
-                @if(setting('site_logo'))
-                    <img src="{{ asset('storage/' . setting('site_logo')) }}"
-                         alt="{{ setting('site_name', config('app.name')) }}"
-                         class="w-10 h-10 rounded-xl object-contain">
-                @else
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg" style="background:var(--primary)">
-                        <span class="text-white font-extrabold text-base">{{ strtoupper(substr(setting('site_name', config('app.name', 'S')), 0, 1)) }}</span>
-                    </div>
-                @endif
-                <div>
-                    <div class="font-bold text-white text-sm">{{ setting('site_name', config('app.name', "Qurrota A'yun")) }}</div>
-                    <div class="text-[10px] font-semibold uppercase tracking-widest" style="color:color-mix(in oklab,var(--primary) 65%,white)">{{ setting('site_tagline', 'Unggul · Berkarakter') }}</div>
-                </div>
-            </a>
-
-            {{-- Close button --}}
-            <button @click="mobileOpen = false"
-                    class="w-10 h-10 rounded-xl border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/40 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-        </div>
-
-        {{-- Nav items --}}
-        <nav class="flex-1 overflow-y-auto px-6 py-6 flex flex-col justify-center gap-1">
-            @foreach($navItems as $i => $item)
-                @php $children = collect($item['children'] ?? [])->where('is_active', true)->values(); @endphp
-                @if($children->isNotEmpty())
-                    <div x-data="{ mobileSubOpen: false }">
-                        <button @click="mobileSubOpen = !mobileSubOpen"
-                                class="mobile-nav-hover group w-full flex items-center gap-4 py-3.5 border-b border-white/8 transition-all duration-200">
-                            <span class="mobile-nav-num text-xs font-bold text-white/25 transition-colors w-6 shrink-0">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
-                            <span class="text-2xl font-bold text-white/70 group-hover:text-white transition-colors tracking-tight flex-1 text-left">{{ $item['label'] }}</span>
-                            <svg class="mobile-nav-arrow w-4 h-4 text-white/20 shrink-0 transition-all duration-200"
-                                 :class="mobileSubOpen ? 'rotate-90' : ''"
-                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div x-show="mobileSubOpen"
-                             x-transition:enter="transition ease-out duration-200"
-                             x-transition:enter-start="opacity-0 -translate-y-2"
-                             x-transition:enter-end="opacity-100 translate-y-0"
-                             class="pl-10 pb-2 space-y-1">
-                            @foreach($children as $child)
-                                <a href="{{ $child['url'] }}" target="{{ $child['target'] ?? '_self' }}"
-                                   @click="mobileOpen = false"
-                                   class="mobile-subnav-hover flex items-center gap-2 py-2 text-lg font-medium text-white/55 transition-colors">
-                                    <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                    {{ $child['label'] }}
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                @else
-                    <a href="{{ $item['url'] }}" target="{{ $item['target'] ?? '_self' }}"
-                       @click="mobileOpen = false"
-                       class="mobile-nav-hover group flex items-center gap-4 py-3.5 border-b border-white/8 transition-all duration-200">
-                        <span class="mobile-nav-num text-xs font-bold text-white/25 transition-colors w-6 shrink-0">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
-                        <span class="text-2xl font-bold text-white/70 group-hover:text-white transition-colors tracking-tight">{{ $item['label'] }}</span>
-                        <svg class="mobile-nav-arrow w-4 h-4 text-white/20 ml-auto shrink-0 transition-all group-hover:translate-x-1 duration-200"
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                @endif
-            @endforeach
-        </nav>
-
-        {{-- Auth buttons --}}
-        <div class="shrink-0 px-6 py-6 border-t border-white/10 space-y-3">
-            @if (Route::has('login'))
-                @auth
-                    <a href="{{ url('/dashboard') }}"
-                       class="btn-primary flex items-center justify-center gap-2 w-full py-3 rounded-xl">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        Dashboard
-                    </a>
-                @else
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}"
-                           class="btn-primary flex items-center justify-center gap-2 w-full py-3 rounded-xl">
-                            Daftar SPMB Sekarang
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                        </a>
-                    @endif
-                    <a href="{{ route('login') }}"
-                       class="flex items-center justify-center w-full py-3 rounded-xl border border-white/25 text-white/80 font-semibold hover:bg-white/10 hover:text-white transition-colors">
-                        Masuk
-                    </a>
-                @endauth
-            @endif
-
-            {{-- Tagline --}}
-            <p class="text-center text-xs text-white/30 pt-1">© {{ date('Y') }} {{ setting('site_name', config('app.name')) }}</p>
-        </div>
-    </div>
+    {{-- Navbar — transparent over hero, solid on scroll --}}
+    <x-navbar :over-hero="true" />
 
     {{-- ═══════════════════════════════════════════════════
          SECTIONS — ordered & toggled via admin settings

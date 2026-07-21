@@ -6,7 +6,7 @@
     .page-hero {
         position: relative;
         background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-800) 40%, var(--primary-700) 70%, var(--primary) 100%);
-        padding: 6rem 0 3.5rem;
+        padding: 9.5rem 0 3.5rem;
         overflow: hidden;
     }
     .page-hero::before {
@@ -113,7 +113,7 @@
 {{-- ═══════════════════════════════════════════════════
      HERO
 ═══════════════════════════════════════════════════ --}}
-<div class="page-hero">
+<div class="page-hero -mt-17">
     {{-- Decorative circles --}}
     <div class="page-hero-circle" style="width:380px;height:380px;top:-120px;right:-80px;"></div>
     <div class="page-hero-circle" style="width:220px;height:220px;bottom:-60px;left:10%;"></div>

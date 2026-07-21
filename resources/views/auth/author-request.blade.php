@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section class="min-h-screen flex items-center justify-center py-20 px-4"
+<section class="min-h-screen flex items-center justify-center -mt-17 py-20 px-4"
          style="background:linear-gradient(135deg,#082828 0%,#08484A 60%,#0a6060 100%)">
 
     <div class="w-full max-w-lg" data-aos="fade-up">

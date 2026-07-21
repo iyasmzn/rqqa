@@ -5,7 +5,7 @@
 {{-- ══════════════════════════════════════════
      HERO
 ══════════════════════════════════════════ --}}
-<section class="py-16 sm:py-20 relative overflow-hidden"
+<section class="-mt-17 pt-32 pb-16 sm:pt-36 sm:pb-20 relative overflow-hidden"
          style="background:linear-gradient(135deg,#082828 0%,#08484A 55%,#0a6060 100%)">
     <div class="absolute inset-0 pointer-events-none"
          style="background:
