@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Teachers\Tables;
 
-use App\Models\Teacher;
+use App\Models\Category;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -71,7 +71,7 @@ class TeachersTable
             ->filters([
                 SelectFilter::make('position')
                     ->label('Jabatan')
-                    ->options(fn () => Teacher::orderBy('position')->distinct()->pluck('position', 'position'))
+                    ->options(fn () => Category::optionsForType(Category::TYPE_TEACHER))
                     ->native(false),
 
                 Filter::make('is_active')

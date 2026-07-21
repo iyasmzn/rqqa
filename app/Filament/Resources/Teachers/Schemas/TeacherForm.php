@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Teachers\Schemas;
 
+use App\Models\Category;
+use App\Models\Teacher;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -12,28 +14,6 @@ use Filament\Schemas\Schema;
 
 class TeacherForm
 {
-    private const POSITIONS = [
-        'Kepala Sekolah' => 'Kepala Sekolah',
-        'Wakil Kepala Sekolah' => 'Wakil Kepala Sekolah',
-        'Guru Matematika' => 'Guru Matematika',
-        'Guru Bahasa Indonesia' => 'Guru Bahasa Indonesia',
-        'Guru Bahasa Inggris' => 'Guru Bahasa Inggris',
-        'Guru Fisika' => 'Guru Fisika',
-        'Guru Kimia' => 'Guru Kimia',
-        'Guru Biologi' => 'Guru Biologi',
-        'Guru Sejarah' => 'Guru Sejarah',
-        'Guru Geografi' => 'Guru Geografi',
-        'Guru Ekonomi' => 'Guru Ekonomi',
-        'Guru Sosiologi' => 'Guru Sosiologi',
-        'Guru Pendidikan Agama' => 'Guru Pendidikan Agama',
-        'Guru Seni Budaya' => 'Guru Seni Budaya',
-        'Guru Penjasorkes' => 'Guru Penjasorkes',
-        'Guru TIK' => 'Guru TIK',
-        'Guru BK' => 'Guru BK',
-        'Staf Tata Usaha' => 'Staf Tata Usaha',
-        'Lainnya' => 'Lainnya',
-    ];
-
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
@@ -72,10 +52,22 @@ class TeacherForm
                     Grid::make(2)->schema([
                         Select::make('position')
                             ->label('Jabatan')
-                            ->options(self::POSITIONS)
+                            ->options(function (?Teacher $record): array {
+                                $options = Category::optionsForType(Category::TYPE_TEACHER);
+
+                                // Keep the record's current jabatan selectable even if it isn't
+                                // (or is no longer) an active category — e.g. set via import or
+                                // legacy data — so editing never silently drops it.
+                                if ($record && filled($record->position) && ! isset($options[$record->position])) {
+                                    $options[$record->position] = $record->position;
+                                }
+
+                                return $options;
+                            })
                             ->required()
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->hint('Kelola pilihan di menu Kategori (tipe Guru / Jabatan).'),
 
                         TextInput::make('subject')
                             ->label('Mata Pelajaran')
