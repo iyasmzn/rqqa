@@ -157,6 +157,16 @@
                        style="background:#fff;color:#030712">
             </div>
 
+            {{-- Institution filter --}}
+            @if($institutions->isNotEmpty())
+                <select name="institution" class="filter-chip sm:w-52 focus:outline-none">
+                    <option value="">Semua Instansi</option>
+                    @foreach($institutions as $inst)
+                        <option value="{{ $inst->id }}" @selected((string) $institution === (string) $inst->id)>{{ $inst->name }}</option>
+                    @endforeach
+                </select>
+            @endif
+
             {{-- Position filter --}}
             @if($positions->isNotEmpty())
                 <select name="position" class="filter-chip sm:w-52 focus:outline-none">
@@ -180,7 +190,7 @@
                 Cari
             </button>
 
-            @if($search || $position || $sort !== 'default')
+            @if($search || $position || $institution || $sort !== 'default')
                 <a href="{{ route('teachers.index') }}" class="btn-outline shrink-0 text-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     Reset
@@ -189,11 +199,12 @@
         </form>
 
         {{-- ── Active filters summary ───────────────────────── --}}
-        @if($search || $position)
+        @if($search || $position || $institution)
             <p class="text-xs mb-6 text-gray-500">
                 Menampilkan <strong class="text-amber-700">{{ $teachers->total() }}</strong> guru
                 @if($search) yang mengandung "<strong class="text-amber-700">{{ $search }}</strong>" @endif
                 @if($position) dengan jabatan "<strong class="text-amber-700">{{ $position }}</strong>" @endif
+                @if($institution) di instansi "<strong class="text-amber-700">{{ optional($institutions->firstWhere('id', (int) $institution))->name }}</strong>" @endif
             </p>
         @endif
 
@@ -243,9 +254,16 @@
                                 {{ $teacher->name }}
                             </a>
                             @if($teacher->subject)
-                                <p class="text-[11px] text-gray-400 line-clamp-1 mb-3" itemprop="jobTitle">
+                                <p class="text-[11px] text-gray-400 line-clamp-1 mb-2" itemprop="jobTitle">
                                     {{ $teacher->subject }}
                                 </p>
+                            @endif
+
+                            @if($teacher->institution)
+                                <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-100 rounded-full px-2 py-0.5 mb-3 w-fit line-clamp-1">
+                                    <svg class="w-2.5 h-2.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                    {{ $teacher->institution->name }}
+                                </span>
                             @endif
 
                             {{-- Contact pills --}}

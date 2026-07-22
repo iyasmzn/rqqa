@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Institution;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -21,13 +22,16 @@ class TeacherController extends Controller
     {
         $search = $request->query('search', '');
         $position = $request->query('position', '');
+        $institution = $request->query('institution', '');
         $sort = $request->query('sort', 'default');
 
         [$sortColumn, $sortDirection] = self::SORT_OPTIONS[$sort] ?? self::SORT_OPTIONS['default'];
 
         $teachers = Teacher::active()
+            ->with('institution')
             ->when($search, fn ($q) => $q->where('name', 'like', "%{$search}%"))
             ->when($position, fn ($q) => $q->where('position', $position))
+            ->when($institution, fn ($q) => $q->where('institution_id', $institution))
             ->orderBy($sortColumn, $sortDirection)
             ->paginate(self::PER_PAGE)
             ->withQueryString();
@@ -37,6 +41,11 @@ class TeacherController extends Controller
             ->orderBy('position')
             ->pluck('position');
 
+        $institutions = Institution::query()
+            ->whereHas('teachers', fn ($q) => $q->where('is_active', true))
+            ->ordered()
+            ->get(['id', 'name']);
+
         $siteName = setting('site_name', config('app.name'));
 
         $seo = [
@@ -45,7 +54,7 @@ class TeacherController extends Controller
             'canonical' => route('teachers.index'),
         ];
 
-        return view('teachers.index', compact('teachers', 'positions', 'search', 'position', 'sort', 'seo'));
+        return view('teachers.index', compact('teachers', 'positions', 'institutions', 'search', 'position', 'institution', 'sort', 'seo'));
     }
 
     public function show(Teacher $teacher): View

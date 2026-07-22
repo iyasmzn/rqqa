@@ -127,29 +127,32 @@
                         @endforeach
                     </div>
 
-                    {{-- Lightbox --}}
-                    <div x-show="lightbox"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0"
-                         x-transition:enter-end="opacity-100"
-                         x-transition:leave="transition ease-in duration-150"
-                         x-transition:leave-start="opacity-100"
-                         x-transition:leave-end="opacity-0"
-                         @click.self="close()"
-                         @keydown.escape.window="close()"
-                         class="lightbox-overlay"
-                         x-trap.inert="lightbox">
-                        <img :src="current" :alt="currentAlt" class="lightbox-img">
-                        <button @click="close()"
-                                class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-                                aria-label="Tutup">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </button>
-                        <p x-show="currentAlt" x-text="currentAlt"
-                           class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-sm bg-black/40 backdrop-blur-sm rounded-full px-4 py-1.5 max-w-sm text-center"></p>
-                    </div>
+                    {{-- Lightbox (teleported to <body> so `position: fixed` escapes any
+                         transformed ancestor card and covers the full viewport) --}}
+                    <template x-teleport="body">
+                        <div x-show="lightbox"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0"
+                             x-transition:enter-end="opacity-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100"
+                             x-transition:leave-end="opacity-0"
+                             @click.self="close()"
+                             @keydown.escape.window="close()"
+                             class="lightbox-overlay"
+                             style="display: none;">
+                            <img :src="current" :alt="currentAlt" class="lightbox-img">
+                            <button @click="close()"
+                                    class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                                    aria-label="Tutup">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                            <p x-show="currentAlt" x-text="currentAlt"
+                               class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-sm bg-black/40 backdrop-blur-sm rounded-full px-4 py-1.5 max-w-sm text-center"></p>
+                        </div>
+                    </template>
                 </div>
             @endif
         @endif
