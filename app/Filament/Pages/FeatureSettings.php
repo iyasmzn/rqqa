@@ -56,6 +56,10 @@ class FeatureSettings extends Page
             'feature_toko' => setting_bool('feature_toko', true),
             // Locked to nonaktif whenever login/register is disabled.
             'feature_pertanyaan' => $loginEnabled && setting_bool('feature_pertanyaan', true),
+
+            // Komentar
+            'comment_user_auto_publish' => setting_bool('comment_user_auto_publish', true),
+            'comment_guest_auto_publish' => setting_bool('comment_guest_auto_publish', true),
         ]);
     }
 
@@ -106,6 +110,21 @@ class FeatureSettings extends Page
                         ->helperText(fn (Get $get): string => $get('feature_login_register')
                             ? 'Menampilkan halaman tanya jawab. Pengunjung wajib login untuk mengirim pertanyaan.'
                             : 'Terkunci: aktifkan Login & Registrasi terlebih dahulu karena pengirim pertanyaan wajib memiliki akun.'),
+                ]),
+
+            Section::make('Komentar Artikel')
+                ->description('Atur apakah komentar baru langsung tampil atau menunggu persetujuan admin.')
+                ->icon(Heroicon::OutlinedChatBubbleLeftRight)
+                ->schema([
+                    Toggle::make('comment_user_auto_publish')
+                        ->label('Komentar pengguna terdaftar langsung tampil')
+                        ->default(true)
+                        ->helperText('Nonaktifkan agar komentar dari pengguna yang login harus disetujui admin dulu.'),
+
+                    Toggle::make('comment_guest_auto_publish')
+                        ->label('Komentar tamu (tanpa login) langsung tampil')
+                        ->default(true)
+                        ->helperText('Nonaktifkan agar komentar dari tamu masuk sebagai menunggu persetujuan admin.'),
                 ]),
         ]);
     }
