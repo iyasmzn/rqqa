@@ -6,6 +6,7 @@ use Database\Factories\InstitutionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Institution extends Model
@@ -66,10 +67,10 @@ class Institution extends Model
         return $this->hasMany(SpmbRegistration::class);
     }
 
-    /** @return HasMany<AdmissionPath, $this> */
-    public function admissionPaths(): HasMany
+    /** @return BelongsToMany<AdmissionPath, $this> */
+    public function admissionPaths(): BelongsToMany
     {
-        return $this->hasMany(AdmissionPath::class);
+        return $this->belongsToMany(AdmissionPath::class);
     }
 
     /** @return HasMany<PpdbField, $this> */

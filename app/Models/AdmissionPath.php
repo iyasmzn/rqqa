@@ -6,7 +6,7 @@ use Database\Factories\AdmissionPathFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AdmissionPath extends Model
@@ -15,7 +15,6 @@ class AdmissionPath extends Model
     use HasFactory;
 
     protected $fillable = [
-        'institution_id',
         'name',
         'slug',
         'icon',
@@ -31,10 +30,10 @@ class AdmissionPath extends Model
         'sort_order' => 'integer',
     ];
 
-    /** @return BelongsTo<Institution, $this> */
-    public function institution(): BelongsTo
+    /** @return BelongsToMany<Institution, $this> */
+    public function institutions(): BelongsToMany
     {
-        return $this->belongsTo(Institution::class);
+        return $this->belongsToMany(Institution::class);
     }
 
     /** @return HasMany<SpmbRegistration, $this> */
@@ -44,8 +43,8 @@ class AdmissionPath extends Model
     }
 
     /**
-     * Paths available to a given jenjang: those scoped to it plus shared
-     * (null-institution) paths. Passing null returns only shared paths.
+     * Paths available to a given jenjang: those attached to it plus shared
+     * paths (no jenjang attached at all). Passing null returns only shared paths.
      *
      * @param  Builder<static>  $query
      * @return Builder<static>
@@ -53,10 +52,12 @@ class AdmissionPath extends Model
     public function scopeForInstitution(Builder $query, ?Institution $institution): Builder
     {
         return $query->where(function (Builder $query) use ($institution): void {
-            $query->whereNull('institution_id');
+            $query->whereDoesntHave('institutions');
 
             if ($institution !== null) {
-                $query->orWhere('institution_id', $institution->id);
+                $query->orWhereHas('institutions', function (Builder $subQuery) use ($institution): void {
+                    $subQuery->whereKey($institution->id);
+                });
             }
         });
     }

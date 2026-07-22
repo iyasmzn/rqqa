@@ -252,6 +252,30 @@ class SpmbRegistrationTest extends TestCase
         $response->assertSessionHasErrors(['admission_path_id']);
     }
 
+    public function test_admission_path_can_be_shared_by_several_jenjang(): void
+    {
+        $sd = Institution::factory()->create(['slug' => 'sd']);
+        $sma = Institution::factory()->create(['slug' => 'sma']);
+
+        // No jenjang attached => shared with everyone.
+        AdmissionPath::factory()->create(['slug' => 'jalur-bersama']);
+
+        // Attached to SMP (setUp) + SD only.
+        $khusus = AdmissionPath::factory()->create(['slug' => 'jalur-khusus']);
+        $khusus->institutions()->attach([$this->institution->id, $sd->id]);
+
+        $smp = AdmissionPath::query()->forInstitution($this->institution)->pluck('slug');
+        $this->assertTrue($smp->contains('jalur-bersama'));
+        $this->assertTrue($smp->contains('jalur-khusus'));
+
+        $this->assertTrue(AdmissionPath::query()->forInstitution($sd)->pluck('slug')->contains('jalur-khusus'));
+
+        // SMA only gets the shared one, not the SMP/SD-specific path.
+        $smaPaths = AdmissionPath::query()->forInstitution($sma)->pluck('slug');
+        $this->assertTrue($smaPaths->contains('jalur-bersama'));
+        $this->assertFalse($smaPaths->contains('jalur-khusus'));
+    }
+
     public function test_dynamic_form_renders_configured_fields(): void
     {
         $this->institution->ppdbFields()->createMany([

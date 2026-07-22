@@ -53,13 +53,14 @@ class AdmissionPathForm
                         ->maxLength(300)
                         ->columnSpanFull(),
 
-                    Select::make('institution_id')
+                    Select::make('institutions')
                         ->label('Khusus Jenjang')
-                        ->relationship('institution', 'name')
+                        ->relationship('institutions', 'name')
+                        ->multiple()
                         ->native(false)
                         ->preload()
                         ->placeholder('Semua Jenjang (bersama)')
-                        ->helperText('Kosongkan agar jalur ini tersedia untuk semua jenjang.')
+                        ->helperText('Kosongkan agar jalur ini tersedia untuk SEMUA jenjang. Pilih satu atau beberapa jenjang untuk membatasi hanya ke jenjang tersebut.')
                         ->columnSpanFull(),
 
                     IconUpload::make()

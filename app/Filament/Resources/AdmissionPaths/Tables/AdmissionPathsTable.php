@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AdmissionPaths\Tables;
 
 use App\Models\AdmissionPath;
+use App\Models\Institution;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -19,6 +20,7 @@ class AdmissionPathsTable
         return $table
             ->reorderable('sort_order')
             ->defaultSort('sort_order', 'asc')
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->with('institutions'))
             ->columns([
                 TextColumn::make('name')
                     ->label('Nama Jalur')
@@ -33,6 +35,14 @@ class AdmissionPathsTable
                     ->limit(60)
                     ->color('gray')
                     ->toggleable(),
+
+                TextColumn::make('institutions')
+                    ->label('Khusus Jenjang')
+                    ->badge()
+                    ->color('gray')
+                    ->state(fn (AdmissionPath $record): array => $record->institutions->isEmpty()
+                        ? ['Semua jenjang']
+                        : $record->institutions->map(fn (Institution $institution): string => $institution->short_name ?: $institution->name)->all()),
 
                 TextColumn::make('registrations_count')
                     ->label('Pendaftar')
