@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Questions;
 
+use App\Filament\Concerns\IndicatesFeatureStatus;
 use App\Filament\Resources\Questions\Pages\CreateQuestion;
 use App\Filament\Resources\Questions\Pages\EditQuestion;
 use App\Filament\Resources\Questions\Pages\ListQuestions;
@@ -14,6 +15,10 @@ use Filament\Tables\Table;
 
 class QuestionResource extends Resource
 {
+    use IndicatesFeatureStatus;
+
+    protected static string $feature = 'pertanyaan';
+
     protected static ?string $model = Question::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Interaksi';

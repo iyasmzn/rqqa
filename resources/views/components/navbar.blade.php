@@ -160,6 +160,7 @@
                     </nav>
 
                     {{-- Cart icon --}}
+                    @if(feature_enabled('toko'))
                     <a href="{{ route('cart.index') }}"
                        class="relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
                        :class="solid ? 'nav-icon-scrolled' : 'hover:bg-white/10'"
@@ -174,6 +175,7 @@
                                   style="background:var(--primary)">{{ $cartCount }}</span>
                         @endif
                     </a>
+                    @endif
 
                     {{-- Auth (desktop) --}}
                     @auth
@@ -205,6 +207,7 @@
                                     <p class="text-xs truncate" style="color:var(--muted)">{{ Auth::user()->email }}</p>
                                 </div>
 
+                                @if(feature_enabled('toko'))
                                 <a href="{{ route('cart.index') }}"
                                    class="flex items-center gap-2.5 px-4 py-2.5 text-sm nav-dropdown-item transition-colors"
                                    style="color:var(--text)">
@@ -217,6 +220,7 @@
                                               style="background:var(--primary)">{{ $cartCount }}</span>
                                     @endif
                                 </a>
+                                @endif
 
                                 <a href="{{ route('profile.edit') }}"
                                    class="flex items-center gap-2.5 px-4 py-2.5 text-sm nav-dropdown-item transition-colors"
@@ -240,7 +244,7 @@
                                 </form>
                             </div>
                         </div>
-                    @else
+                    @elseif(feature_enabled('login_register'))
                         <a href="{{ route('login') }}"
                            class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-200"
                            :class="solid
@@ -377,7 +381,7 @@
                         Keluar
                     </button>
                 </form>
-            @else
+            @elseif(feature_enabled('login_register'))
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}"
                        class="btn-primary flex items-center justify-center gap-2 w-full py-3 rounded-xl">

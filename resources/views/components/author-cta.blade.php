@@ -1,4 +1,5 @@
 @guest
+    @if(feature_enabled('login_register'))
     <div class="relative overflow-hidden rounded-3xl p-8 sm:p-10 text-center"
          style="background:linear-gradient(135deg,#082828 0%,#08484A 60%,#0a6060 100%)"
          data-aos="fade-up">
@@ -35,4 +36,5 @@
             </div>
         </div>
     </div>
+    @endif
 @endguest

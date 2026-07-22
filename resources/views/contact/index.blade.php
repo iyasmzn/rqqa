@@ -126,7 +126,7 @@
                 </iframe>
             </div>
         </div>
-        @else
+        @elseif(feature_enabled('pertanyaan'))
         {{-- Tanya Jawab CTA --}}
         <div class="text-center py-12 rounded-2xl border-2 border-dashed" style="border-color:var(--border)" data-aos="fade-up">
             <div class="text-5xl mb-4">💬</div>

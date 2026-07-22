@@ -265,8 +265,15 @@
     {{-- ═══════════════════════════════════════════════════
          SECTIONS — ordered & toggled via admin settings
     ═══════════════════════════════════════════════════ --}}
+    @php
+        // Landing sections tied to a toggleable feature; hidden when it is off.
+        $sectionFeature = [
+            'section_books'  => 'toko',
+            'section_donasi' => 'donasi',
+        ];
+    @endphp
     @foreach($sectionOrder as $section)
-        @if(($section['visible'] ?? true) && isset($sectionPartials[$section['key']]))
+        @if(($section['visible'] ?? true) && isset($sectionPartials[$section['key']]) && (! isset($sectionFeature[$section['key']]) || feature_enabled($sectionFeature[$section['key']])))
             @include($sectionPartials[$section['key']])
         @endif
     @endforeach
@@ -372,14 +379,14 @@
                     <h4 class="text-xs font-bold uppercase tracking-widest mb-4"
                         style="color:color-mix(in oklab,var(--primary) 80%,white)">Layanan</h4>
                     <ul class="space-y-2.5">
-                        @foreach([
-                            ['label' => 'Toko Buku',       'url' => route('books.index')],
+                        @foreach(array_filter([
+                            feature_enabled('toko') ? ['label' => 'Toko Buku', 'url' => route('books.index')] : null,
                             ['label' => 'Daftar Santri',   'url' => route('ppdb.index')],
                             ['label' => 'Blog & Berita',   'url' => route('blog.index')],
                             ['label' => 'Unduhan',         'url' => route('downloads.index')],
                             ['label' => 'Tenaga Pendidik', 'url' => route('teachers.index')],
-                            ['label' => 'Donasi',          'url' => route('donasi.index')],
-                        ] as $link)
+                            feature_enabled('donasi') ? ['label' => 'Donasi', 'url' => route('donasi.index')] : null,
+                        ]) as $link)
                         <li>
                             <a href="{{ $link['url'] }}"
                                class="text-sm text-white/50 hover:text-white transition-colors flex items-center gap-2 group">

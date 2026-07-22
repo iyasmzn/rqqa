@@ -50,6 +50,33 @@ if (! function_exists('setting_bool')) {
     }
 }
 
+if (! function_exists('feature_enabled')) {
+    /**
+     * Whether a public-facing feature is enabled, honouring dependencies.
+     *
+     * Dependencies:
+     *  - "pertanyaan" requires "login_register" (submitting a question needs an
+     *    account), so it is locked off whenever login/register is disabled.
+     *  - "toko_checkout" requires both the shop and login/register: the shop may
+     *    stay enabled for browsing while checkout is unavailable without login.
+     *
+     * All features default to enabled so existing installs keep working.
+     */
+    function feature_enabled(string $feature): bool
+    {
+        $loginRegister = setting_bool('feature_login_register', true);
+
+        return match ($feature) {
+            'login_register' => $loginRegister,
+            'donasi' => setting_bool('feature_donasi', true),
+            'toko' => setting_bool('feature_toko', true),
+            'toko_checkout' => setting_bool('feature_toko', true) && $loginRegister,
+            'pertanyaan' => $loginRegister && setting_bool('feature_pertanyaan', true),
+            default => setting_bool('feature_'.$feature, true),
+        };
+    }
+}
+
 if (! function_exists('google_font_url')) {
     /**
      * Extract a clean Google/Bunny Fonts stylesheet URL from a pasted <link>

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Books;
 
+use App\Filament\Concerns\IndicatesFeatureStatus;
 use App\Filament\Resources\Books\Pages\CreateBook;
 use App\Filament\Resources\Books\Pages\EditBook;
 use App\Filament\Resources\Books\Pages\ListBooks;
@@ -15,6 +16,10 @@ use UnitEnum;
 
 class BookResource extends Resource
 {
+    use IndicatesFeatureStatus;
+
+    protected static string $feature = 'toko';
+
     protected static ?string $model = Book::class;
 
     protected static string|UnitEnum|null $navigationGroup = 'Profil Sekolah';

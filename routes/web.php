@@ -57,7 +57,7 @@ Route::get('/unduhan', [DownloadController::class, 'index'])->name('downloads.in
 Route::get('/unduhan/{download}/download', [DownloadController::class, 'download'])->name('downloads.download');
 
 // ── Autentikasi Pengguna Umum ────────────────────────────────
-Route::middleware('guest')->group(function () {
+Route::middleware(['guest', 'feature:login_register'])->group(function () {
     Route::get('/masuk', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/masuk', [LoginController::class, 'login']);
     Route::get('/daftar', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -91,19 +91,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/jadi-author', [AuthorRequestController::class, 'store'])->name('author-request.store');
 });
 
-// Produk Buku
-Route::get('/buku', [BookController::class, 'index'])->name('books.index');
-Route::get('/buku/{book:slug}', [BookController::class, 'show'])->name('books.show');
+// Produk Buku & Keranjang (Toko)
+Route::middleware('feature:toko')->group(function () {
+    Route::get('/buku', [BookController::class, 'index'])->name('books.index');
+    Route::get('/buku/{book:slug}', [BookController::class, 'show'])->name('books.show');
 
-// Keranjang Belanja
-Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
-Route::post('/keranjang/{book}', [CartController::class, 'add'])->name('cart.add');
-Route::patch('/keranjang/{book}', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/keranjang/{book}', [CartController::class, 'remove'])->name('cart.remove');
-Route::delete('/keranjang', [CartController::class, 'clear'])->name('cart.clear');
+    Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/keranjang/{book}', [CartController::class, 'add'])->name('cart.add');
+    Route::patch('/keranjang/{book}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/keranjang/{book}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::delete('/keranjang', [CartController::class, 'clear'])->name('cart.clear');
+});
 
-// Checkout (harus login)
-Route::middleware('auth')->group(function () {
+// Checkout (harus login; nonaktif jika Login & Register dimatikan)
+Route::middleware(['auth', 'feature:toko_checkout'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 });
@@ -121,14 +122,18 @@ Route::get('/cerita-santri', [StoryController::class, 'index'])->name('stories.i
 Route::get('/cerita-santri/{story:slug}', [StoryController::class, 'show'])->name('stories.show');
 
 // Donasi
-Route::get('/donasi', [DonationController::class, 'index'])->name('donasi.index');
-Route::post('/donasi', [DonationController::class, 'store'])->middleware('throttle:8,1')->name('donasi.store');
+Route::middleware('feature:donasi')->group(function () {
+    Route::get('/donasi', [DonationController::class, 'index'])->name('donasi.index');
+    Route::post('/donasi', [DonationController::class, 'store'])->middleware('throttle:8,1')->name('donasi.store');
+});
 
 // Tanya Jawab
-Route::get('/tanya-jawab', [QuestionController::class, 'index'])->name('questions.index');
-Route::post('/tanya-jawab', [QuestionController::class, 'store'])
-    ->middleware(['auth', 'verified', 'throttle:8,1'])
-    ->name('questions.store');
+Route::middleware('feature:pertanyaan')->group(function () {
+    Route::get('/tanya-jawab', [QuestionController::class, 'index'])->name('questions.index');
+    Route::post('/tanya-jawab', [QuestionController::class, 'store'])
+        ->middleware(['auth', 'verified', 'throttle:8,1'])
+        ->name('questions.store');
+});
 
 // Kontak
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');

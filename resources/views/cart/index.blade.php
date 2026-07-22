@@ -137,25 +137,32 @@ $seo = [
                             <span style="color:var(--primary)">Rp {{ number_format($total, 0, ',', '.') }}</span>
                         </div>
 
-                        @guest
-                            <div class="p-4 rounded-xl mb-4 text-sm text-center"
+                        @unless(feature_enabled('toko_checkout'))
+                            <div class="p-4 rounded-xl text-sm text-center"
                                  style="background:var(--primary-50);color:var(--primary-800)">
-                                Silakan masuk terlebih dahulu untuk melanjutkan checkout.
+                                Checkout sedang tidak tersedia saat ini.
                             </div>
-                            <a href="{{ route('login') }}" class="btn-primary w-full justify-center mb-2">
-                                Masuk untuk Checkout
-                            </a>
-                            <a href="{{ route('register') }}" class="btn-outline w-full justify-center text-sm">
-                                Daftar Akun Baru
-                            </a>
                         @else
-                            <a href="{{ route('checkout.index') }}" class="btn-primary w-full justify-center">
-                                Lanjut ke Checkout
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                                </svg>
-                            </a>
-                        @endguest
+                            @guest
+                                <div class="p-4 rounded-xl mb-4 text-sm text-center"
+                                     style="background:var(--primary-50);color:var(--primary-800)">
+                                    Silakan masuk terlebih dahulu untuk melanjutkan checkout.
+                                </div>
+                                <a href="{{ route('login') }}" class="btn-primary w-full justify-center mb-2">
+                                    Masuk untuk Checkout
+                                </a>
+                                <a href="{{ route('register') }}" class="btn-outline w-full justify-center text-sm">
+                                    Daftar Akun Baru
+                                </a>
+                            @else
+                                <a href="{{ route('checkout.index') }}" class="btn-primary w-full justify-center">
+                                    Lanjut ke Checkout
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                    </svg>
+                                </a>
+                            @endguest
+                        @endunless
                     </div>
                 </div>
 

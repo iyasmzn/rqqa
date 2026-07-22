@@ -364,6 +364,7 @@
     </div>
 
     {{-- ── Q&A Section ──────────────────────────────────────── --}}
+    @if(feature_enabled('pertanyaan'))
     <section class="border-t py-14" style="border-color:#f3f4f6;background:#f9fafb">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-600 mb-2">
@@ -480,6 +481,7 @@
             @endif
         </div>
     </section>
+    @endif
 
     {{-- ── Komentar ─────────────────────────────────────────── --}}
     <section id="komentar" class="border-t py-14" style="border-color:#f3f4f6">
@@ -581,9 +583,11 @@
                         </div>
                         @guest
                         <x-spam-guard />
+                        @if(feature_enabled('login_register'))
                         <p class="text-xs text-gray-400">
                             Sudah punya akun? <a href="{{ route('login') }}" class="text-amber-600 font-semibold hover:underline">Masuk</a> untuk berkomentar dengan nama akun Anda.
                         </p>
+                        @endif
                         @endguest
                         <button type="submit"
                                 class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80"

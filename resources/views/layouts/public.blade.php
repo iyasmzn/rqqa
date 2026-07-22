@@ -309,14 +309,14 @@
                     <h4 class="text-xs font-bold uppercase tracking-widest mb-4"
                         style="color:color-mix(in oklab,var(--primary) 80%,white)">Layanan</h4>
                     <ul class="space-y-2.5">
-                        @foreach([
-                            ['label' => 'Toko Buku',      'url' => route('books.index')],
+                        @foreach(array_filter([
+                            feature_enabled('toko') ? ['label' => 'Toko Buku', 'url' => route('books.index')] : null,
                             ['label' => 'Daftar Santri',  'url' => route('ppdb.index')],
                             ['label' => 'Blog & Berita',  'url' => route('blog.index')],
                             ['label' => 'Unduhan',        'url' => route('downloads.index')],
                             ['label' => 'Tenaga Pendidik','url' => route('teachers.index')],
-                            ['label' => 'Keranjang',      'url' => route('cart.index')],
-                        ] as $link)
+                            feature_enabled('toko') ? ['label' => 'Keranjang', 'url' => route('cart.index')] : null,
+                        ]) as $link)
                         <li>
                             <a href="{{ $link['url'] }}"
                                class="text-sm text-white/50 hover:text-white transition-colors flex items-center gap-2 group">

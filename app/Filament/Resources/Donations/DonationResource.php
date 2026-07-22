@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Donations;
 
+use App\Filament\Concerns\IndicatesFeatureStatus;
 use App\Filament\Resources\Donations\Pages\EditDonation;
 use App\Filament\Resources\Donations\Pages\ListDonations;
 use App\Filament\Resources\Donations\Schemas\DonationForm;
@@ -14,6 +15,10 @@ use UnitEnum;
 
 class DonationResource extends Resource
 {
+    use IndicatesFeatureStatus;
+
+    protected static string $feature = 'donasi';
+
     protected static ?string $model = Donation::class;
 
     protected static string|UnitEnum|null $navigationGroup = 'Donasi';
@@ -49,12 +54,12 @@ class DonationResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge(): ?string
+    protected static function getNavigationBadgeWhenEnabled(): ?string
     {
         return (string) static::getModel()::where('status', 'pending')->count() ?: null;
     }
 
-    public static function getNavigationBadgeColor(): string
+    protected static function getNavigationBadgeColorWhenEnabled(): string|array|null
     {
         return 'warning';
     }
