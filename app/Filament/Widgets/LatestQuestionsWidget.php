@@ -23,6 +23,11 @@ class LatestQuestionsWidget extends TableWidget
 
     protected static ?string $heading = 'Pertanyaan Belum Dijawab';
 
+    public static function canView(): bool
+    {
+        return parent::canView() && feature_enabled('pertanyaan');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

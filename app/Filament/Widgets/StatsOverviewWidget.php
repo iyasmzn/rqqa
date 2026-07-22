@@ -86,7 +86,7 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
 
         $teacherTotal = Teacher::where('is_active', true)->count();
 
-        return [
+        return array_values(array_filter([
             Stat::make('Total Postingan', Post::where('is_published', true)->count())
                 ->description($postsThisMonth.' baru bulan ini'.($postsLastMonth > 0 ? ' (bulan lalu: '.$postsLastMonth.')' : ''))
                 ->descriptionIcon(Heroicon::Newspaper)
@@ -99,16 +99,20 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
                 ->chart($spmbTrend)
                 ->color('warning'),
 
-            Stat::make('Total Donasi Masuk', 'Rp '.number_format($donationTotal, 0, ',', '.'))
-                ->description('Rp '.number_format($donationThisMonth, 0, ',', '.').' bulan ini')
-                ->descriptionIcon(Heroicon::Heart)
-                ->chart($donationTrend)
-                ->color('danger'),
+            feature_enabled('donasi')
+                ? Stat::make('Total Donasi Masuk', 'Rp '.number_format($donationTotal, 0, ',', '.'))
+                    ->description('Rp '.number_format($donationThisMonth, 0, ',', '.').' bulan ini')
+                    ->descriptionIcon(Heroicon::Heart)
+                    ->chart($donationTrend)
+                    ->color('danger')
+                : null,
 
-            Stat::make('Pertanyaan Belum Dijawab', $unansweredQuestions)
-                ->description('Dari total '.Question::count().' pertanyaan masuk')
-                ->descriptionIcon(Heroicon::ChatBubbleLeftRight)
-                ->color($unansweredQuestions > 0 ? 'warning' : 'success'),
+            feature_enabled('pertanyaan')
+                ? Stat::make('Pertanyaan Belum Dijawab', $unansweredQuestions)
+                    ->description('Dari total '.Question::count().' pertanyaan masuk')
+                    ->descriptionIcon(Heroicon::ChatBubbleLeftRight)
+                    ->color($unansweredQuestions > 0 ? 'warning' : 'success')
+                : null,
 
             Stat::make('Komentar Perlu Moderasi', $pendingComments)
                 ->description('Dari total '.Comment::count().' komentar masuk')
@@ -124,6 +128,6 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
                 ->description($mediaTotal.' file media tersimpan')
                 ->descriptionIcon(Heroicon::Users)
                 ->color('success'),
-        ];
+        ]));
     }
 }
