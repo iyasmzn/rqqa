@@ -186,6 +186,15 @@
                         </a>
                         @endif
                     @endif
+
+                    @if($institution->detail_url)
+                        @php $detailIsExternal = \Illuminate\Support\Str::startsWith($institution->detail_url, ['http://', 'https://']); @endphp
+                        <a href="{{ $institution->detail_url }}" @if($detailIsExternal) target="_blank" rel="noopener" @endif
+                           class="mt-3 flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-sm transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Lihat Detail Jenjang
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

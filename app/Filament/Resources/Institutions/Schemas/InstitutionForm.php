@@ -62,6 +62,13 @@ class InstitutionForm
                         ->maxLength(300)
                         ->columnSpanFull(),
 
+                    TextInput::make('detail_url')
+                        ->label('URL / Path Halaman Detail')
+                        ->maxLength(500)
+                        ->placeholder('https://sekolah.sch.id/profil/sma  atau  /profil/sma')
+                        ->helperText('Opsional. Tautan halaman detail/profil jenjang agar calon pendaftar bisa melihat informasi lengkap sebelum mendaftar. Isi URL lengkap (https://...) atau path internal diawali garis miring (/...).')
+                        ->columnSpanFull(),
+
                     Textarea::make('address')
                         ->label('Alamat')
                         ->rows(2)

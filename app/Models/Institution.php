@@ -27,6 +27,7 @@ class Institution extends Model
         'icon_image',
         'color',
         'description',
+        'detail_url',
         'address',
         'sort_order',
         'is_active',

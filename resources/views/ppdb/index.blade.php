@@ -60,9 +60,10 @@
                 $wave = $institution->usesInternalForm() ? \App\Models\RegistrationWave::relevant($institution) : null;
                 $fmtDate = fn ($d) => $d ? $d->locale('id')->translatedFormat('d M Y') : null;
             @endphp
+            <div class="jenjang-card fi-card flex flex-col border overflow-hidden" style="border-color:var(--border)"
+                 data-aos="fade-up" data-aos-delay="{{ $loop->index * 80 }}">
             <a href="{{ route('ppdb.show', $institution) }}"
-               class="jenjang-card fi-card p-6 flex flex-col border" style="border-color:var(--border)"
-               data-aos="fade-up" data-aos-delay="{{ $loop->index * 80 }}">
+               class="p-6 flex flex-col flex-1">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
                         @if($url = icon_url($institution->icon_image))
@@ -103,6 +104,16 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                 </span>
             </a>
+            @if($institution->detail_url)
+                @php $detailIsExternal = \Illuminate\Support\Str::startsWith($institution->detail_url, ['http://', 'https://']); @endphp
+                <a href="{{ $institution->detail_url }}" @if($detailIsExternal) target="_blank" rel="noopener" @endif
+                   class="flex items-center justify-center gap-1.5 text-xs font-bold px-4 py-3.5 border-t transition-colors hover:text-amber-600"
+                   style="color:var(--muted); border-color:var(--border)">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Lihat Detail Jenjang
+                </a>
+            @endif
+            </div>
             @endforeach
         </div>
     @endif
