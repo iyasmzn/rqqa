@@ -110,7 +110,7 @@
         @endif
 
         {{-- Maps Embed --}}
-        @php $mapsUrl = setting('maps_embed_url') @endphp
+        @php $mapsUrl = setting('contact_map_url') @endphp
         @if($mapsUrl)
         <div data-aos="fade-up" data-aos-delay="100">
             <h2 class="text-xl font-extrabold mb-4" style="color:var(--text)">Lokasi Kami</h2>

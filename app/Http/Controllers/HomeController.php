@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Models\ContactItem;
 use App\Models\Event;
 use App\Models\Greeting;
 use App\Models\Media;
@@ -28,7 +27,7 @@ class HomeController extends Controller
         $slides = Slide::active()->get();
         $greetings = Greeting::published()->get();
         $testimonials = Testimonial::published()->get();
-        $contactItems = ContactItem::active()->get();
+        $contactItems = contact_items();
 
         $upcomingEvents = Event::published()
             ->upcoming()

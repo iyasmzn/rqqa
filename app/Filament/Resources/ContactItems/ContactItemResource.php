@@ -17,6 +17,14 @@ class ContactItemResource extends Resource
 {
     protected static ?string $model = ContactItem::class;
 
+    /**
+     * Retired: contact data is now managed centrally in GeneralSettings
+     * (the `contact_*` / `social_*` settings) to avoid duplicate sources.
+     * The resource is hidden from navigation but kept so existing data is
+     * not lost; it can be removed once the legacy table is dropped.
+     */
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string|UnitEnum|null $navigationGroup = 'Interaksi';
 
     protected static ?string $navigationLabel = 'Kontak';

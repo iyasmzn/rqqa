@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ContactItem;
 use Illuminate\View\View;
 
 class ContactController extends Controller
 {
     public function index(): View
     {
-        $contactItems = ContactItem::active()->get();
+        $contactItems = contact_items();
 
         $appName = config('app.name');
 

@@ -58,6 +58,8 @@ class GeneralSettings extends Page
             'social_facebook' => Setting::get('social_facebook'),
             'social_instagram' => Setting::get('social_instagram'),
             'social_youtube' => Setting::get('social_youtube'),
+            'social_tiktok' => Setting::get('social_tiktok'),
+            'social_telegram' => Setting::get('social_telegram'),
             'social_whatsapp' => Setting::get('social_whatsapp'),
 
             // Toko Buku
@@ -194,6 +196,19 @@ class GeneralSettings extends Page
                             ->url()
                             ->placeholder('https://youtube.com/@channel')
                             ->prefixIcon(Heroicon::OutlinedGlobeAlt),
+
+                        TextInput::make('social_tiktok')
+                            ->label('TikTok')
+                            ->url()
+                            ->placeholder('https://tiktok.com/@namaakun')
+                            ->prefixIcon(Heroicon::OutlinedGlobeAlt),
+
+                        TextInput::make('social_telegram')
+                            ->label('Telegram')
+                            ->url()
+                            ->placeholder('https://t.me/namaakun')
+                            ->hint('Juga tampil sebagai kartu kontak di halaman.')
+                            ->prefixIcon(Heroicon::OutlinedPaperAirplane),
 
                         TextInput::make('social_whatsapp')
                             ->label('WhatsApp')

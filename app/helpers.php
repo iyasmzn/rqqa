@@ -3,6 +3,7 @@
 use App\Models\AcademicYear;
 use App\Models\RegistrationWave;
 use App\Models\Setting;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 if (! function_exists('icon_url')) {
@@ -20,6 +21,82 @@ if (! function_exists('icon_url')) {
         return Str::startsWith($path, ['http://', 'https://', '/'])
             ? $path
             : asset('storage/'.$path);
+    }
+}
+
+if (! function_exists('contact_items')) {
+    /**
+     * Build the list of public contact channels from the site settings. This is
+     * the single source of truth for contact data shown on the landing page,
+     * the contact page, and the footer. Only channels with a filled value are
+     * returned. Each item mirrors the legacy ContactItem shape so the existing
+     * Blade views can consume it unchanged.
+     *
+     * @return Collection<int, object{icon: string, icon_image: null, label: string, value: string, link: ?string}>
+     */
+    function contact_items(): Collection
+    {
+        $address = setting('contact_address');
+        $phone = setting('contact_phone');
+        $email = setting('contact_email');
+        $whatsapp = setting('social_whatsapp');
+        $telegram = setting('social_telegram');
+        $hours = setting('contact_hours');
+
+        $phoneDigits = $phone ? preg_replace('/[^0-9+]/', '', $phone) : null;
+        $waDigits = $whatsapp ? preg_replace('/\D/', '', $whatsapp) : null;
+
+        $channels = [
+            [
+                'icon' => '📍',
+                'label' => 'Alamat',
+                'value' => $address,
+                'link' => $address
+                    ? 'https://www.google.com/maps/search/?api=1&query='.urlencode($address)
+                    : null,
+            ],
+            [
+                'icon' => '📞',
+                'label' => 'Telepon',
+                'value' => $phone,
+                'link' => $phoneDigits ? 'tel:'.$phoneDigits : null,
+            ],
+            [
+                'icon' => '✉️',
+                'label' => 'Email',
+                'value' => $email,
+                'link' => $email ? 'mailto:'.$email : null,
+            ],
+            [
+                'icon' => '💬',
+                'label' => 'WhatsApp',
+                'value' => $whatsapp,
+                'link' => $waDigits ? 'https://wa.me/'.$waDigits : null,
+            ],
+            [
+                'icon' => '✈️',
+                'label' => 'Telegram',
+                'value' => $telegram,
+                'link' => $telegram,
+            ],
+            [
+                'icon' => '🕐',
+                'label' => 'Jam Operasional',
+                'value' => $hours,
+                'link' => null,
+            ],
+        ];
+
+        return collect($channels)
+            ->filter(fn (array $channel): bool => filled($channel['value']))
+            ->map(fn (array $channel): object => (object) [
+                'icon' => $channel['icon'],
+                'icon_image' => null,
+                'label' => $channel['label'],
+                'value' => $channel['value'],
+                'link' => $channel['link'],
+            ])
+            ->values();
     }
 }
 
