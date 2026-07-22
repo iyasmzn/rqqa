@@ -32,6 +32,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName(fn (): string => (string) setting('site_name', config('app.name')))
+            ->brandLogo(fn (): ?HtmlString => $this->brandLogo())
+            ->brandLogoHeight('2.25rem')
+            ->favicon(fn (): ?string => filled(setting('site_favicon')) ? asset('storage/'.setting('site_favicon')) : null)
             ->globalSearch(FeatureGlobalSearchProvider::class)
             ->profile(EditProfile::class)
             ->userMenuItems([
@@ -181,5 +185,27 @@ class AdminPanelProvider extends PanelProvider
                         'sm' => 2,
                     ]),
             ]);
+    }
+
+    /**
+     * Render the panel logo as the uploaded image alongside the site name.
+     * Falls back to null (Filament shows the text brand name) when no logo
+     * has been uploaded in the general settings.
+     */
+    protected function brandLogo(): ?HtmlString
+    {
+        if (blank(setting('site_logo'))) {
+            return null;
+        }
+
+        $logo = e(asset('storage/'.setting('site_logo')));
+        $name = e((string) setting('site_name', config('app.name')));
+
+        return new HtmlString(<<<HTML
+            <span style="display:inline-flex;align-items:center;gap:.625rem">
+                <img src="{$logo}" alt="{$name}" style="height:2.25rem;width:auto;flex:none">
+                <span class="text-gray-950 dark:text-white" style="font-weight:600;font-size:1rem;line-height:1.2">{$name}</span>
+            </span>
+            HTML);
     }
 }
