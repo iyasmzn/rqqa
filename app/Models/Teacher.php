@@ -6,6 +6,7 @@ use Database\Factories\TeacherFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Teacher extends Model
 {
@@ -13,6 +14,7 @@ class Teacher extends Model
     use HasFactory;
 
     protected $fillable = [
+        'institution_id',
         'name', 'nip', 'position', 'subject',
         'education', 'phone', 'email', 'whatsapp',
         'photo', 'is_active', 'sort_order',
@@ -23,6 +25,16 @@ class Teacher extends Model
         return [
             'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * Instansi / unit tempat guru bertugas (opsional).
+     *
+     * @return BelongsTo<Institution, $this>
+     */
+    public function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class);
     }
 
     /**

@@ -49,6 +49,16 @@ class TeacherForm
 
             Section::make('Jabatan & Bidang Studi')
                 ->schema([
+                    Select::make('institution_id')
+                        ->label('Instansi / Unit')
+                        ->relationship('institution', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->native(false)
+                        ->placeholder('Tidak terikat unit tertentu')
+                        ->hint('Opsional — kosongkan jika guru tidak terikat unit.')
+                        ->columnSpanFull(),
+
                     Grid::make(2)->schema([
                         Select::make('position')
                             ->label('Jabatan')

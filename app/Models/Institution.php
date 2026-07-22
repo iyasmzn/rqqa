@@ -47,6 +47,12 @@ class Institution extends Model
         'fees' => 'array',
     ];
 
+    /** @return HasMany<Teacher, $this> */
+    public function teachers(): HasMany
+    {
+        return $this->hasMany(Teacher::class);
+    }
+
     /** @return HasMany<RegistrationWave, $this> */
     public function waves(): HasMany
     {

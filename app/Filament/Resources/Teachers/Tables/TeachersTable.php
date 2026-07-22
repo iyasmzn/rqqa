@@ -46,6 +46,14 @@ class TeachersTable
                     ->badge()
                     ->color('warning'),
 
+                TextColumn::make('institution.name')
+                    ->label('Instansi / Unit')
+                    ->badge()
+                    ->color('gray')
+                    ->placeholder('—')
+                    ->sortable()
+                    ->toggleable(),
+
                 TextColumn::make('subject')
                     ->label('Mata Pelajaran')
                     ->searchable()
@@ -69,6 +77,13 @@ class TeachersTable
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
             ->filters([
+                SelectFilter::make('institution')
+                    ->label('Instansi / Unit')
+                    ->relationship('institution', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->native(false),
+
                 SelectFilter::make('position')
                     ->label('Jabatan')
                     ->options(fn () => Category::optionsForType(Category::TYPE_TEACHER))
