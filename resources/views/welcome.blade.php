@@ -344,6 +344,20 @@
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
                         </a>
                         @endif
+                        @if(setting('social_tiktok'))
+                        <a href="{{ setting('social_tiktok') }}" target="_blank" rel="noopener" title="TikTok"
+                           class="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+                           style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                        </a>
+                        @endif
+                        @if(setting('social_telegram'))
+                        <a href="{{ setting('social_telegram') }}" target="_blank" rel="noopener" title="Telegram"
+                           class="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+                           style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        </a>
+                        @endif
                         @if(setting('social_whatsapp'))
                         <a href="https://wa.me/{{ preg_replace('/\D/', '', setting('social_whatsapp')) }}"
                            target="_blank" rel="noopener" title="WhatsApp"
@@ -375,18 +389,25 @@
                 </div>
 
                 {{-- ── Col 3: Layanan ── --}}
+                @php
+                    $footerServiceLinks = collect(json_decode(setting('footer_service_links', ''), true) ?: [
+                        ['label' => 'Toko Buku',       'url' => '/buku',      'feature' => 'toko',   'is_active' => true],
+                        ['label' => 'Daftar Santri',   'url' => '/ppdb',      'feature' => '',       'is_active' => true],
+                        ['label' => 'Blog & Berita',   'url' => '/blog',      'feature' => '',       'is_active' => true],
+                        ['label' => 'Unduhan',         'url' => '/unduhan',   'feature' => '',       'is_active' => true],
+                        ['label' => 'Tenaga Pendidik', 'url' => '/guru',      'feature' => '',       'is_active' => true],
+                        ['label' => 'Donasi',          'url' => '/donasi',    'feature' => 'donasi', 'is_active' => true],
+                        ['label' => 'Keranjang',       'url' => '/keranjang', 'feature' => 'toko',   'is_active' => true],
+                    ])
+                        ->filter(fn ($l) => ($l['is_active'] ?? true) && (blank($l['feature'] ?? '') || feature_enabled($l['feature'])))
+                        ->values();
+                @endphp
+                @if(setting_bool('footer_services_enabled', true) && $footerServiceLinks->isNotEmpty())
                 <div data-aos="fade-up" data-aos-delay="160">
                     <h4 class="text-xs font-bold uppercase tracking-widest mb-4"
-                        style="color:color-mix(in oklab,var(--primary) 80%,white)">Layanan</h4>
+                        style="color:color-mix(in oklab,var(--primary) 80%,white)">{{ setting('footer_services_title', 'Layanan') }}</h4>
                     <ul class="space-y-2.5">
-                        @foreach(array_filter([
-                            feature_enabled('toko') ? ['label' => 'Toko Buku', 'url' => route('books.index')] : null,
-                            ['label' => 'Daftar Santri',   'url' => route('ppdb.index')],
-                            ['label' => 'Blog & Berita',   'url' => route('blog.index')],
-                            ['label' => 'Unduhan',         'url' => route('downloads.index')],
-                            ['label' => 'Tenaga Pendidik', 'url' => route('teachers.index')],
-                            feature_enabled('donasi') ? ['label' => 'Donasi', 'url' => route('donasi.index')] : null,
-                        ]) as $link)
+                        @foreach($footerServiceLinks as $link)
                         <li>
                             <a href="{{ $link['url'] }}"
                                class="text-sm text-white/50 hover:text-white transition-colors flex items-center gap-2 group">
@@ -398,6 +419,7 @@
                         @endforeach
                     </ul>
                 </div>
+                @endif
 
                 {{-- ── Col 4: Kontak ── --}}
                 <div data-aos="fade-up" data-aos-delay="240">
@@ -458,17 +480,25 @@
             </div>
 
             {{-- Bottom bar --}}
+            @php
+                $footerCopyright = trim((string) setting('footer_copyright'));
+                $footerCopyright = $footerCopyright !== ''
+                    ? strtr($footerCopyright, [
+                        '{tahun}' => date('Y'),
+                        '{nama_situs}' => setting('site_name', config('app.name')),
+                    ])
+                    : '© '.date('Y').' '.setting('site_name', config('app.name')).'. Semua hak dilindungi.';
+            @endphp
             <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p class="text-xs text-white/30">
-                    © {{ date('Y') }} {{ setting('site_name', config('app.name')) }}. Hak cipta dilindungi.
-                </p>
-                <div class="flex items-center gap-1 text-white/20 text-xs">
-                    <span>Dibuat dengan</span>
+                <p class="text-xs text-white/30">{{ $footerCopyright }}</p>
+                @if(setting_bool('footer_credit_enabled', true) && filled(setting('footer_credit_text', 'Dibuat dengan penuh semangat')))
+                <div class="flex items-center gap-1.5 text-white/20 text-xs">
                     <svg class="w-3.5 h-3.5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
                     </svg>
-                    <span>penuh semangat</span>
+                    <span>{{ setting('footer_credit_text', 'Dibuat dengan penuh semangat') }}</span>
                 </div>
+                @endif
             </div>
         </div>
     </footer>

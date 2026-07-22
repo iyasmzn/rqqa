@@ -58,6 +58,7 @@ class SettingSeeder extends Seeder
             $this->navbar(),
             $this->landingPage(),
             $this->quickLinks(),
+            $this->footer(),
             $this->spmb(),
             $this->theme(),
             $this->donasi(),
@@ -83,6 +84,8 @@ class SettingSeeder extends Seeder
             'social_facebook' => null,
             'social_instagram' => null,
             'social_youtube' => null,
+            'social_tiktok' => null,
+            'social_telegram' => null,
             'social_whatsapp' => null,
 
             // Nomor WA khusus untuk pesanan buku (toko)
@@ -144,6 +147,29 @@ class SettingSeeder extends Seeder
                 ['icon' => '📖', 'label' => 'Cerita',      'url' => '/cerita-santri', 'is_active' => true],
                 ['icon' => '📞', 'label' => 'Kontak',      'url' => '#kontak',        'is_active' => true],
             ]),
+        ];
+    }
+
+    // ── Footer ───────────────────────────────────────────────────────
+
+    /** @return array<string, mixed> */
+    private function footer(): array
+    {
+        return [
+            'footer_services_enabled' => '1',
+            'footer_services_title' => 'Layanan',
+            'footer_service_links' => json_encode([
+                ['label' => 'Toko Buku',       'url' => '/buku',      'feature' => 'toko', 'is_active' => true],
+                ['label' => 'Daftar Santri',   'url' => '/ppdb',      'feature' => '',     'is_active' => true],
+                ['label' => 'Blog & Berita',   'url' => '/blog',      'feature' => '',     'is_active' => true],
+                ['label' => 'Unduhan',         'url' => '/unduhan',   'feature' => '',       'is_active' => true],
+                ['label' => 'Tenaga Pendidik', 'url' => '/guru',      'feature' => '',       'is_active' => true],
+                ['label' => 'Donasi',          'url' => '/donasi',    'feature' => 'donasi', 'is_active' => true],
+                ['label' => 'Keranjang',       'url' => '/keranjang', 'feature' => 'toko',   'is_active' => true],
+            ]),
+            'footer_copyright' => '',
+            'footer_credit_enabled' => '1',
+            'footer_credit_text' => 'Dibuat dengan penuh semangat',
         ];
     }
 

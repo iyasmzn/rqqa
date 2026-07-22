@@ -325,18 +325,25 @@
                 </div>
 
                 {{-- ── Col 3: Layanan ── --}}
+                @php
+                    $footerServiceLinks = collect(json_decode(setting('footer_service_links', ''), true) ?: [
+                        ['label' => 'Toko Buku',       'url' => '/buku',      'feature' => 'toko', 'is_active' => true],
+                        ['label' => 'Daftar Santri',   'url' => '/ppdb',      'feature' => '',     'is_active' => true],
+                        ['label' => 'Blog & Berita',   'url' => '/blog',      'feature' => '',     'is_active' => true],
+                        ['label' => 'Unduhan',         'url' => '/unduhan',   'feature' => '',       'is_active' => true],
+                        ['label' => 'Tenaga Pendidik', 'url' => '/guru',      'feature' => '',       'is_active' => true],
+                        ['label' => 'Donasi',          'url' => '/donasi',    'feature' => 'donasi', 'is_active' => true],
+                        ['label' => 'Keranjang',       'url' => '/keranjang', 'feature' => 'toko',   'is_active' => true],
+                    ])
+                        ->filter(fn ($l) => ($l['is_active'] ?? true) && (blank($l['feature'] ?? '') || feature_enabled($l['feature'])))
+                        ->values();
+                @endphp
+                @if(setting_bool('footer_services_enabled', true) && $footerServiceLinks->isNotEmpty())
                 <div>
                     <h4 class="text-xs font-bold uppercase tracking-widest mb-4"
-                        style="color:color-mix(in oklab,var(--primary) 80%,white)">Layanan</h4>
+                        style="color:color-mix(in oklab,var(--primary) 80%,white)">{{ setting('footer_services_title', 'Layanan') }}</h4>
                     <ul class="space-y-2.5">
-                        @foreach(array_filter([
-                            feature_enabled('toko') ? ['label' => 'Toko Buku', 'url' => route('books.index')] : null,
-                            ['label' => 'Daftar Santri',  'url' => route('ppdb.index')],
-                            ['label' => 'Blog & Berita',  'url' => route('blog.index')],
-                            ['label' => 'Unduhan',        'url' => route('downloads.index')],
-                            ['label' => 'Tenaga Pendidik','url' => route('teachers.index')],
-                            feature_enabled('toko') ? ['label' => 'Keranjang', 'url' => route('cart.index')] : null,
-                        ]) as $link)
+                        @foreach($footerServiceLinks as $link)
                         <li>
                             <a href="{{ $link['url'] }}"
                                class="text-sm text-white/50 hover:text-white transition-colors flex items-center gap-2 group">
@@ -348,6 +355,7 @@
                         @endforeach
                     </ul>
                 </div>
+                @endif
 
                 {{-- ── Col 4: Kontak ── --}}
                 <div>
@@ -415,17 +423,25 @@
             </div>
 
             {{-- Bottom bar --}}
+            @php
+                $footerCopyright = trim((string) setting('footer_copyright'));
+                $footerCopyright = $footerCopyright !== ''
+                    ? strtr($footerCopyright, [
+                        '{tahun}' => date('Y'),
+                        '{nama_situs}' => setting('site_name', config('app.name')),
+                    ])
+                    : '© '.date('Y').' '.setting('site_name', config('app.name')).'. Semua hak dilindungi.';
+            @endphp
             <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p class="text-xs text-white/30">
-                    © {{ date('Y') }} {{ setting('site_name', config('app.name')) }}. Semua hak dilindungi.
-                </p>
-                <div class="flex items-center gap-1 text-white/20 text-xs">
-                    <span>Dibuat dengan</span>
+                <p class="text-xs text-white/30">{{ $footerCopyright }}</p>
+                @if(setting_bool('footer_credit_enabled', true) && filled(setting('footer_credit_text', 'Dibuat dengan penuh semangat')))
+                <div class="flex items-center gap-1.5 text-white/20 text-xs">
                     <svg class="w-3.5 h-3.5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
                     </svg>
-                    <span>penuh semangat</span>
+                    <span>{{ setting('footer_credit_text', 'Dibuat dengan penuh semangat') }}</span>
                 </div>
+                @endif
             </div>
         </div>
     </footer>
