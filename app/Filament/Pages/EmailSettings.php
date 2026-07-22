@@ -161,11 +161,9 @@ class EmailSettings extends Page
             ->send();
     }
 
-    public function sendTestEmail(): void
+    public function sendTestEmail(string $recipient): void
     {
         $this->save();
-
-        $recipient = auth()->user()->email;
 
         try {
             Mail::raw('Ini adalah email uji dari '.config('app.name').'. Jika Anda menerima pesan ini, konfigurasi SMTP sudah benar.', function ($message) use ($recipient) {
@@ -195,8 +193,18 @@ class EmailSettings extends Page
                 ->icon(Heroicon::OutlinedPaperAirplane)
                 ->color('gray')
                 ->requiresConfirmation()
-                ->modalDescription('Simpan pengaturan saat ini lalu kirim email uji ke alamat Anda?')
-                ->action('sendTestEmail'),
+                ->modalDescription('Simpan pengaturan saat ini lalu kirim email uji ke alamat tujuan.')
+                ->schema([
+                    TextInput::make('test_recipient')
+                        ->label('Kirim ke alamat')
+                        ->email()
+                        ->required()
+                        ->default(fn (): ?string => auth()->user()?->email)
+                        ->helperText('Default ke email akun Anda. Ubah untuk mengirim ke alamat lain.'),
+                ])
+                ->action(function (array $data): void {
+                    $this->sendTestEmail($data['test_recipient']);
+                }),
 
             Action::make('save')
                 ->label('Simpan Pengaturan')
