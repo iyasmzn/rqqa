@@ -4,8 +4,11 @@ namespace App\Filament\Resources\SpmbRegistrations\Schemas;
 
 use App\Models\AcademicYear;
 use App\Models\AdmissionPath;
+use App\Models\PpdbField;
 use App\Models\SpmbRegistration;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -15,6 +18,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class SpmbRegistrationForm
 {
@@ -25,6 +29,13 @@ class SpmbRegistrationForm
             Section::make('Pendaftaran')
                 ->icon('heroicon-o-clipboard-document-list')
                 ->schema([
+                    Select::make('institution_id')
+                        ->label('Jenjang')
+                        ->relationship('institution', 'name')
+                        ->required()
+                        ->native(false)
+                        ->columnSpanFull(),
+
                     Grid::make(3)->schema([
                         Select::make('academic_year_id')
                             ->label('Tahun Ajaran')
@@ -149,6 +160,37 @@ class SpmbRegistrationForm
                         ->label('Catatan')
                         ->rows(3)
                         ->columnSpanFull(),
+                ]),
+
+            Section::make('Data Tambahan')
+                ->description('Nilai field kustom (di luar kolom baku) yang diisi pendaftar melalui formulir dinamis.')
+                ->icon('heroicon-o-list-bullet')
+                ->collapsed()
+                ->schema([
+                    KeyValue::make('data')
+                        ->hiddenLabel()
+                        ->keyLabel('Field')
+                        ->valueLabel('Nilai')
+                        ->columnSpanFull(),
+                ]),
+
+            Section::make('Berkas Terunggah')
+                ->icon('heroicon-o-paper-clip')
+                ->visible(fn (?SpmbRegistration $record): bool => (bool) $record?->institution?->ppdbFields()->where('type', 'file')->exists())
+                ->schema([
+                    Placeholder::make('berkas_terunggah')
+                        ->hiddenLabel()
+                        ->content(function (SpmbRegistration $record): HtmlString {
+                            $links = ($record->institution?->ppdbFields()
+                                ->where('type', 'file')
+                                ->orderBy('sort_order')
+                                ->get() ?? collect())
+                                ->filter(fn (PpdbField $field): bool => filled(data_get($record->data, $field->key)))
+                                ->map(fn (PpdbField $field): string => '<a href="'.e(route('ppdb.berkas', [$record, $field->key])).'" target="_blank" class="text-primary-600 underline">📎 '.e($field->label).'</a>')
+                                ->implode('<br>');
+
+                            return new HtmlString($links ?: '<span class="text-gray-500">Belum ada berkas diunggah.</span>');
+                        }),
                 ]),
         ]);
     }

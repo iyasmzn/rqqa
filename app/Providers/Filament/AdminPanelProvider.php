@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\EditProfile;
+use App\Filament\GlobalSearch\FeatureGlobalSearchProvider;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
@@ -31,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->globalSearch(FeatureGlobalSearchProvider::class)
             ->profile(EditProfile::class)
             ->userMenuItems([
                 'profile' => fn (Action $action): Action => $action

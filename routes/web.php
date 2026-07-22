@@ -46,7 +46,11 @@ Route::get('/page/{slug}', [StaticPageController::class, 'show'])->name('page.sh
 
 // PPDB / SPMB
 Route::get('/ppdb', [SpmbController::class, 'index'])->name('ppdb.index');
-Route::post('/ppdb', [SpmbController::class, 'store'])->middleware('throttle:8,1')->name('ppdb.store');
+Route::get('/ppdb/{institution:slug}', [SpmbController::class, 'show'])->name('ppdb.show');
+Route::post('/ppdb/{institution:slug}', [SpmbController::class, 'store'])->middleware('throttle:8,1')->name('ppdb.store');
+Route::get('/panitia/ppdb-berkas/{registration}/{field}', [SpmbController::class, 'downloadBerkas'])
+    ->middleware('auth')
+    ->name('ppdb.berkas');
 
 // Unduhan
 Route::get('/unduhan', [DownloadController::class, 'index'])->name('downloads.index');

@@ -30,6 +30,14 @@ class AcademicYearResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    /**
+     * @return array<string>
+     */
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['year_start', 'year_end'];
+    }
+
     public static function form(Schema $schema): Schema
     {
         return AcademicYearForm::configure($schema);

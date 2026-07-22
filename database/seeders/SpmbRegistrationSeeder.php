@@ -28,16 +28,21 @@ class SpmbRegistrationSeeder extends Seeder
             ->get();
 
         foreach ($years as $year) {
-            $waves = $year->waves()->pluck('id')->all();
+            $waves = $year->waves()->get();
             $count = $year->is_active ? 30 : 15;
 
             SpmbRegistration::factory()
                 ->count($count)
-                ->sequence(fn () => [
-                    'academic_year_id' => $year->id,
-                    'registration_wave_id' => fake()->randomElement($waves),
-                    'admission_path_id' => fake()->randomElement($paths),
-                ])
+                ->sequence(function () use ($year, $waves, $paths): array {
+                    $wave = $waves->random();
+
+                    return [
+                        'institution_id' => $wave->institution_id,
+                        'academic_year_id' => $year->id,
+                        'registration_wave_id' => $wave->id,
+                        'admission_path_id' => fake()->randomElement($paths),
+                    ];
+                })
                 ->create();
         }
     }

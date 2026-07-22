@@ -17,6 +17,7 @@ class RegistrationWave extends Model
 
     protected $fillable = [
         'academic_year_id',
+        'institution_id',
         'name',
         'start_date',
         'end_date',
@@ -37,6 +38,12 @@ class RegistrationWave extends Model
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
+    }
+
+    /** @return BelongsTo<Institution, $this> */
+    public function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class);
     }
 
     /** @return HasMany<SpmbRegistration, $this> */
@@ -60,9 +67,11 @@ class RegistrationWave extends Model
     }
 
     /**
-     * The currently open wave of the active academic year, if any.
+     * The currently open wave of the active academic year, if any. Pass an
+     * institution to scope the lookup to a single jenjang (SD/SMP/SMA); omit it
+     * for a site-wide "is any wave open?" check.
      */
-    public static function currentOpen(): ?self
+    public static function currentOpen(?Institution $institution = null): ?self
     {
         $year = AcademicYear::active();
 
@@ -74,6 +83,7 @@ class RegistrationWave extends Model
 
         return static::query()
             ->where('academic_year_id', $year->id)
+            ->when($institution, fn (Builder $query): Builder => $query->where('institution_id', $institution->id))
             ->where('is_active', true)
             ->whereDate('start_date', '<=', $today)
             ->whereDate('end_date', '>=', $today)
@@ -84,8 +94,9 @@ class RegistrationWave extends Model
     /**
      * The most relevant wave to display for the active academic year:
      * the one currently open, otherwise the next upcoming, otherwise the latest.
+     * Pass an institution to scope to a single jenjang.
      */
-    public static function relevant(): ?self
+    public static function relevant(?Institution $institution = null): ?self
     {
         $year = AcademicYear::active();
 
@@ -97,9 +108,10 @@ class RegistrationWave extends Model
 
         $base = static::query()
             ->where('academic_year_id', $year->id)
+            ->when($institution, fn (Builder $query): Builder => $query->where('institution_id', $institution->id))
             ->where('is_active', true);
 
-        return static::currentOpen()
+        return static::currentOpen($institution)
             ?? (clone $base)->whereDate('start_date', '>', $today)->orderBy('start_date')->first()
             ?? (clone $base)->orderByDesc('end_date')->first();
     }

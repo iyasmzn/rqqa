@@ -1,18 +1,17 @@
 @php
-    $wave = spmb_current_wave();
+    $institutions = \App\Models\Institution::query()->active()->ordered()->get();
+    $openInstitutions = $institutions->filter(fn (\App\Models\Institution $i): bool => $i->registrationOpen());
 @endphp
 
-{{-- Section hanya tampil saat ada gelombang pendaftaran yang sedang dibuka --}}
-@if($wave)
+{{-- Section tampil saat minimal satu jenjang sedang membuka pendaftaran --}}
+@if($openInstitutions->isNotEmpty())
 @php
     $spmbYear       = spmb_year_label();
-    $cardTitle      = setting('spmb_card_title', 'SPMB Tahun Ajaran {year} Dibuka!');
-    $cardTitle      = str_replace('{year}', $spmbYear, $cardTitle);
-    $cardDesc       = setting('spmb_card_description', 'Pendaftaran peserta didik baru resmi dibuka. Tersedia jalur Prestasi, Zonasi, dan Afirmasi. Segera lengkapi berkas dan daftarkan diri Anda sebelum batas waktu.');
+    $cardTitle      = str_replace('{year}', $spmbYear, setting('spmb_card_title', 'SPMB Tahun Ajaran {year} Dibuka!'));
+    $cardDesc       = setting('spmb_card_description', 'Pendaftaran peserta didik baru resmi dibuka. Pilih jenjang, lengkapi berkas, dan daftarkan diri Anda sebelum batas waktu.');
     $ctaLabel       = setting('spmb_card_cta_label', 'Daftar Sekarang');
     $ctaUrl         = setting('spmb_card_cta_url', '/ppdb');
     $secondaryLabel = setting('spmb_card_secondary_label', 'Info Selengkapnya');
-    $fmtDate        = fn ($d) => $d ? $d->locale('id')->translatedFormat('d M Y') : '—';
 @endphp
 
 <section id="spmb" class="py-8 sm:py-12">
@@ -33,13 +32,15 @@
                         {!! nl2br(e($cardTitle)) !!}
                     </h2>
 
-                    {{-- Gelombang yang sedang dibuka --}}
+                    {{-- Ringkasan jenjang yang membuka pendaftaran --}}
                     <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl mb-5"
                          style="border:1px solid var(--primary-300); background:color-mix(in oklab,var(--primary-100) 60%,transparent)">
                         <span class="text-lg">🗓️</span>
                         <div class="leading-tight">
-                            <div class="text-sm font-bold" style="color:var(--primary-900)">{{ $wave->name }} dibuka</div>
-                            <div class="text-[11px] font-medium" style="color:var(--primary-700)">{{ $fmtDate($wave->start_date) }} – {{ $fmtDate($wave->end_date) }}</div>
+                            <div class="text-sm font-bold" style="color:var(--primary-900)">
+                                {{ $openInstitutions->count() }} jenjang membuka pendaftaran
+                            </div>
+                            <div class="text-[11px] font-medium" style="color:var(--primary-700)">Tahun Ajaran {{ $spmbYear }}</div>
                         </div>
                     </div>
                     <p class="text-base leading-relaxed mb-8" style="color:var(--primary-800);opacity:.85">
@@ -60,30 +61,36 @@
                     </div>
                 </div>
 
-                {{-- Right: dates panel --}}
-                <div class="hidden lg:flex items-center justify-center px-10 py-14"
+                {{-- Right: kartu pilihan jenjang --}}
+                <div class="p-8 lg:p-12 flex flex-col justify-center"
                      style="background:color-mix(in oklab,var(--primary-400) 15%,transparent)"
                      data-aos="fade-left" data-aos-delay="160">
-                    <div class="text-center w-full">
-                        <div class="text-8xl mb-6">🎓</div>
-                        <div class="grid grid-cols-3 gap-4 text-center">
-                            @foreach([
-                                [$fmtDate($wave->end_date), 'Batas Daftar'],
-                                [$fmtDate($wave->selection_date), 'Seleksi'],
-                                [$fmtDate($wave->announcement_date), 'Pengumuman'],
-                            ] as [$d, $l])
-                                <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-4 shadow-sm">
-                                    <div class="text-sm font-extrabold" style="color:var(--primary-700)">{{ $d }}</div>
-                                    <div class="text-[11px] font-semibold mt-1" style="color:var(--primary-600)">{{ $l }}</div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <a href="{{ route('ppdb.index') }}"
-                           class="mt-6 inline-flex items-center gap-1.5 text-sm font-bold transition-opacity hover:opacity-70"
-                           style="color:var(--primary-700)">
-                            Lihat semua info PPDB
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    <div class="text-xs font-bold uppercase tracking-widest mb-4" style="color:var(--primary-800)">Pilih Jenjang</div>
+                    <div class="space-y-3">
+                        @foreach($institutions as $institution)
+                        @php $open = $institution->registrationOpen(); @endphp
+                        <a href="{{ route('ppdb.show', $institution) }}"
+                           class="group flex items-center gap-3.5 p-3.5 rounded-2xl bg-white/70 hover:bg-white transition-colors border shadow-sm"
+                           style="border-color:var(--primary-200)">
+                            <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:var(--primary-100)">
+                                @if($url = icon_url($institution->icon_image))
+                                    <img src="{{ $url }}" alt="{{ $institution->name }}" loading="lazy" class="w-6 h-6 object-contain">
+                                @else
+                                    <span class="text-2xl">{{ $institution->icon ?: '🏫' }}</span>
+                                @endif
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="font-bold text-sm" style="color:var(--primary-900)">{{ $institution->short_name ?: $institution->name }}</div>
+                                <div class="text-[11px] truncate" style="color:var(--primary-700)">{{ $institution->name }}</div>
+                            </div>
+                            @if($open)
+                                <span class="text-[10px] font-bold px-2 py-1 rounded-full bg-green-100 text-green-700 shrink-0">Dibuka</span>
+                            @else
+                                <span class="text-[10px] font-bold px-2 py-1 rounded-full bg-gray-100 text-gray-500 shrink-0">Segera</span>
+                            @endif
+                            <svg class="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5" style="color:var(--primary-500)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                         </a>
+                        @endforeach
                     </div>
                 </div>
 

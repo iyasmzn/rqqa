@@ -9,6 +9,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -31,6 +32,15 @@ class WavesRelationManager extends RelationManager
     public function form(Schema $schema): Schema
     {
         return $schema->components([
+            Select::make('institution_id')
+                ->label('Jenjang')
+                ->relationship('institution', 'name')
+                ->required()
+                ->native(false)
+                ->preload()
+                ->helperText('Gelombang ini berlaku untuk PPDB jenjang yang dipilih.')
+                ->columnSpanFull(),
+
             TextInput::make('name')
                 ->label('Nama Gelombang')
                 ->required()
@@ -86,6 +96,13 @@ class WavesRelationManager extends RelationManager
                     ->label('Nama Gelombang')
                     ->searchable()
                     ->weight('bold'),
+
+                TextColumn::make('institution.short_name')
+                    ->label('Jenjang')
+                    ->state(fn (RegistrationWave $record): ?string => $record->institution?->short_name ?? $record->institution?->name)
+                    ->badge()
+                    ->color('gray')
+                    ->placeholder('—'),
 
                 TextColumn::make('start_date')
                     ->label('Mulai')

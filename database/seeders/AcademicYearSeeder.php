@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\AcademicYear;
+use App\Models\Institution;
 use App\Models\RegistrationWave;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -12,6 +13,10 @@ class AcademicYearSeeder extends Seeder
     public function run(): void
     {
         $today = Carbon::today();
+
+        // Demo waves are attached to the first jenjang; other jenjang start
+        // empty for the admin to configure.
+        $institutionId = Institution::query()->orderBy('sort_order')->orderBy('id')->value('id');
 
         $active = AcademicYear::updateOrCreate(
             ['year_start' => 2026, 'year_end' => 2027],
@@ -24,7 +29,7 @@ class AcademicYearSeeder extends Seeder
         );
 
         // Gelombang tahun ajaran aktif: satu berjalan, satu akan datang.
-        $this->seedWaves($active, [
+        $this->seedWaves($active, $institutionId, [
             [
                 'name' => 'Gelombang 1',
                 'start_date' => $today->copy()->subDays(7),
@@ -42,7 +47,7 @@ class AcademicYearSeeder extends Seeder
         ]);
 
         // Gelombang tahun ajaran sebelumnya: keduanya sudah selesai.
-        $this->seedWaves($previous, [
+        $this->seedWaves($previous, $institutionId, [
             [
                 'name' => 'Gelombang 1',
                 'start_date' => $today->copy()->subYear()->subDays(40),
@@ -56,12 +61,12 @@ class AcademicYearSeeder extends Seeder
     /**
      * @param  array<int, array<string, mixed>>  $waves
      */
-    private function seedWaves(AcademicYear $year, array $waves): void
+    private function seedWaves(AcademicYear $year, ?int $institutionId, array $waves): void
     {
         foreach ($waves as $wave) {
             RegistrationWave::updateOrCreate(
                 ['academic_year_id' => $year->id, 'name' => $wave['name']],
-                array_merge($wave, ['is_active' => true]),
+                array_merge($wave, ['institution_id' => $institutionId, 'is_active' => true]),
             );
         }
     }

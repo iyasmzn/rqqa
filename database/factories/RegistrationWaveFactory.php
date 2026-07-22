@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\AcademicYear;
+use App\Models\Institution;
 use App\Models\RegistrationWave;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -22,6 +23,7 @@ class RegistrationWaveFactory extends Factory
 
         return [
             'academic_year_id' => AcademicYear::factory(),
+            'institution_id' => Institution::factory(),
             'name' => 'Gelombang '.fake()->numberBetween(1, 3),
             'start_date' => $start->toDateString(),
             'end_date' => $end->toDateString(),

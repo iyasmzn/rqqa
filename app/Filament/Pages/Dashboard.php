@@ -7,6 +7,7 @@ use App\Filament\Widgets\LatestCommentsWidget;
 use App\Filament\Widgets\LatestQuestionsWidget;
 use App\Filament\Widgets\LatestSpmbRegistrationsWidget;
 use App\Filament\Widgets\PostsChartWidget;
+use App\Filament\Widgets\RegistrationsPerInstitutionChart;
 use App\Filament\Widgets\RegistrationsPerPathChart;
 use App\Filament\Widgets\RegistrationsPerWaveChart;
 use App\Filament\Widgets\RegistrationsPerYearStats;
@@ -38,6 +39,7 @@ class Dashboard extends BaseDashboard
             StatsOverviewWidget::class,
             RegistrationsPerYearStats::class,
             PostsChartWidget::class,
+            RegistrationsPerInstitutionChart::class,
             RegistrationsPerPathChart::class,
             RegistrationsPerWaveChart::class,
             SpmbRegistrationsChartWidget::class,

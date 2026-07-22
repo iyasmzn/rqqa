@@ -6,6 +6,7 @@ use Database\Factories\AdmissionPathFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AdmissionPath extends Model
@@ -14,6 +15,7 @@ class AdmissionPath extends Model
     use HasFactory;
 
     protected $fillable = [
+        'institution_id',
         'name',
         'slug',
         'icon',
@@ -29,10 +31,34 @@ class AdmissionPath extends Model
         'sort_order' => 'integer',
     ];
 
+    /** @return BelongsTo<Institution, $this> */
+    public function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class);
+    }
+
     /** @return HasMany<SpmbRegistration, $this> */
     public function registrations(): HasMany
     {
         return $this->hasMany(SpmbRegistration::class);
+    }
+
+    /**
+     * Paths available to a given jenjang: those scoped to it plus shared
+     * (null-institution) paths. Passing null returns only shared paths.
+     *
+     * @param  Builder<static>  $query
+     * @return Builder<static>
+     */
+    public function scopeForInstitution(Builder $query, ?Institution $institution): Builder
+    {
+        return $query->where(function (Builder $query) use ($institution): void {
+            $query->whereNull('institution_id');
+
+            if ($institution !== null) {
+                $query->orWhere('institution_id', $institution->id);
+            }
+        });
     }
 
     /**

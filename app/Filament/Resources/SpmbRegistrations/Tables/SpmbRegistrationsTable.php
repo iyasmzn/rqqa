@@ -24,11 +24,27 @@ class SpmbRegistrationsTable
     {
         return $table
             ->columns([
+                TextColumn::make('registration_number')
+                    ->label('No. Daftar')
+                    ->badge()
+                    ->color('gray')
+                    ->searchable()
+                    ->placeholder('—')
+                    ->toggleable(),
+
                 TextColumn::make('full_name')
                     ->label('Nama Lengkap')
                     ->searchable()
                     ->sortable()
                     ->description(fn (SpmbRegistration $record): string => $record->previous_school),
+
+                TextColumn::make('institution.short_name')
+                    ->label('Jenjang')
+                    ->state(fn (SpmbRegistration $record): ?string => $record->institution?->short_name ?? $record->institution?->name)
+                    ->badge()
+                    ->color(fn (SpmbRegistration $record): string => $record->institution?->color ?? 'gray')
+                    ->placeholder('—')
+                    ->toggleable(),
 
                 TextColumn::make('nik')
                     ->label('NIK')
@@ -78,6 +94,11 @@ class SpmbRegistrationsTable
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
+                SelectFilter::make('institution_id')
+                    ->label('Jenjang')
+                    ->relationship('institution', 'name')
+                    ->native(false),
+
                 Filter::make('periode')
                     ->label('Tahun Ajaran & Gelombang')
                     ->schema([

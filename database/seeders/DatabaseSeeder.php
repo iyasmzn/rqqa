@@ -49,6 +49,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ProgramSeeder::class);
         $this->call(StorySeeder::class);
         $this->call(SettingSeeder::class);
+        $this->call(InstitutionSeeder::class);
+        $this->call(PpdbFieldSeeder::class);
         $this->call(AdmissionPathSeeder::class);
         $this->call(AcademicYearSeeder::class);
         $this->call(SpmbRegistrationSeeder::class);
