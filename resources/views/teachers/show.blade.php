@@ -109,8 +109,7 @@
                     <img src="{{ $teacher->photo_url }}"
                          alt="{{ $teacher->name }}"
                          loading="eager"
-                         class="w-full h-full object-cover"
-                         style="max-height:560px"
+                         class="w-full h-full object-cover absolute inset-0"
                          itemprop="image">
 
                     {{-- Info overlay at bottom (mobile) --}}
