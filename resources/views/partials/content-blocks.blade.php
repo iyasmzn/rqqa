@@ -168,10 +168,12 @@
                 };
                 $styleCls = ($block['style'] ?? 'primary') === 'outline' ? 'block-cta-outline' : 'block-cta-primary';
                 $newTab   = !empty($block['open_in_new_tab']);
+                $color    = trim($block['color'] ?? '');
             @endphp
             <div class="block-cta flex {{ $justify }}">
                 <a href="{{ $block['url'] }}"
                    class="block-cta-btn {{ $styleCls }}"
+                   @if($color) style="--cta: {{ $color }}" @endif
                    @if($newTab) target="_blank" rel="noopener noreferrer" @endif>
                     {{ $block['label'] }}
                 </a>

@@ -68,15 +68,15 @@
         transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
     }
     .block-cta-primary {
-        background: var(--primary); color: #fff;
+        background: var(--cta, var(--primary)); color: #fff;
         box-shadow: 0 4px 16px rgba(0,0,0,.15);
     }
     .block-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
     .block-cta-outline {
-        background: transparent; color: var(--primary);
-        border: 2px solid var(--primary);
+        background: transparent; color: var(--cta, var(--primary));
+        border: 2px solid var(--cta, var(--primary));
     }
-    .block-cta-outline:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+    .block-cta-outline:hover { background: var(--cta, var(--primary)); color: #fff; transform: translateY(-2px); }
 
     /* Lightbox */
     .lightbox-overlay {

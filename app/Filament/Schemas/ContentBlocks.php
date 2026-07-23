@@ -3,6 +3,7 @@
 namespace App\Filament\Schemas;
 
 use App\Filament\Concerns\InteractsWithImagePicker;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -122,6 +123,12 @@ class ContentBlocks
                     ])
                     ->default('primary')
                     ->native(false)
+                    ->visible(fn (Get $get): bool => $get('type') === 'cta_button'),
+
+                ColorPicker::make('color')
+                    ->label('Warna Tombol')
+                    ->placeholder('Kosongkan untuk warna tema')
+                    ->hint('Opsional — kosongkan untuk memakai warna utama tema.')
                     ->visible(fn (Get $get): bool => $get('type') === 'cta_button'),
 
                 Select::make('alignment')
