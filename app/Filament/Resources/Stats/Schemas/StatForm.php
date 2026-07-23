@@ -4,8 +4,10 @@ namespace App\Filament\Resources\Stats\Schemas;
 
 use App\Filament\Support\IconUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class StatForm
@@ -51,6 +53,20 @@ class StatForm
                         ->label('Keterangan Tambahan')
                         ->maxLength(150)
                         ->placeholder('Tingkat nasional')
+                        ->columnSpanFull(),
+
+                    TextInput::make('url')
+                        ->label('Tautan (URL / Path)')
+                        ->maxLength(500)
+                        ->placeholder('https://contoh.sch.id/prestasi atau /prestasi')
+                        ->hint('Opsional — kartu bisa diklik dan mengarah ke tautan ini.')
+                        ->live(onBlur: true)
+                        ->columnSpanFull(),
+
+                    Toggle::make('open_in_new_tab')
+                        ->label('Buka di Tab Baru')
+                        ->default(false)
+                        ->visible(fn (Get $get): bool => filled($get('url')))
                         ->columnSpanFull(),
 
                     IconUpload::make()

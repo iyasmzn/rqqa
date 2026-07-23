@@ -3,7 +3,15 @@
         @if($stats->isNotEmpty())
             <div class="grid grid-cols-2 sm:grid-cols-{{ min($stats->count(), 4) }} gap-4 sm:gap-5">
                 @foreach($stats as $stat)
-                    <div class="fi-card fi-card-hover p-7 sm:p-8 text-center"
+                    @php
+                        $hasLink = filled($stat->url);
+                        $tag = $hasLink ? 'a' : 'div';
+                        $cardClass = 'fi-card fi-card-hover p-7 sm:p-8 text-center'.($hasLink ? ' block cursor-pointer' : '');
+                        $linkAttrs = $hasLink
+                            ? 'href="'.e($stat->url).'"'.($stat->open_in_new_tab ? ' target="_blank" rel="noopener"' : '')
+                            : '';
+                    @endphp
+                    <{{ $tag }} class="{{ $cardClass }}" {!! $linkAttrs !!}
                          data-aos="zoom-in" data-aos-delay="{{ $loop->index * 80 }}">
                         @if($url = icon_url($stat->icon_image))
                             <img src="{{ $url }}" alt="{{ $stat->label }}" loading="lazy"
@@ -16,7 +24,7 @@
                         @if($stat->sub)
                             <div class="text-xs mt-1 leading-relaxed" style="color:var(--muted)">{{ $stat->sub }}</div>
                         @endif
-                    </div>
+                    </{{ $tag }}>
                 @endforeach
             </div>
         @endif
