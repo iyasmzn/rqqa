@@ -157,5 +157,26 @@
             @endif
         @endif
 
+        {{-- ── CTA Button ───────────────────────────────── --}}
+        @if($type === 'cta_button' && !empty($block['label']) && !empty($block['url']))
+            @php
+                $align   = $block['alignment'] ?? 'center';
+                $justify = match($align) {
+                    'left'  => 'justify-start',
+                    'right' => 'justify-end',
+                    default => 'justify-center',
+                };
+                $styleCls = ($block['style'] ?? 'primary') === 'outline' ? 'block-cta-outline' : 'block-cta-primary';
+                $newTab   = !empty($block['open_in_new_tab']);
+            @endphp
+            <div class="block-cta flex {{ $justify }}">
+                <a href="{{ $block['url'] }}"
+                   class="block-cta-btn {{ $styleCls }}"
+                   @if($newTab) target="_blank" rel="noopener noreferrer" @endif>
+                    {{ $block['label'] }}
+                </a>
+            </div>
+        @endif
+
     @endforeach
 @endif

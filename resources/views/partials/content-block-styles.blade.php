@@ -58,6 +58,26 @@
     .gallery-item:hover .gallery-caption { transform: translateY(0); }
     .gallery-caption p { color: #fff; font-size: .75rem; line-height: 1.4; }
 
+    /* CTA Button */
+    .block-cta { margin: 2rem 0; }
+    .block-cta-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        padding: .8rem 1.75rem; border-radius: 9999px;
+        font-size: .9375rem; font-weight: 600; line-height: 1;
+        text-decoration: none; cursor: pointer;
+        transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+    }
+    .block-cta-primary {
+        background: var(--primary); color: #fff;
+        box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    }
+    .block-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+    .block-cta-outline {
+        background: transparent; color: var(--primary);
+        border: 2px solid var(--primary);
+    }
+    .block-cta-outline:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+
     /* Lightbox */
     .lightbox-overlay {
         position: fixed; inset: 0; z-index: 9999;
