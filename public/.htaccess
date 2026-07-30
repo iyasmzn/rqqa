@@ -13,6 +13,18 @@
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
+    # One canonical host: www duplicates every page otherwise, and each copy
+    # self-canonicalises, so crawlers cannot tell which version is the original.
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
+
+    # The deploy subfolder must never be a public URL. THE_REQUEST is matched
+    # instead of REQUEST_URI on purpose: it holds the original request line and
+    # is untouched by rewriting, so internal rewrites cannot trigger this and
+    # loop. Sends already-indexed /web2/public/* duplicates to the real URL.
+    RewriteCond %{THE_REQUEST} \s/+web2/public/([^\s?]*) [NC]
+    RewriteRule ^ /%1 [L,R=301]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
