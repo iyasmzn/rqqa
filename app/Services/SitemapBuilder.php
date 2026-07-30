@@ -2,11 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\Book;
 use App\Models\Event;
+use App\Models\Institution;
 use App\Models\Post;
 use App\Models\Program;
 use App\Models\StaticPage;
 use App\Models\Story;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
@@ -19,7 +23,20 @@ class SitemapBuilder
     public const CACHE_KEY = 'sitemap.xml';
 
     /**
+     * Active jenjang, resolved once per build since both the index-page
+     * condition and the per-jenjang URLs need them.
+     *
+     * @var Collection<int, Institution>|null
+     */
+    private ?Collection $activeInstitutions = null;
+
+    /**
      * Build the sitemap from the current published content.
+     *
+     * Only URLs that answer 200 belong here: a listed URL that 404s or
+     * redirects is reported as an indexing error in Search Console. That rules
+     * out pages behind a disabled feature flag (the `feature` middleware aborts
+     * with 404) and pages that redirect elsewhere.
      */
     public function build(): Sitemap
     {
@@ -29,26 +46,18 @@ class SitemapBuilder
         $sitemap->add(Url::create('/')->setPriority(1.0)->setChangeFrequency('weekly'));
 
         /* ── Static index pages ── */
-        foreach ([
-            ['route' => 'blog.index',      'priority' => 0.8, 'freq' => 'daily'],
-            ['route' => 'events.index',    'priority' => 0.8, 'freq' => 'weekly'],
-            ['route' => 'programs.index',  'priority' => 0.7, 'freq' => 'monthly'],
-            ['route' => 'stories.index',   'priority' => 0.6, 'freq' => 'weekly'],
-            ['route' => 'teachers.index',  'priority' => 0.6, 'freq' => 'monthly'],
-            ['route' => 'downloads.index', 'priority' => 0.6, 'freq' => 'weekly'],
-            ['route' => 'gallery.index',   'priority' => 0.5, 'freq' => 'weekly'],
-            ['route' => 'ppdb.index',      'priority' => 0.7, 'freq' => 'monthly'],
-            ['route' => 'donasi.index',    'priority' => 0.5, 'freq' => 'monthly'],
-            ['route' => 'kontak',          'priority' => 0.5, 'freq' => 'monthly'],
-        ] as $page) {
+        foreach ($this->indexPages() as $page) {
             try {
                 $sitemap->add(
                     Url::create(route($page['route']))
                         ->setPriority($page['priority'])
                         ->setChangeFrequency($page['freq'])
                 );
-            } catch (\Exception) {
-                // skip if route doesn't exist
+            } catch (\Throwable $e) {
+                Log::warning('Sitemap: halaman indeks dilewati karena route gagal di-resolve.', [
+                    'route' => $page['route'],
+                    'error' => $e->getMessage(),
+                ]);
             }
         }
 
@@ -108,6 +117,80 @@ class SitemapBuilder
                 );
             });
 
+        /* ── PPDB per jenjang ── */
+        foreach ($this->activeInstitutions() as $institution) {
+            $sitemap->add(
+                Url::create(route('ppdb.show', $institution->slug))
+                    ->setLastModificationDate($institution->updated_at)
+                    ->setPriority(0.7)
+                    ->setChangeFrequency('monthly')
+            );
+        }
+
+        /* ── Buku (hanya saat fitur toko aktif) ── */
+        if (feature_enabled('toko')) {
+            Book::query()->available()->each(function (Book $book) use ($sitemap) {
+                $sitemap->add(
+                    Url::create(route('books.show', $book->slug))
+                        ->setLastModificationDate($book->updated_at)
+                        ->setPriority(0.5)
+                        ->setChangeFrequency('weekly')
+                );
+            });
+        }
+
+        /*
+         * Teacher detail pages (`/guru/{teacher}`) are intentionally omitted:
+         * individual staff profiles are not meant to rank in search. The
+         * `/guru` index above is enough for discovery.
+         */
+
         return $sitemap;
+    }
+
+    /**
+     * Index pages that are currently reachable, each with its crawl hints.
+     *
+     * @return list<array{route: string, priority: float, freq: string}>
+     */
+    private function indexPages(): array
+    {
+        $pages = [
+            ['route' => 'blog.index',      'priority' => 0.8, 'freq' => 'daily'],
+            ['route' => 'events.index',    'priority' => 0.8, 'freq' => 'weekly'],
+            ['route' => 'programs.index',  'priority' => 0.7, 'freq' => 'monthly'],
+            ['route' => 'stories.index',   'priority' => 0.6, 'freq' => 'weekly'],
+            ['route' => 'teachers.index',  'priority' => 0.6, 'freq' => 'monthly'],
+            ['route' => 'downloads.index', 'priority' => 0.6, 'freq' => 'weekly'],
+            ['route' => 'gallery.index',   'priority' => 0.5, 'freq' => 'weekly'],
+            ['route' => 'contact.index',   'priority' => 0.5, 'freq' => 'monthly'],
+        ];
+
+        /*
+         * `/ppdb` redirects straight to the only jenjang when just one is
+         * active, so it is listed only when it actually renders a selector.
+         * Either way the per-jenjang URLs above carry the content.
+         */
+        if ($this->activeInstitutions()->count() > 1) {
+            $pages[] = ['route' => 'ppdb.index', 'priority' => 0.7, 'freq' => 'monthly'];
+        }
+
+        if (feature_enabled('donasi')) {
+            $pages[] = ['route' => 'donasi.index', 'priority' => 0.5, 'freq' => 'monthly'];
+        }
+
+        if (feature_enabled('toko')) {
+            $pages[] = ['route' => 'books.index', 'priority' => 0.6, 'freq' => 'weekly'];
+        }
+
+        return $pages;
+    }
+
+    /**
+     * @return Collection<int, Institution>
+     */
+    private function activeInstitutions(): Collection
+    {
+        return $this->activeInstitutions ??= Institution::query()->active()->ordered()->get();
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Book;
 use App\Models\Event;
+use App\Models\Institution;
 use App\Models\Post;
 use App\Models\Program;
 use App\Models\Setting;
@@ -55,10 +57,27 @@ class AppServiceProvider extends ServiceProvider
     {
         $forget = fn (Model $model) => Cache::forget(SitemapBuilder::CACHE_KEY);
 
-        foreach ([Post::class, Event::class, Program::class, Story::class, StaticPage::class] as $model) {
+        foreach ([
+            Post::class,
+            Event::class,
+            Program::class,
+            Story::class,
+            StaticPage::class,
+            Institution::class,
+            Book::class,
+        ] as $model) {
             $model::saved($forget);
             $model::deleted($forget);
         }
+
+        /*
+         * Feature toggles decide which pages exist at all — turning off `toko`
+         * or `donasi` makes their routes 404. Without this hook the cached XML
+         * would keep advertising those URLs to crawlers indefinitely, since no
+         * content model is touched when a setting changes.
+         */
+        Setting::saved($forget);
+        Setting::deleted($forget);
     }
 
     /**

@@ -19,6 +19,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SpmbController;
 use App\Http\Controllers\StaticPageController;
@@ -29,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/robots.txt', [RobotsController::class, 'index'])->name('robots');
 
 // Blog
 Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
