@@ -158,6 +158,17 @@ class InstitutionForm
                         ->rows(2)
                         ->columnSpanFull(),
 
+                    TextInput::make('cta_label')
+                        ->label('Teks Tombol Pendaftaran')
+                        ->maxLength(60)
+                        ->placeholder(fn (Get $get): string => match ($get('form_mode')) {
+                            Institution::FORM_MODE_EXTERNAL_LINK => 'Buka Portal Pendaftaran',
+                            Institution::FORM_MODE_EMBED => 'Isi Formulir',
+                            default => 'Daftar Sekarang',
+                        })
+                        ->helperText('Tulisan pada tombol utama pendaftaran di halaman PPDB jenjang ini. Kosongkan untuk memakai teks bawaan sesuai mode formulir.')
+                        ->columnSpanFull(),
+
                     Textarea::make('closed_message')
                         ->label('Pesan saat Pendaftaran Ditutup')
                         ->rows(2)

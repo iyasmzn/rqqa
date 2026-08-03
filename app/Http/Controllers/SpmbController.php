@@ -57,6 +57,7 @@ class SpmbController extends Controller
         $formTitle = $institution->resolvedFormTitle();
         $formDesc = $institution->resolvedFormDescription();
         $closedMessage = $institution->resolvedClosedMessage();
+        $ctaLabel = $institution->resolvedCtaLabel();
         $paths = AdmissionPath::query()->forInstitution($institution)->active()->ordered()->get();
         $fields = $institution->usesInternalForm()
             ? $institution->ppdbFields()->active()->ordered()->get()
@@ -84,7 +85,7 @@ class SpmbController extends Controller
             'canonical' => route('ppdb.show', $institution),
         ];
 
-        return view('ppdb.show', compact('institution', 'procedures', 'fees', 'formTitle', 'formDesc', 'closedMessage', 'paths', 'fields', 'waves', 'scheduleWave', 'spmbOpen', 'seo'));
+        return view('ppdb.show', compact('institution', 'procedures', 'fees', 'formTitle', 'formDesc', 'closedMessage', 'ctaLabel', 'paths', 'fields', 'waves', 'scheduleWave', 'spmbOpen', 'seo'));
     }
 
     public function store(Request $request, Institution $institution): RedirectResponse

@@ -449,6 +449,37 @@ class SpmbRegistrationTest extends TestCase
         $response->assertDontSee('Judul Global');
     }
 
+    public function test_cta_label_defaults_per_form_mode(): void
+    {
+        $internal = Institution::factory()->create();
+        $external = Institution::factory()->externalLink()->make();
+        $embed = Institution::factory()->embed()->make();
+
+        $this->assertSame('Daftar Sekarang', $internal->resolvedCtaLabel());
+        $this->assertSame('Buka Portal Pendaftaran', $external->resolvedCtaLabel());
+        $this->assertSame('Isi Formulir', $embed->resolvedCtaLabel());
+    }
+
+    public function test_custom_cta_label_replaces_the_default_button_text(): void
+    {
+        $this->institution->update(['cta_label' => 'Ayo Gabung SMP Kami']);
+
+        $this->get(route('ppdb.show', $this->institution))
+            ->assertStatus(200)
+            ->assertSee('Ayo Gabung SMP Kami')
+            ->assertDontSee('Daftar Sekarang');
+
+        $jenjang = Institution::factory()->externalLink('https://ppdb.contoh.test/daftar')->create([
+            'slug' => 'sma',
+            'cta_label' => 'Lanjut ke Portal SMA',
+        ]);
+
+        $this->get(route('ppdb.show', $jenjang))
+            ->assertStatus(200)
+            ->assertSee('Lanjut ke Portal SMA')
+            ->assertDontSee('Buka Portal Pendaftaran');
+    }
+
     public function test_registration_number_is_generated_on_creation(): void
     {
         $registration = SpmbRegistration::factory()->create([

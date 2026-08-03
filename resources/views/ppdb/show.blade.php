@@ -160,7 +160,7 @@
                         <a href="#form-pendaftaran" x-data
                            @click="$dispatch('open-form')"
                            class="mt-5 flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm transition-colors">
-                            Daftar Sekarang
+                            {{ $ctaLabel }}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </a>
                         @endif
@@ -170,7 +170,7 @@
                         @if($spmbOpen && $formEnabled)
                         <a href="{{ $institution->external_url }}" target="_blank" rel="noopener"
                            class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm transition-colors">
-                            Buka Portal Pendaftaran
+                            {{ $ctaLabel }}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                         </a>
                         @endif
@@ -181,7 +181,7 @@
                         <a href="#form-pendaftaran" x-data
                            @click="$dispatch('open-form')"
                            class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm transition-colors">
-                            Isi Formulir
+                            {{ $ctaLabel }}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
                         </a>
                         @endif
@@ -387,7 +387,7 @@
             <p class="text-sm max-w-md mx-auto mb-6" style="color:var(--muted)">Pendaftaran jenjang ini dilakukan melalui portal resmi di situs terpisah. Klik tombol di bawah untuk melanjutkan.</p>
             <a href="{{ $institution->external_url }}" target="_blank" rel="noopener"
                class="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm transition-all">
-                Buka Portal Pendaftaran
+                {{ $ctaLabel }}
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
             </a>
         </div>

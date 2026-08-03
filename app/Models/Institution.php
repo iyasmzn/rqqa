@@ -39,6 +39,7 @@ class Institution extends Model
         'fees',
         'form_title',
         'form_description',
+        'cta_label',
         'closed_message',
     ];
 
@@ -161,6 +162,24 @@ class Institution extends Model
     public function resolvedFormDescription(): string
     {
         return $this->form_description ?: (string) Setting::get('spmb_form_description', 'Isi formulir di bawah ini dengan data yang benar dan lengkap.');
+    }
+
+    /**
+     * Label of the main registration CTA button, falling back to a default
+     * that matches how this jenjang collects registrations.
+     */
+    public function resolvedCtaLabel(): string
+    {
+        return $this->cta_label ?: $this->defaultCtaLabel();
+    }
+
+    public function defaultCtaLabel(): string
+    {
+        return match ($this->form_mode) {
+            self::FORM_MODE_EXTERNAL_LINK => 'Buka Portal Pendaftaran',
+            self::FORM_MODE_EMBED => 'Isi Formulir',
+            default => 'Daftar Sekarang',
+        };
     }
 
     public function resolvedClosedMessage(): string
