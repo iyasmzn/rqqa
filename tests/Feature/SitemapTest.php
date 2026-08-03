@@ -52,9 +52,17 @@ class SitemapTest extends TestCase
         $paths = $this->sitemapPaths();
         $this->assertNotEmpty($paths);
 
+        $broken = [];
+
         foreach ($paths as $path) {
-            $this->get($path)->assertOk("URL sitemap {$path} tidak mengembalikan 200.");
+            $status = $this->get($path)->getStatusCode();
+
+            if ($status !== 200) {
+                $broken[$path] = $status;
+            }
         }
+
+        $this->assertSame([], $broken, 'URL sitemap yang tidak menjawab 200: '.json_encode($broken));
     }
 
     public function test_contact_page_is_listed(): void
