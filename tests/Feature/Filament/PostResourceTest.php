@@ -9,6 +9,7 @@ use App\Filament\Resources\Posts\PostResource;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use App\Providers\AppServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
@@ -233,5 +234,59 @@ class PostResourceTest extends TestCase
             'title' => 'Judul Diperbarui',
             'is_published' => false,
         ]);
+    }
+
+    // ── Publish timestamp timezone ─────────────────────────────────
+
+    /**
+     * Admins type wall-clock WIB into the publish field while timestamps are
+     * stored in UTC. Without a panel timezone the typed value was saved
+     * verbatim, landing 7 hours in the future and hiding the post behind
+     * Post::published() until the offset elapsed.
+     */
+    public function test_publish_time_typed_in_local_time_is_stored_as_utc_and_visible_immediately(): void
+    {
+        $this->freezeTime();
+
+        $superAuthor = $this->superAuthor();
+        $this->seedPostCategory();
+        $this->actingAs($superAuthor);
+
+        $localNow = now()->timezone(AppServiceProvider::PANEL_TIMEZONE);
+
+        Livewire::test(CreatePost::class)
+            ->fillForm([
+                'title' => 'Terbit Sekarang',
+                'slug' => 'terbit-sekarang',
+                'content' => '<p>Konten.</p>',
+                'category' => 'Berita',
+                'read_time' => 2,
+                'author' => 'Admin',
+                'author_initials' => 'AD',
+                'image_source' => 'upload',
+                'is_published' => true,
+                'published_at' => $localNow->format('Y-m-d H:i:s'),
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $post = Post::where('slug', 'terbit-sekarang')->sole();
+
+        $this->assertSame(
+            now()->format('Y-m-d H:i'),
+            $post->published_at->format('Y-m-d H:i'),
+            'published_at should be converted from WIB to UTC on save.',
+        );
+
+        $this->assertNotSame(
+            $localNow->format('Y-m-d H:i'),
+            $post->published_at->format('Y-m-d H:i'),
+            'The WIB wall clock must not be stored verbatim as UTC.',
+        );
+
+        $this->assertTrue(
+            Post::published()->whereKey($post->id)->exists(),
+            'A post published at the current local time must appear on the public site right away.',
+        );
     }
 }

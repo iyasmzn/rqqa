@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Questions\Schemas;
 
+use App\Providers\AppServiceProvider;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -67,7 +68,7 @@ class QuestionForm
                                     ->live()
                                     ->afterStateUpdated(function (Set $set, bool $state): void {
                                         if ($state) {
-                                            $set('answered_at', now()->format('Y-m-d H:i:s'));
+                                            $set('answered_at', now()->timezone(AppServiceProvider::PANEL_TIMEZONE)->format('Y-m-d H:i:s'));
                                         } else {
                                             $set('answered_at', null);
                                         }

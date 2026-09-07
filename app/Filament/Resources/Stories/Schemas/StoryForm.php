@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Stories\Schemas;
 
 use App\Filament\Concerns\InteractsWithImagePicker;
 use App\Filament\Schemas\ContentBlocks;
+use App\Providers\AppServiceProvider;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
@@ -112,7 +113,7 @@ class StoryForm
                                     ->live()
                                     ->afterStateUpdated(function (Set $set, bool $state): void {
                                         if ($state) {
-                                            $set('published_at', now()->format('Y-m-d H:i:s'));
+                                            $set('published_at', now()->timezone(AppServiceProvider::PANEL_TIMEZONE)->format('Y-m-d H:i:s'));
                                         }
                                     }),
 

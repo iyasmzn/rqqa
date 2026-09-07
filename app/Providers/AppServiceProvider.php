@@ -12,6 +12,7 @@ use App\Models\StaticPage;
 use App\Models\Story;
 use App\Services\SitemapBuilder;
 use Filament\Forms\Components\FileUpload;
+use Filament\Support\Facades\FilamentTimezone;
 use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,12 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * Local time the admin panel presents and accepts, matching the school's
+     * Western Indonesian Time. Storage stays UTC.
+     */
+    public const PANEL_TIMEZONE = 'Asia/Jakarta';
+
     /**
      * Register any application services.
      */
@@ -34,6 +41,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        /*
+         * Timestamps are stored in UTC, but admins think in WIB. Without this,
+         * a date/time typed into the panel is saved verbatim as UTC — putting it
+         * 7 hours into the future, which hides freshly published posts behind
+         * Post::published() until that offset elapses. FilamentTimezone is the
+         * default for DateTimePicker fields, dateTime() table columns, and
+         * dateTime() infolist entries, so the panel reads and writes WIB while
+         * the database keeps UTC.
+         */
+        FilamentTimezone::set(self::PANEL_TIMEZONE);
+
         // ── Prevent ImageColumn from checking file existence on every table load ──
         ImageColumn::configureUsing(function (ImageColumn $column): void {
             $column->checkFileExistence(false);
