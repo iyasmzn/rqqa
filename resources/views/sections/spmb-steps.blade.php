@@ -18,7 +18,7 @@
     $hasMore      = count($procedures) > 4;
 @endphp
 
-<section class="py-20 sm:py-28" style="background:var(--bg)">
+<section id="tahapan-spmb" class="py-20 sm:py-28" style="background:var(--bg)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="text-center mb-14" data-aos="fade-up">

@@ -27,6 +27,7 @@ class Post extends Model
         'allow_comments' => 'boolean',
         'allow_questions' => 'boolean',
         'published_at' => 'datetime',
+        'views_count' => 'integer',
     ];
 
     // ── Relations ───────────────────────────────────────────
@@ -56,7 +57,30 @@ class Post extends Model
         return $query->where('category', $category);
     }
 
+    /** Urutkan dari pembaca terbanyak. */
+    public function scopePopular(Builder $query): Builder
+    {
+        return $query->orderByDesc('views_count');
+    }
+
+    // ── Actions ─────────────────────────────────────────────
+
+    /**
+     * Tambah 1 pembaca tanpa menyentuh updated_at (dipakai sitemap lastmod
+     * & dateModified SEO) dan tanpa memicu model event.
+     */
+    public function recordView(): void
+    {
+        static::withoutTimestamps(fn () => $this->incrementQuietly('views_count'));
+    }
+
     // ── Computed Attributes ──────────────────────────────────
+
+    /** Jumlah pembaca berformat Indonesia, e.g. "1.234". */
+    public function getFormattedViewsAttribute(): string
+    {
+        return number_format((int) $this->views_count, 0, ',', '.');
+    }
 
     /**
      * Thumbnail URL — falls back to picsum placeholder during development.

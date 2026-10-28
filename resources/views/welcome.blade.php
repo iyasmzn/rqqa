@@ -205,51 +205,6 @@
         ['label' => 'Blog',     'url' => '/blog',     'target' => '_self', 'is_active' => true, 'children' => []],
         ['label' => 'Kontak',   'url' => '#kontak',   'target' => '_self', 'is_active' => true, 'children' => []],
     ])->where('is_active', true)->values();
-
-    $defaultSectionOrder = [
-        ['key' => 'section_hero',        'visible' => true],
-        ['key' => 'section_quick_links', 'visible' => true],
-        ['key' => 'section_spmb',        'visible' => true],
-        ['key' => 'section_stats',       'visible' => true],
-        ['key' => 'section_principal',   'visible' => true],
-        ['key' => 'section_spmb_steps',  'visible' => true],
-        ['key' => 'section_programs',    'visible' => true],
-        ['key' => 'section_events',      'visible' => true],
-        ['key' => 'section_books',       'visible' => true],
-        ['key' => 'section_gallery',     'visible' => true],
-        ['key' => 'section_blog',        'visible' => true],
-        ['key' => 'section_testimonials','visible' => true],
-        ['key' => 'section_donasi',      'visible' => true],
-        ['key' => 'section_contact',     'visible' => true],
-    ];
-
-    $sectionOrder = json_decode(setting('section_order', ''), true) ?: $defaultSectionOrder;
-
-    // Forward-compat: append sections added after the saved order was stored
-    // so newly introduced sections (e.g. gallery) still render.
-    $orderedKeys = array_column($sectionOrder, 'key');
-    foreach ($defaultSectionOrder as $defaultSection) {
-        if (! in_array($defaultSection['key'], $orderedKeys, true)) {
-            $sectionOrder[] = $defaultSection;
-        }
-    }
-
-    $sectionPartials = [
-        'section_hero'        => 'sections.hero',
-        'section_quick_links' => 'sections.quick-links',
-        'section_spmb'        => 'sections.spmb',
-        'section_stats'       => 'sections.stats',
-        'section_principal'   => 'sections.principal',
-        'section_spmb_steps'  => 'sections.spmb-steps',
-        'section_programs'    => 'sections.programs',
-        'section_events'      => 'sections.events',
-        'section_books'       => 'sections.books',
-        'section_gallery'     => 'sections.gallery',
-        'section_blog'        => 'sections.blog',
-        'section_testimonials'=> 'sections.testimonials',
-        'section_donasi'      => 'sections.donasi',
-        'section_contact'     => 'sections.contact',
-    ];
 @endphp
 
 <body class="min-h-screen antialiased overflow-x-clip"
@@ -263,19 +218,11 @@
     <x-navbar :over-hero="true" />
 
     {{-- ═══════════════════════════════════════════════════
-         SECTIONS — ordered & toggled via admin settings
+         SECTIONS — ordered & toggled via admin settings; seksi yang
+         fiturnya dimatikan ikut dilewati (lihat App\Support\HomeSections)
     ═══════════════════════════════════════════════════ --}}
-    @php
-        // Landing sections tied to a toggleable feature; hidden when it is off.
-        $sectionFeature = [
-            'section_books'  => 'toko',
-            'section_donasi' => 'donasi',
-        ];
-    @endphp
-    @foreach($sectionOrder as $section)
-        @if(($section['visible'] ?? true) && isset($sectionPartials[$section['key']]) && (! isset($sectionFeature[$section['key']]) || feature_enabled($sectionFeature[$section['key']])))
-            @include($sectionPartials[$section['key']])
-        @endif
+    @foreach(\App\Support\HomeSections::visiblePartials() as $sectionPartial)
+        @include($sectionPartial)
     @endforeach
 
     {{-- ═══════════════════════════════════════════════════

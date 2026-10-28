@@ -11,12 +11,22 @@ class PostController extends Controller
 {
     private const PER_PAGE = 9;
 
+    /** Nilai query ?sort= untuk urutan pembaca terbanyak; selain itu = terbaru. */
+    private const SORT_POPULAR = 'popular';
+
+    private const VIEWED_SESSION_KEY = 'viewed_posts';
+
+    /** User-agent crawler / link preview yang tidak dihitung sebagai pembaca. */
+    private const BOT_PATTERN = '/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram|preview|headless|lighthouse/i';
+
     public function index(Request $request): View
     {
         $category = $request->query('category');
+        $sort = $request->query('sort') === self::SORT_POPULAR ? self::SORT_POPULAR : null;
 
         $posts = Post::published()
             ->when($category, fn ($q) => $q->byCategory($category))
+            ->when($sort === self::SORT_POPULAR, fn ($q) => $q->popular())
             ->latest('published_at')
             ->paginate(self::PER_PAGE)
             ->withQueryString();
@@ -40,14 +50,16 @@ class PostController extends Controller
             'og_image' => asset('images/og-blog.jpg'),
         ];
 
-        return view('blog.index', compact('posts', 'categories', 'category', 'seo'));
+        return view('blog.index', compact('posts', 'categories', 'category', 'sort', 'seo'));
     }
 
-    public function show(string $slug): View
+    public function show(Request $request, string $slug): View
     {
         $post = Post::published()
             ->where('slug', $slug)
             ->firstOrFail();
+
+        $this->trackView($request, $post);
 
         $related = Post::published()
             ->where('id', '!=', $post->id)
@@ -79,5 +91,26 @@ class PostController extends Controller
             ->get();
 
         return view('blog.show', compact('post', 'related', 'seo', 'postQuestions', 'comments'));
+    }
+
+    /**
+     * Hitung satu pembaca per sesi per artikel; abaikan bot & link preview.
+     */
+    private function trackView(Request $request, Post $post): void
+    {
+        $userAgent = (string) $request->userAgent();
+
+        if ($userAgent === '' || preg_match(self::BOT_PATTERN, $userAgent)) {
+            return;
+        }
+
+        $viewedPostIds = $request->session()->get(self::VIEWED_SESSION_KEY, []);
+
+        if (in_array($post->id, $viewedPostIds, true)) {
+            return;
+        }
+
+        $post->recordView();
+        $request->session()->push(self::VIEWED_SESSION_KEY, $post->id);
     }
 }

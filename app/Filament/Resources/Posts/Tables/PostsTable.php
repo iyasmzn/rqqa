@@ -47,6 +47,12 @@ class PostsTable
                     ->sortable()
                     ->toggleable(),
 
+                TextColumn::make('views_count')
+                    ->label('Dibaca')
+                    ->numeric(decimalPlaces: 0, thousandsSeparator: '.')
+                    ->sortable()
+                    ->toggleable(),
+
                 IconColumn::make('is_published')
                     ->label('Tayang')
                     ->boolean()

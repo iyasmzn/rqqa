@@ -58,6 +58,38 @@
         color: #fff;
     }
 
+    /* Sort toggle (Terbaru / Terpopuler) */
+    .sort-toggle {
+        display: inline-flex;
+        align-self: flex-start;
+        flex-shrink: 0;
+        gap: .25rem;
+        padding: .1875rem;
+        border-radius: 9999px;
+        border: 1.5px solid var(--border);
+        background: var(--card);
+    }
+    .sort-toggle a {
+        display: inline-flex;
+        align-items: center;
+        gap: .375rem;
+        font-size: .8125rem;
+        font-weight: 600;
+        padding: .375rem .875rem;
+        border-radius: 9999px;
+        color: var(--muted);
+        transition: all .2s;
+        white-space: nowrap;
+    }
+    .sort-toggle a:hover {
+        color: var(--primary-800);
+        background: var(--primary-50);
+    }
+    .sort-toggle a.active {
+        background: var(--primary);
+        color: #fff;
+    }
+
     /* Featured post */
     .featured-card {
         background: var(--card);
@@ -147,20 +179,35 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        {{-- ── Category Filter ─────────────────────────────── --}}
-        @if($categories->isNotEmpty())
-            <div class="flex flex-wrap gap-2 mb-8" data-aos="fade-up">
-                <a href="{{ route('blog.index') }}" class="cat-pill {{ !$category ? 'active' : '' }}">
-                    Semua
-                </a>
-                @foreach($categories as $cat)
-                    <a href="{{ route('blog.index', ['category' => $cat]) }}"
-                       class="cat-pill {{ $category === $cat ? 'active' : '' }}">
-                        {{ $cat }}
+        {{-- ── Category Filter & Sort ──────────────────────── --}}
+        <div class="flex flex-col gap-4 sm:flex-row sm:justify-between mb-8" data-aos="fade-up">
+            @if($categories->isNotEmpty())
+                <div class="flex flex-wrap gap-2">
+                    <a href="{{ route('blog.index', array_filter(['sort' => $sort])) }}" class="cat-pill {{ !$category ? 'active' : '' }}">
+                        Semua
                     </a>
-                @endforeach
-            </div>
-        @endif
+                    @foreach($categories as $cat)
+                        <a href="{{ route('blog.index', array_filter(['category' => $cat, 'sort' => $sort])) }}"
+                           class="cat-pill {{ $category === $cat ? 'active' : '' }}">
+                            {{ $cat }}
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+
+            <nav class="sort-toggle sm:ml-auto" aria-label="Urutkan artikel">
+                <a href="{{ route('blog.index', array_filter(['category' => $category])) }}"
+                   class="{{ !$sort ? 'active' : '' }}" @if(!$sort) aria-current="true" @endif>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Terbaru
+                </a>
+                <a href="{{ route('blog.index', array_filter(['category' => $category, 'sort' => 'popular'])) }}"
+                   class="{{ $sort ? 'active' : '' }}" @if($sort) aria-current="true" @endif>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"/></svg>
+                    Terpopuler
+                </a>
+            </nav>
+        </div>
 
         {{-- ── Post Grid ───────────────────────────────────── --}}
         @if($posts->isEmpty())
@@ -188,7 +235,7 @@
                         {{-- Featured label --}}
                         <div class="absolute top-4 left-4">
                             <span class="text-[10px] font-bold px-2.5 py-1.5 rounded-lg bg-amber-500 text-white uppercase tracking-wider">
-                                ✦ Unggulan
+                                {{ $sort && $posts->onFirstPage() ? '🔥 Terpopuler' : '✦ Unggulan' }}
                             </span>
                         </div>
                     </a>
@@ -203,6 +250,10 @@
                             <span class="text-xs text-gray-400 flex items-center gap-1">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 {{ $featured->read_time }} menit baca
+                            </span>
+                            <span class="text-xs text-gray-400 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                {{ $featured->formatted_views }} kali dibaca
                             </span>
                         </div>
                         <h2 class="text-xl sm:text-2xl font-extrabold leading-snug mb-3 text-gray-900" itemprop="headline">
@@ -259,6 +310,11 @@
                                 <time datetime="{{ $post->published_at?->toIso8601String() }}">{{ $post->formatted_date }}</time>
                                 <span class="w-1 h-1 rounded-full bg-gray-300 inline-block"></span>
                                 <span>{{ $post->read_time }} mnt</span>
+                                <span class="w-1 h-1 rounded-full bg-gray-300 inline-block"></span>
+                                <span class="flex items-center gap-1" title="{{ $post->formatted_views }} kali dibaca">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    {{ $post->formatted_views }}
+                                </span>
                             </div>
 
                             <h2 class="font-bold text-sm leading-snug mb-2 line-clamp-2 text-gray-900 hover:text-amber-700 transition-colors flex-1" itemprop="headline">
