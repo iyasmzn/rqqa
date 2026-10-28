@@ -131,11 +131,22 @@ class PostViewCountTest extends TestCase
         $this->withHeader('User-Agent', self::BROWSER_USER_AGENT)
             ->get(route('blog.show', $post->slug))
             ->assertOk()
-            ->assertSee('1.234 kali dibaca')
+            ->assertSee('1.234x dibaca')
             ->assertSee('"userInteractionCount": 1234', false);
 
         $this->get(route('blog.index'))
             ->assertOk()
-            ->assertSee('1.234 kali dibaca');
+            ->assertSee('1.234x dibaca');
+    }
+
+    public function test_view_count_is_shown_in_the_home_article_section(): void
+    {
+        Post::factory()->create(['published_at' => now()->subDay(), 'views_count' => 2500]);
+        Post::factory()->create(['published_at' => now()->subDays(3), 'views_count' => 7]);
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSeeInOrder(['mnt baca', 'M2.458 12C3.732', '2.500x dibaca'], false)
+            ->assertSeeInOrder(['M2.458 12C3.732', '7x dibaca'], false);
     }
 }

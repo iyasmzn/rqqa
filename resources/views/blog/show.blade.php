@@ -19,7 +19,7 @@
         'url'   => url('/'),
     ],
     'articleSection' => $post->category,
-    'wordCount'      => str_word_count(strip_tags($post->content)),
+    'wordCount'      => str_word_count(plain_text($post->content)),
     'interactionStatistic' => [
         '@type'                => 'InteractionCounter',
         'interactionType'      => 'https://schema.org/ReadAction',
@@ -279,7 +279,7 @@
                     </div>
                     <div class="flex items-center gap-1.5 text-xs text-gray-400">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        <span>{{ $post->formatted_views }} kali dibaca</span>
+                        <span>{{ $post->formatted_views }}x dibaca</span>
                     </div>
                 </div>
 
@@ -355,7 +355,7 @@
                                 @foreach($headings[1] as $i => $heading)
                                     <li class="toc-link">
                                         <span class="toc-num">{{ $i + 1 }}.</span>
-                                        <span>{{ strip_tags($heading) }}</span>
+                                        <span>{{ plain_text($heading) }}</span>
                                     </li>
                                 @endforeach
                             </ol>

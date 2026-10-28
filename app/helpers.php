@@ -331,3 +331,17 @@ if (! function_exists('upload_max_hint')) {
         return "Ukuran maksimal file: {$formatted}.";
     }
 }
+
+if (! function_exists('plain_text')) {
+    /**
+     * Plain text from a rich-editor HTML fragment: tags are stripped and
+     * entities such as `&#039;` are turned back into their characters, so the
+     * text is not double-escaped when echoed again through `{{ }}`.
+     */
+    function plain_text(?string $html): string
+    {
+        $text = html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        return trim(preg_replace('/[\s\x{00A0}]+/u', ' ', $text) ?? $text);
+    }
+}
