@@ -1,4 +1,4 @@
-<section id="beranda" class="relative h-130 sm:h-145 lg:h-160 overflow-hidden -mt-17">
+<section id="beranda" class="relative h-130 sm:h-145 lg:h-160 overflow-hidden page-band -mt-17">
 
     {{-- Slides --}}
     @forelse($slides as $index => $s)
@@ -90,11 +90,4 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
         </button>
     @endif
-
-    {{-- Bottom wave --}}
-    <div class="absolute bottom-0 inset-x-0 z-10">
-        <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-14">
-            <path d="M0 56L80 48C160 40 320 24 480 22.7C640 21.3 800 34.7 960 40C1120 45.3 1280 42.7 1360 41.3L1440 40V56H0Z" fill="var(--bg)"/>
-        </svg>
-    </div>
 </section>

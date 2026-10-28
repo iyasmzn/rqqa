@@ -30,7 +30,7 @@
 @section('content')
 
 {{-- ── Breadcrumb ──────────────────────────────────────────── --}}
-<div class="-mt-17" style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0c1a14 100%);border-bottom:1px solid rgba(255,255,255,.08)">
+<div class="page-band -mt-17" style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0c1a14 100%);border-bottom:1px solid rgba(255,255,255,.08)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-5 sm:pt-28 sm:pb-6">
         <nav class="flex items-center gap-2 text-sm" style="color:rgba(255,255,255,.6)">
             <a href="{{ route('home') }}" class="hover:opacity-75 transition-opacity">Beranda</a>

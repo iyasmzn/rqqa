@@ -27,7 +27,7 @@
 @endphp
 
 {{-- ═══════════════════════ HERO ═══════════════════════════════ --}}
-<section class="ppdb-hero -mt-17 pt-32 pb-16 sm:pt-36 sm:pb-20">
+<section class="ppdb-hero page-band -mt-17 pt-32 pb-16 sm:pt-36 sm:pb-20">
     <x-hero-geo />
     <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center" data-aos="fade-up">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 mb-5">

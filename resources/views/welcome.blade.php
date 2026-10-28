@@ -101,7 +101,7 @@
         .fi-card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 1.5rem;
+            border-radius: var(--radius-card);
             box-shadow: 0 2px 12px rgba(0,0,0,.06);
             transition: box-shadow .3s ease, transform .3s ease, border-color .3s ease;
         }
@@ -115,7 +115,7 @@
         .btn-primary {
             display: inline-flex; align-items: center; gap: .5rem;
             padding: .75rem 1.75rem;
-            border-radius: .875rem;
+            border-radius: var(--radius-btn);
             font-size: .9375rem; font-weight: 600;
             background: var(--primary); color: #fff;
             transition: background .2s, box-shadow .2s, transform .15s;
@@ -129,7 +129,7 @@
         .btn-outline {
             display: inline-flex; align-items: center; gap: .5rem;
             padding: .75rem 1.75rem;
-            border-radius: .875rem;
+            border-radius: var(--radius-btn);
             font-size: .9375rem; font-weight: 600;
             border: 1.5px solid var(--border);
             color: var(--text); background: var(--card);
@@ -151,7 +151,7 @@
         .fi-badge {
             display: inline-flex; align-items: center; gap: .25rem;
             padding: .2rem .75rem;
-            border-radius: 9999px;
+            border-radius: var(--radius-pill);
             font-size: .75rem; font-weight: 600;
             background: var(--primary-50);
             color: var(--primary-800);
@@ -169,7 +169,7 @@
         .masonry-item {
             break-inside: avoid;
             margin-bottom: .875rem;
-            border-radius: 1.25rem;
+            border-radius: var(--radius-media);
             overflow: hidden;
             display: block;
             position: relative;
@@ -193,6 +193,7 @@
         .fade-up { animation: fadeUp .6s ease both; }
         .d1 { animation-delay: .1s; } .d2 { animation-delay: .2s; } .d3 { animation-delay: .3s; }
     </style>
+    @include('partials.shape-tokens')
 </head>
 
 @php
@@ -207,7 +208,7 @@
     ])->where('is_active', true)->values();
 @endphp
 
-<body class="min-h-screen antialiased overflow-x-clip"
+<body class="page-inset min-h-screen antialiased overflow-x-clip"
       x-data="{
           slide: 0,
           total: {{ max($slides->count(), 1) }}

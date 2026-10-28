@@ -109,7 +109,7 @@
         .fi-card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 1.5rem;
+            border-radius: var(--radius-card);
             box-shadow: 0 2px 12px rgba(0,0,0,.06);
             transition: box-shadow .3s ease, transform .3s ease, border-color .3s ease;
         }
@@ -123,7 +123,7 @@
         .btn-primary {
             display: inline-flex; align-items: center; gap: .5rem;
             padding: .75rem 1.75rem;
-            border-radius: .875rem;
+            border-radius: var(--radius-btn);
             font-size: .9375rem; font-weight: 600;
             background: var(--primary); color: #fff;
             transition: background .2s, box-shadow .2s, transform .15s;
@@ -137,7 +137,7 @@
         .btn-outline {
             display: inline-flex; align-items: center; gap: .5rem;
             padding: .75rem 1.75rem;
-            border-radius: .875rem;
+            border-radius: var(--radius-btn);
             font-size: .9375rem; font-weight: 600;
             border: 1.5px solid var(--border);
             color: var(--text); background: var(--card);
@@ -174,11 +174,12 @@
         .prose a  { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
         .prose strong { color: var(--text); }
     </style>
+    @include('partials.shape-tokens')
 
     @stack('head')
 </head>
 
-<body class="min-h-screen antialiased overflow-x-clip">
+<body class="page-inset min-h-screen antialiased overflow-x-clip">
 
     {{-- Navbar — transparent over hero, solid on scroll --}}
     <x-navbar />
