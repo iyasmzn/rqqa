@@ -19,7 +19,7 @@
         'url'   => url('/'),
     ],
     'articleSection' => $post->category,
-    'wordCount'      => str_word_count(strip_tags($post->content)),
+    'wordCount'      => str_word_count(plain_text($post->content)),
     'interactionStatistic' => [
         '@type'                => 'InteractionCounter',
         'interactionType'      => 'https://schema.org/ReadAction',
@@ -355,7 +355,7 @@
                                 @foreach($headings[1] as $i => $heading)
                                     <li class="toc-link">
                                         <span class="toc-num">{{ $i + 1 }}.</span>
-                                        <span>{{ strip_tags($heading) }}</span>
+                                        <span>{{ plain_text($heading) }}</span>
                                     </li>
                                 @endforeach
                             </ol>

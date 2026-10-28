@@ -186,7 +186,7 @@
                             @foreach($headings[1] as $i => $heading)
                                 <li class="toc-item">
                                     <span class="toc-num">{{ $i + 1 }}.</span>
-                                    <span>{{ strip_tags($heading) }}</span>
+                                    <span>{{ plain_text($heading) }}</span>
                                 </li>
                             @endforeach
                         </ol>

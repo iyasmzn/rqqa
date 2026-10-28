@@ -72,7 +72,7 @@ class Story extends Model
 
     public function getMetaDescriptionAttribute(): string
     {
-        $source = $this->excerpt ?: strip_tags((string) $this->content);
+        $source = $this->excerpt ?: plain_text($this->content);
 
         return Str::limit($source, 155);
     }

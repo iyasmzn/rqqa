@@ -50,7 +50,7 @@ class EventController extends Controller
 
         $seo = [
             'title' => "{$event->title} | ".config('app.name'),
-            'description' => $event->excerpt ?? Str::limit(strip_tags((string) $event->content), 155),
+            'description' => $event->excerpt ?? Str::limit(plain_text($event->content), 155),
             'canonical' => route('events.show', $event),
             'og_image' => $event->thumbnail_url,
         ];

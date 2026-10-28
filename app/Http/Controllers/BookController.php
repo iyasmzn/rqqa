@@ -84,7 +84,7 @@ class BookController extends Controller
         $seo = [
             'title' => "{$book->title} | ".config('app.name'),
             'description' => $book->description
-                ? Str::limit(strip_tags($book->description), 155)
+                ? Str::limit(plain_text($book->description), 155)
                 : "Beli buku {$book->title} di toko buku ".config('app.name'),
             'canonical' => route('books.show', $book),
             'og_image' => $book->cover_url,
