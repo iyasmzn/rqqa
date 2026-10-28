@@ -1,4 +1,4 @@
-<section class="relative h-130 sm:h-145 lg:h-160 overflow-hidden -mt-17">
+<section id="beranda" class="relative h-130 sm:h-145 lg:h-160 overflow-hidden -mt-17">
 
     {{-- Slides --}}
     @forelse($slides as $index => $s)
