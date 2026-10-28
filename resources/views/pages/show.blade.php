@@ -113,7 +113,7 @@
 {{-- ═══════════════════════════════════════════════════
      HERO
 ═══════════════════════════════════════════════════ --}}
-<div class="page-hero -mt-17">
+<div class="page-hero page-band -mt-17">
     {{-- Decorative circles --}}
     <div class="page-hero-circle" style="width:380px;height:380px;top:-120px;right:-80px;"></div>
     <div class="page-hero-circle" style="width:220px;height:220px;bottom:-60px;left:10%;"></div>
