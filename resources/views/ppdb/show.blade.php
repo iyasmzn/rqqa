@@ -372,8 +372,9 @@
             <div class="text-5xl mb-4">🔒</div>
             <h3 class="font-bold text-lg mb-2" style="color:var(--text)">Form Pendaftaran Ditutup</h3>
             <p class="text-sm max-w-md mx-auto" style="color:var(--muted)">{{ $closedMessage }}</p>
-            @if(setting('contact_whatsapp') || setting('social_whatsapp'))
-            <a href="https://wa.me/{{ setting('contact_whatsapp', setting('social_whatsapp')) }}" target="_blank" rel="noopener"
+            @php $contactWhatsapp = whatsapp_number(setting('social_whatsapp')); @endphp
+            @if($contactWhatsapp)
+            <a href="https://wa.me/{{ $contactWhatsapp }}" target="_blank" rel="noopener"
                class="inline-flex items-center gap-2 mt-6 btn-primary">
                 💬 Hubungi via WhatsApp
             </a>

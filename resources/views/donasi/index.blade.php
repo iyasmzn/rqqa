@@ -358,11 +358,12 @@
             </div>
 
             {{-- Kontak --}}
-            @if(setting('contact_whatsapp') || setting('social_whatsapp'))
+            @php $contactWhatsapp = whatsapp_number(setting('social_whatsapp')); @endphp
+            @if($contactWhatsapp)
             <div class="fi-card p-6" data-aos="fade-up" data-aos-delay="120">
                 <h3 class="font-bold text-sm mb-3" style="color:var(--text)">💬 Ada Pertanyaan?</h3>
                 <p class="text-xs mb-4" style="color:var(--muted)">Hubungi kami via WhatsApp jika ada pertanyaan seputar donasi.</p>
-                <a href="https://wa.me/{{ setting('contact_whatsapp', setting('social_whatsapp')) }}" target="_blank" rel="noopener"
+                <a href="https://wa.me/{{ $contactWhatsapp }}" target="_blank" rel="noopener"
                    class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-sm transition-colors">
                     💬 Hubungi via WhatsApp
                 </a>

@@ -100,6 +100,36 @@ if (! function_exists('contact_items')) {
     }
 }
 
+if (! function_exists('whatsapp_number')) {
+    /**
+     * A WhatsApp number in the form wa.me expects: digits only, starting with
+     * the country code. Local Indonesian numbers ("0812-3456-7890") become
+     * "6281234567890"; "+62 812…" loses its punctuation. Null when empty.
+     */
+    function whatsapp_number(?string $number): ?string
+    {
+        $digits = preg_replace('/\D/', '', (string) $number);
+
+        if ($digits === '') {
+            return null;
+        }
+
+        return str_starts_with($digits, '0') ? '62'.substr($digits, 1) : $digits;
+    }
+}
+
+if (! function_exists('shop_whatsapp_number')) {
+    /**
+     * The number that receives bookstore orders — from the book page and the
+     * checkout alike: "Nomor WhatsApp Toko Buku", falling back to the general
+     * WhatsApp number when that is empty.
+     */
+    function shop_whatsapp_number(): ?string
+    {
+        return whatsapp_number(setting('shop_whatsapp') ?: setting('social_whatsapp'));
+    }
+}
+
 if (! function_exists('setting')) {
     /**
      * Get a setting value from the database, with an optional default.
