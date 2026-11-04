@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Ebook;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,6 +19,17 @@ class FeatureToggleTest extends TestCase
         $this->assertTrue(feature_enabled('login_register'));
         $this->assertTrue(feature_enabled('pertanyaan'));
         $this->assertTrue(feature_enabled('toko_checkout'));
+        $this->assertTrue(feature_enabled('ebook'));
+    }
+
+    public function test_disabling_ebook_returns_not_found_for_its_pages(): void
+    {
+        $ebook = Ebook::factory()->create();
+
+        Setting::set('feature_ebook', false);
+
+        $this->get(route('ebooks.index'))->assertNotFound();
+        $this->get(route('ebooks.show', $ebook))->assertNotFound();
     }
 
     public function test_disabling_donasi_returns_not_found(): void

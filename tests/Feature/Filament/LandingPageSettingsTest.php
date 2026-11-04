@@ -159,7 +159,7 @@ class LandingPageSettingsTest extends TestCase
         Livewire::actingAs($admin)
             ->test(LandingPageSettings::class)
             ->assertSee('Disembunyikan')
-            ->assertSee('Saat ini 13 dari 14 seksi tampil di halaman depan.');
+            ->assertSee('Saat ini '.(count(HomeSections::keys()) - 1).' dari '.count(HomeSections::keys()).' seksi tampil di halaman depan.');
     }
 
     public function test_clearing_texts_hides_eyebrow_and_subtitle_but_keeps_the_default_title(): void
@@ -223,7 +223,7 @@ class LandingPageSettingsTest extends TestCase
         $sections = collect(Livewire::actingAs($this->admin())->test(LandingPageSettings::class)->get('data.sections'))
             ->filter(fn (array $section): bool => isset($section['title']));
 
-        $this->assertCount(9, $sections);
+        $this->assertCount(10, $sections);
 
         foreach ($sections as $section) {
             $key = $section['key'];
@@ -257,6 +257,14 @@ class LandingPageSettingsTest extends TestCase
             ->assertDontSee(SlideResource::getUrl('index'), false);
     }
 
+    public function test_ebook_card_explains_how_its_content_is_chosen(): void
+    {
+        Livewire::actingAs($this->admin())
+            ->test(LandingPageSettings::class)
+            ->assertSee('E-Book Pilihan')
+            ->assertSee('Yang tampil: e-book bertanda Unggulan (bila belum ada, e-book terbaru).');
+    }
+
     public function test_a_section_whose_feature_is_off_is_flagged(): void
     {
         Setting::set('feature_toko', false);
@@ -265,7 +273,7 @@ class LandingPageSettingsTest extends TestCase
             ->test(LandingPageSettings::class)
             ->assertSee('Fitur Toko Buku nonaktif')
             ->assertSee('sedang dimatikan di menu')
-            ->assertSee('Saat ini 13 dari 14 seksi tampil di halaman depan.');
+            ->assertSee('Saat ini '.(count(HomeSections::keys()) - 1).' dari '.count(HomeSections::keys()).' seksi tampil di halaman depan.');
     }
 
     public function test_seo_fields_count_characters(): void

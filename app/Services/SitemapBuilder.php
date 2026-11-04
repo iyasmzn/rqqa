@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Book;
+use App\Models\Ebook;
 use App\Models\Event;
 use App\Models\Institution;
 use App\Models\Post;
@@ -139,6 +140,18 @@ class SitemapBuilder
             });
         }
 
+        /* ── E-Book (hanya saat fiturnya aktif) ── */
+        if (feature_enabled('ebook')) {
+            Ebook::query()->published()->each(function (Ebook $ebook) use ($sitemap) {
+                $sitemap->add(
+                    Url::create(route('ebooks.show', $ebook->slug))
+                        ->setLastModificationDate($ebook->updated_at)
+                        ->setPriority(0.5)
+                        ->setChangeFrequency('monthly')
+                );
+            });
+        }
+
         /*
          * Teacher detail pages (`/guru/{teacher}`) are intentionally omitted:
          * individual staff profiles are not meant to rank in search. The
@@ -181,6 +194,10 @@ class SitemapBuilder
 
         if (feature_enabled('toko')) {
             $pages[] = ['route' => 'books.index', 'priority' => 0.6, 'freq' => 'weekly'];
+        }
+
+        if (feature_enabled('ebook')) {
+            $pages[] = ['route' => 'ebooks.index', 'priority' => 0.6, 'freq' => 'weekly'];
         }
 
         return $pages;

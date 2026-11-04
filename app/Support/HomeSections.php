@@ -30,6 +30,7 @@ class HomeSections
         'section_programs' => ['label' => '🎓  Program Unggulan', 'partial' => 'sections.programs', 'anchor' => 'program'],
         'section_events' => ['label' => '📅  Agenda Kegiatan', 'partial' => 'sections.events', 'anchor' => 'kegiatan-upcoming'],
         'section_books' => ['label' => '📚  Buku', 'partial' => 'sections.books', 'anchor' => 'toko-buku', 'feature' => 'toko'],
+        'section_ebooks' => ['label' => '📖  E-Book Pilihan', 'partial' => 'sections.ebooks', 'anchor' => 'ebook', 'feature' => 'ebook'],
         'section_gallery' => ['label' => '🖼️  Galeri Foto', 'partial' => 'sections.gallery', 'anchor' => 'galeri'],
         'section_blog' => ['label' => '📰  Blog & Berita', 'partial' => 'sections.blog', 'anchor' => 'blog'],
         'section_testimonials' => ['label' => '💬  Kesan & Pesan Alumni', 'partial' => 'sections.testimonials', 'anchor' => 'kesan-pesan'],
@@ -45,6 +46,7 @@ class HomeSections
     private const FEATURE_LABELS = [
         'toko' => 'Toko Buku',
         'donasi' => 'Donasi',
+        'ebook' => 'E-Book',
     ];
 
     /**

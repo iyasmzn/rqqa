@@ -34,7 +34,7 @@ class FeatureSettings extends Page
 
     public static function getNavigationBadge(): ?string
     {
-        $disabled = collect(['login_register', 'donasi', 'toko', 'pertanyaan'])
+        $disabled = collect(['login_register', 'donasi', 'toko', 'ebook', 'pertanyaan'])
             ->reject(fn (string $feature): bool => feature_enabled($feature))
             ->count();
 
@@ -54,6 +54,7 @@ class FeatureSettings extends Page
             'feature_login_register' => $loginEnabled,
             'feature_donasi' => setting_bool('feature_donasi', true),
             'feature_toko' => setting_bool('feature_toko', true),
+            'feature_ebook' => setting_bool('feature_ebook', true),
             // Locked to nonaktif whenever login/register is disabled.
             'feature_pertanyaan' => $loginEnabled && setting_bool('feature_pertanyaan', true),
 
@@ -102,6 +103,11 @@ class FeatureSettings extends Page
                         ->label('Toko Buku')
                         ->default(true)
                         ->helperText('Menampilkan toko dan keranjang. Jika Login & Registrasi nonaktif, produk tetap tampil namun proses checkout tidak tersedia.'),
+
+                    Toggle::make('feature_ebook')
+                        ->label('E-Book (Perpustakaan Digital)')
+                        ->default(true)
+                        ->helperText('Menampilkan halaman e-book dan seksi E-Book Pilihan di halaman depan.'),
 
                     Toggle::make('feature_pertanyaan')
                         ->label('Tanya Jawab (Pertanyaan)')

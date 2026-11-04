@@ -115,6 +115,16 @@ class CategorySeeder extends Seeder
                 'Staf Tata Usaha',
                 'Lainnya',
             ],
+
+            // ── E-Book ─────────────────────────────────────────────
+            Category::TYPE_EBOOK => [
+                'Buku Pelajaran',
+                'Modul',
+                'Kitab',
+                'Referensi',
+                'Bacaan Umum',
+                'Lainnya',
+            ],
         ];
     }
 }
