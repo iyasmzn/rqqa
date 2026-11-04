@@ -62,9 +62,9 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index');
         }
 
-        $whatsapp = preg_replace('/\D/', '', setting('shop_whatsapp', setting('social_whatsapp', '')));
+        $whatsapp = shop_whatsapp_number();
 
-        if (empty($whatsapp)) {
+        if ($whatsapp === null) {
             return redirect()->route('checkout.index')
                 ->with('error', 'Nomor WhatsApp toko belum dikonfigurasi. Hubungi admin.');
         }
