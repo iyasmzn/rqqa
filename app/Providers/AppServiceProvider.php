@@ -73,7 +73,12 @@ class AppServiceProvider extends ServiceProvider
      */
     private function invalidateSitemapCacheOnContentChange(): void
     {
-        $forget = fn (Model $model) => Cache::forget(SitemapBuilder::CACHE_KEY);
+        // Jangan kembalikan hasil forget(): bernilai false saat cache-nya belum
+        // ada, dan listener model yang mengembalikan false menghentikan listener
+        // sesudahnya — misalnya penghapusan berkas PDF milik model Ebook.
+        $forget = function (Model $model): void {
+            Cache::forget(SitemapBuilder::CACHE_KEY);
+        };
 
         foreach ([
             Post::class,
