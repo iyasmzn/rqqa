@@ -20,6 +20,8 @@ class Category extends Model
 
     public const TYPE_TEACHER = 'teacher';
 
+    public const TYPE_EBOOK = 'ebook';
+
     /** Label tampilan per tipe (untuk UI admin). */
     public const TYPE_LABELS = [
         self::TYPE_POST => 'Blog / Berita',
@@ -28,6 +30,7 @@ class Category extends Model
         self::TYPE_PROGRAM => 'Program',
         self::TYPE_DOWNLOAD => 'Unduhan',
         self::TYPE_TEACHER => 'Guru / Jabatan',
+        self::TYPE_EBOOK => 'E-Book',
     ];
 
     protected $fillable = ['type', 'name', 'sort_order', 'is_active'];

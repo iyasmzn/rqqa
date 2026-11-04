@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Book;
+use App\Models\Ebook;
 use App\Models\Event;
 use App\Models\Institution;
 use App\Models\Post;
@@ -88,6 +89,7 @@ class AppServiceProvider extends ServiceProvider
             StaticPage::class,
             Institution::class,
             Book::class,
+            Ebook::class,
         ] as $model) {
             $model::saved($forget);
             $model::deleted($forget);

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Book;
+use App\Models\Ebook;
 use App\Models\Institution;
 use App\Models\Post;
 use App\Models\Setting;
@@ -48,6 +49,7 @@ class SitemapTest extends TestCase
         Post::factory()->create();
         Institution::factory()->create();
         Book::factory()->create();
+        Ebook::factory()->create();
 
         $paths = $this->sitemapPaths();
         $this->assertNotEmpty($paths);
@@ -112,6 +114,34 @@ class SitemapTest extends TestCase
         $book = Book::factory()->create(['is_available' => false]);
 
         $this->assertNotContains("/buku/{$book->slug}", $this->sitemapPaths());
+    }
+
+    public function test_ebooks_are_listed_while_the_feature_is_enabled(): void
+    {
+        $ebook = Ebook::factory()->create();
+
+        $paths = $this->sitemapPaths();
+
+        $this->assertContains('/ebook', $paths);
+        $this->assertContains("/ebook/{$ebook->slug}", $paths);
+    }
+
+    public function test_ebooks_are_omitted_once_the_feature_is_disabled(): void
+    {
+        $ebook = Ebook::factory()->create();
+        Setting::set('feature_ebook', false);
+
+        $paths = $this->sitemapPaths();
+
+        $this->assertNotContains('/ebook', $paths);
+        $this->assertNotContains("/ebook/{$ebook->slug}", $paths);
+    }
+
+    public function test_unpublished_ebook_is_omitted(): void
+    {
+        $ebook = Ebook::factory()->unpublished()->create();
+
+        $this->assertNotContains("/ebook/{$ebook->slug}", $this->sitemapPaths());
     }
 
     /**
@@ -191,6 +221,15 @@ class SitemapTest extends TestCase
         $this->sitemapXml();
 
         Book::factory()->create();
+
+        $this->assertFalse(Cache::has(SitemapBuilder::CACHE_KEY));
+    }
+
+    public function test_saving_an_ebook_invalidates_the_cached_sitemap(): void
+    {
+        $this->sitemapXml();
+
+        Ebook::factory()->create();
 
         $this->assertFalse(Cache::has(SitemapBuilder::CACHE_KEY));
     }

@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Resources\Books\BookResource;
+use App\Filament\Resources\Ebooks\EbookResource;
 use App\Filament\Resources\Events\EventResource;
 use App\Filament\Resources\Greetings\GreetingResource;
 use App\Filament\Resources\Media\MediaResource;
@@ -64,11 +65,22 @@ class LandingPageSettings extends Page
         'section_programs' => ProgramResource::class,
         'section_events' => EventResource::class,
         'section_books' => BookResource::class,
+        'section_ebooks' => EbookResource::class,
         'section_gallery' => MediaResource::class,
         'section_blog' => PostResource::class,
         'section_testimonials' => TestimonialResource::class,
         'section_donasi' => GeneralSettings::class,
         'section_contact' => GeneralSettings::class,
+    ];
+
+    /**
+     * Aturan pemilihan isi yang tidak terlihat dari menu sumbernya saja,
+     * ditampilkan di bawah asal isi seksinya.
+     *
+     * @var array<string, string>
+     */
+    private const CONTENT_NOTES = [
+        'section_ebooks' => 'Yang tampil: e-book bertanda Unggulan (bila belum ada, e-book terbaru). Seksi ini baru muncul setelah ada e-book yang dipublikasikan.',
     ];
 
     /** @var array<string, mixed>|null */
@@ -98,6 +110,11 @@ class LandingPageSettings extends Page
                 'eyebrow' => 'Toko Buku',
                 'title' => 'Koleksi Buku Pilihan',
                 'subtitle' => 'Kitab, buku agama, dan referensi pendidikan berkualitas tersedia untuk dipesan.',
+            ],
+            'section_ebooks' => [
+                'eyebrow' => 'Perpustakaan Digital',
+                'title' => 'E-Book Pilihan',
+                'subtitle' => 'Buku pelajaran, modul, dan bacaan bermanfaat yang bisa dibaca langsung secara gratis.',
             ],
             'section_gallery' => [
                 'eyebrow' => 'Foto & Video',
@@ -410,9 +427,15 @@ class LandingPageSettings extends Page
 
         $menu = self::menuLink($source);
 
-        return new HtmlString(self::contentConfig($key) === null
+        $hint = self::contentConfig($key) === null
             ? "Tidak ada teks yang bisa diubah di sini — seluruh isinya diatur di menu {$menu}."
-            : "Isinya diambil dari menu {$menu}; teks judulnya bisa diubah di bawah.");
+            : "Isinya diambil dari menu {$menu}; teks judulnya bisa diubah di bawah.";
+
+        if (isset(self::CONTENT_NOTES[$key])) {
+            $hint .= '<div style="margin-top:.35rem;font-size:.8125rem;opacity:.75">'.e(self::CONTENT_NOTES[$key]).'</div>';
+        }
+
+        return new HtmlString($hint);
     }
 
     /**

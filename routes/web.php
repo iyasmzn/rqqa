@@ -13,6 +13,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\EbookController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
@@ -57,6 +58,12 @@ Route::get('/panitia/ppdb-berkas/{registration}/{field}', [SpmbController::class
 // Unduhan
 Route::get('/unduhan', [DownloadController::class, 'index'])->name('downloads.index');
 Route::get('/unduhan/{download}/download', [DownloadController::class, 'download'])->name('downloads.download');
+
+// E-Book
+Route::middleware('feature:ebook')->group(function () {
+    Route::get('/ebook', [EbookController::class, 'index'])->name('ebooks.index');
+    Route::get('/ebook/{ebook:slug}', [EbookController::class, 'show'])->name('ebooks.show');
+});
 
 // ── Autentikasi Pengguna Umum ────────────────────────────────
 Route::middleware(['guest', 'feature:login_register'])->group(function () {
